@@ -1,8 +1,66 @@
-﻿@{
+﻿@model Nop.Plugin.Shipping.NovaPoshta.Models.NovaPoshtaModel
+
+@{
     Layout = "_ConfigurePlugin";
 }
 
-<div>
-    <h1>Новая Почта</h1>
-    <h2>Конфигурирование</h2>
-</div>
+<form asp-controller="NovaPoshtaShipping" asp-action="Configure" method="post">
+
+    <div class="cards-group">
+        <div class="card card-default">
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="ApiUrl"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="ApiUrl"/>
+                        <span asp-validation-for="ApiUrl"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="ApiKey"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="ApiKey"/>
+                        <span asp-validation-for="ApiKey"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="UseAdditionalFee"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="UseAdditionalFee"/>
+                        <span asp-validation-for="UseAdditionalFee"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="AdditionalFee"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="AdditionalFee"/>
+                        <span asp-validation-for="AdditionalFee"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="AdditionalFeeIsPercent"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="AdditionalFeeIsPercent"/>
+                        <span asp-validation-for="AdditionalFeeIsPercent"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-9 offset-md-3">
+                        <button type="submit" name="save" class="btn btn-primary">@T("Admin.Common.Save")</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>

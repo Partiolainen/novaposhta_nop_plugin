@@ -33,6 +33,10 @@
       </Content>
       <None Remove="Views\Configure.cshtml" />
       <Content Include="Views\Configure.cshtml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Views\ToWarehouseOptionExt.cshtml" />
+      <Content Include="Views\ToWarehouseOptionExt.cshtml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>

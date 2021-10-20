@@ -1,3 +1,4 @@
+D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\Configure.cshtml
 D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\_ViewImports.cshtml
 D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\plugin.json
 D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\logo.jpg
@@ -296,5 +297,5 @@ D:\Projects\nopCommerce\SOURCE\Plugins\Nop.Plugin.Shipping.NovaPoshta\obj\Debug\
 D:\Projects\nopCommerce\SOURCE\Plugins\Nop.Plugin.Shipping.NovaPoshta\obj\Debug\net5.0\Nop.Plugin.Shipping.NovaPoshta.dll
 D:\Projects\nopCommerce\SOURCE\Plugins\Nop.Plugin.Shipping.NovaPoshta\obj\Debug\net5.0\ref\Nop.Plugin.Shipping.NovaPoshta.dll
 D:\Projects\nopCommerce\SOURCE\Plugins\Nop.Plugin.Shipping.NovaPoshta\obj\Debug\net5.0\Nop.Plugin.Shipping.NovaPoshta.pdb
-D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\Configure.cshtml
+D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\ToWarehouseOptionExt.cshtml
 D:\Projects\nopCommerce\SOURCE\Plugins\Nop.Plugin.Shipping.NovaPoshta\obj\Debug\net5.0\Nop.Plugin.Shipping.NovaPoshta.csproj.AssemblyReference.cache
