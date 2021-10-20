@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -18,26 +19,6 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         public NovaPoshtaApiService(ISettingService settingService)
         {
             _settingService = settingService;
-        }
-
-        public async Task<List<NovaPoshtaAddress>> GetAllAddresses()
-        {
-            var apiResponse = await NovaPoshtaApiGetData<ApiResponseAddresses, GetAddressesProps>(props =>
-            {
-                props.ModelName = "Address";
-                props.CalledMethod = "searchSettlements";
-            });
-
-            var addresses = new List<NovaPoshtaAddress>();
-
-            if (!apiResponse.Success) return addresses;
-            
-            foreach (var novaPoshtaAddress in apiResponse.Data)
-            {
-                addresses.AddRange(novaPoshtaAddress.Addresses);
-            }
-
-            return addresses;
         }
 
         public async Task<List<NovaPoshtaAddress>> GetAddressesByCityName(string cityName)
@@ -63,13 +44,26 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
 
         public async Task<List<NovaPoshtaSettlement>> GetAllSettlements()
         {
-            var apiResponse = await NovaPoshtaApiGetData<NovaPoshtaSettlement, GetSettlementsProps>(props =>
+            var allData = new List<NovaPoshtaSettlement>();
+            var page = 1;
+            ApiResponse<NovaPoshtaSettlement> apiResponse;
+            
+            do
             {
-                props.ModelName = "Address";
-                props.CalledMethod = "getSettlements";
-            });
+                apiResponse = await NovaPoshtaApiGetData<NovaPoshtaSettlement, GetSettlementsProps>(props =>
+                {
+                    props.ModelName = "Address";
+                    props.CalledMethod = "getSettlements";
+                    props.Page = page;
+                });
 
-            return apiResponse.Success ? apiResponse.Data : new List<NovaPoshtaSettlement>();
+                if (!apiResponse.Success) break;
+
+                allData.AddRange(apiResponse.Data);
+                page++;
+            } while (apiResponse.Data.Any());
+
+            return allData;
         }
 
         public async Task<List<NovaPoshtaSettlement>> GetSettlementsByRef(string @ref)
@@ -90,6 +84,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             {
                 props.ModelName = "AddressGeneral";
                 props.CalledMethod = "getWarehouses";
+                props.CityRef = null;
             });
 
             return apiResponse.Success ? apiResponse.Data : new List<NovaPoshtaWarehouse>();

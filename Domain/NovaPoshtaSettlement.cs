@@ -2,9 +2,8 @@
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Domain
 {
-    public class NovaPoshtaSettlement : BaseEntity
+    public class NovaPoshtaSettlement : NovaPoshtaEntity
     {
-        public string Ref { get; set; }
         public string SettlementType { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }

@@ -6,7 +6,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Infrastructure
     {
         public bool Success { get; set; }
 
-        public List<TData> Data { get; set; }
+        public List<TData> Data { get; set; } = new();
 
         public List<string> Errors { get; set; }
         public List<string> Warnings { get; set; }

@@ -2,6 +2,7 @@
 {
     public class GetSettlementsProps : BaseRequestProps
     {
-        public string @Ref { get; set; }
+        public string Ref { get; set; }
+        public int Page { get; set; }
     }
 }

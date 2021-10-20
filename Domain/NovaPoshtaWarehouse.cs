@@ -2,9 +2,8 @@
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Domain
 {
-    public class NovaPoshtaWarehouse : BaseEntity
+    public class NovaPoshtaWarehouse : NovaPoshtaEntity
     {
-        public string Ref { get; set; }
         public string SiteKey { get; set; }
         public string Description { get; set; }
         public string DescriptionRu { get; set; }

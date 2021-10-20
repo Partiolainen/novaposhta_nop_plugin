@@ -4,12 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Nop.Core;
 using Nop.Core.Domain.Shipping;
+using Nop.Core.Domain.Tasks;
 using Nop.Plugin.Shipping.NovaPoshta.Services;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
 using Nop.Services.Plugins;
 using Nop.Services.Shipping;
 using Nop.Services.Shipping.Tracking;
+using Nop.Services.Tasks;
+using Task = System.Threading.Tasks.Task;
 
 namespace Nop.Plugin.Shipping.NovaPoshta
 {
@@ -22,6 +25,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta
         private readonly INovaPoshtaService _novaPoshtaService;
         private readonly ILocalizationService _localizationService;
         private readonly ILanguageService _languageService;
+        private readonly IScheduleTaskService _scheduleTaskService;
 
         #endregion
 
@@ -32,13 +36,15 @@ namespace Nop.Plugin.Shipping.NovaPoshta
             ISettingService settingService,
             INovaPoshtaService novaPoshtaService,
             ILocalizationService localizationService,
-            ILanguageService languageService)
+            ILanguageService languageService,
+            IScheduleTaskService scheduleTaskService)
         {
             _webHelper = webHelper;
             _settingService = settingService;
             _novaPoshtaService = novaPoshtaService;
             _localizationService = localizationService;
             _languageService = languageService;
+            _scheduleTaskService = scheduleTaskService;
         }
         
         #endregion
@@ -71,7 +77,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta
 
         public async Task<decimal?> GetFixedRateAsync(GetShippingOptionRequest getShippingOptionRequest)
         {
-            return 100;
+            return 90;
         }
 
         public override string GetConfigurationPageUrl()
@@ -90,11 +96,25 @@ namespace Nop.Plugin.Shipping.NovaPoshta
                 AdditionalFeeIsPercent = false
             });
 
+            await InstallScheduledTasks();
+
             await SetLocaleResources();
 
             await base.InstallAsync();
-            
-            
+        }
+        
+        private async Task InstallScheduledTasks()
+        {
+            if (await _scheduleTaskService.GetTaskByTypeAsync(NovaPoshtaDefaults.UPDATE_DATA_TASK) == null)
+            {
+                await _scheduleTaskService.InsertTaskAsync(new ScheduleTask
+                {
+                    Enabled = true,
+                    Seconds = NovaPoshtaDefaults.DEFAULT_SYNCHRONIZATION_PERIOD * 60 * 60,
+                    Name = NovaPoshtaDefaults.SYNCHRONIZATION_TASK_NAME,
+                    Type = NovaPoshtaDefaults.UPDATE_DATA_TASK
+                });
+            }
         }
         
         private async Task SetLocaleResources()

@@ -1,20 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Text.Json;
 using System.Threading.Tasks;
-using iTextSharp.text;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Shipping;
-using Nop.Core.Domain.Tasks;
 using Nop.Plugin.Shipping.NovaPoshta.Domain;
-using Nop.Plugin.Shipping.NovaPoshta.Infrastructure;
-using Nop.Plugin.Shipping.NovaPoshta.Infrastructure.ApiRequest;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
 using Nop.Services.Tasks;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Services
 {
@@ -116,21 +107,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         {
             var warehouses = new List<NovaPoshtaWarehouse>();
 
-            var novaPoshtaAddresses = await _novaPoshtaApiService.GetAddressesByCityName(shippingAddress.City);
-
-            if (!novaPoshtaAddresses.Any()) return warehouses;
             
-            foreach (var address in novaPoshtaAddresses)
-            {
-                var settlements = await _novaPoshtaApiService.GetSettlementsByRef(address.Ref);
-                    
-                foreach (var settlement in settlements)
-                {
-                    if (settlement.Index1 != shippingAddress.ZipPostalCode) continue;
-                    
-                    warehouses = await _novaPoshtaApiService.GetWarehousesByCityRef(address.DeliveryCity);
-                }
-            }
 
             return warehouses;
         }

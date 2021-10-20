@@ -2,7 +2,7 @@
 using Nop.Data.Migrations;
 using Nop.Plugin.Shipping.NovaPoshta.Domain;
 
-namespace Nop.Plugin.Shipping.NovaPoshta.Data
+namespace Nop.Plugin.Shipping.NovaPoshta.Data.Migrations
 {
     [NopMigration("2021/10/20 12:17:00:0000000", "Create NovaPoshtaAddress, NovaPoshtaSettlement, NovaPoshtaWarehouse")]
     public class InitialMigration : AutoReversingMigration
@@ -16,7 +16,6 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Data
 
         public override void Up()
         {
-            _migrationManager.BuildTable<NovaPoshtaAddress>(Create);
             _migrationManager.BuildTable<NovaPoshtaSettlement>(Create);
             _migrationManager.BuildTable<NovaPoshtaWarehouse>(Create);
         }
