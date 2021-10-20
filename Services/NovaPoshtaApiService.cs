@@ -22,7 +22,11 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
 
         public async Task<List<NovaPoshtaAddress>> GetAllAddresses()
         {
-            var apiResponse = await NovaPoshtaApiGetData<ApiResponseAddresses, GetAddressesProps>(_ => { });
+            var apiResponse = await NovaPoshtaApiGetData<ApiResponseAddresses, GetAddressesProps>(props =>
+            {
+                props.ModelName = "Address";
+                props.CalledMethod = "searchSettlements";
+            });
 
             var addresses = new List<NovaPoshtaAddress>();
 
@@ -38,17 +42,32 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
 
         public async Task<List<NovaPoshtaAddress>> GetAddressesByCityName(string cityName)
         {
-            var apiResponse = await NovaPoshtaApiGetData<NovaPoshtaAddress, GetAddressesProps>(props =>
+            var apiResponse = await NovaPoshtaApiGetData<ApiResponseAddresses, GetAddressesProps>(props =>
             {
+                props.ModelName = "Address";
+                props.CalledMethod = "searchSettlements";
                 props.CityName = cityName;
             });
 
-            return apiResponse.Success ? apiResponse.Data : new List<NovaPoshtaAddress>();
+            var addresses = new List<NovaPoshtaAddress>();
+
+            if (!apiResponse.Success) return addresses;
+            
+            foreach (var novaPoshtaAddress in apiResponse.Data)
+            {
+                addresses.AddRange(novaPoshtaAddress.Addresses);
+            }
+
+            return addresses;
         }
 
         public async Task<List<NovaPoshtaSettlement>> GetAllSettlements()
         {
-            var apiResponse = await NovaPoshtaApiGetData<NovaPoshtaSettlement, GetSettlementsProps>(_ => { });
+            var apiResponse = await NovaPoshtaApiGetData<NovaPoshtaSettlement, GetSettlementsProps>(props =>
+            {
+                props.ModelName = "Address";
+                props.CalledMethod = "getSettlements";
+            });
 
             return apiResponse.Success ? apiResponse.Data : new List<NovaPoshtaSettlement>();
         }
@@ -57,6 +76,8 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         {
             var apiResponse = await NovaPoshtaApiGetData<NovaPoshtaSettlement, GetSettlementsProps>(props =>
             {
+                props.ModelName = "Address";
+                props.CalledMethod = "getSettlements";
                 props.Ref = @ref;
             });
 
@@ -65,7 +86,11 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
 
         public async Task<List<NovaPoshtaWarehouse>> GetAllWarehouses()
         {
-            var apiResponse = await NovaPoshtaApiGetData<NovaPoshtaWarehouse, GetWarehousesProps>(_ => { });
+            var apiResponse = await NovaPoshtaApiGetData<NovaPoshtaWarehouse, GetWarehousesProps>(props =>
+            {
+                props.ModelName = "AddressGeneral";
+                props.CalledMethod = "getWarehouses";
+            });
 
             return apiResponse.Success ? apiResponse.Data : new List<NovaPoshtaWarehouse>();
         }
@@ -74,6 +99,8 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         {
             var apiResponse = await NovaPoshtaApiGetData<NovaPoshtaWarehouse, GetWarehousesProps>(props =>
             {
+                props.ModelName = "AddressGeneral";
+                props.CalledMethod = "getWarehouses";
                 props.CityRef = cityRef;
             });
 
@@ -91,7 +118,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         }
 
         private async Task<ApiResponse<TData>> NovaPoshtaApiGetData<TData, TRequest>(Action<TRequest> props)
-            where TRequest : BaseRequestProps
+            where TRequest : BaseRequestProps, new()
         {
             var settings = await GetNovaPoshtaSettings();
             var request = new ApiRequest<TRequest>(await ApiKey(), props);

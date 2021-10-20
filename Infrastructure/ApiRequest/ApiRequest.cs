@@ -2,19 +2,19 @@
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Infrastructure.ApiRequest
 {
-    public class ApiRequest<T> where T : BaseRequestProps
+    public class ApiRequest<T> where T : BaseRequestProps, new()
     {
-        public string ModelName;
-        public string CalledMethod;
-        public string ApiKey;
-        public T MethodProperties;
+        public string modelName;
+        public string calledMethod;
+        public string apiKey;
+        public readonly T methodProperties = new();
 
         public ApiRequest(string apiKey, Action<T> properties)
         {
-            ApiKey = apiKey;
-            properties.Invoke(MethodProperties);
-            ModelName = MethodProperties.ModelName;
-            CalledMethod = MethodProperties.CalledMethod;
+            this.apiKey = apiKey;
+            properties(methodProperties);
+            modelName = methodProperties.ModelName;
+            calledMethod = methodProperties.CalledMethod;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Infrastructure.ApiRequest
             _apiKey = apiKey;
         }
 
-        public ApiRequest<T> Build<T>(Action<T> properties) where T : BaseRequestProps
+        public ApiRequest<T> Build<T>(Action<T> properties) where T : BaseRequestProps, new()
         {
             var apiRequest = new ApiRequest<T>(_apiKey, properties);
 
