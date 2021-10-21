@@ -1,12 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Nop.Plugin.Shipping.NovaPoshta.Models;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
 using Nop.Services.Messages;
+using Nop.Services.Tasks;
 using Nop.Web.Framework;
 using Nop.Web.Framework.Controllers;
 using Nop.Web.Framework.Mvc.Filters;
+using Task = Nop.Services.Tasks.Task;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
 {
@@ -19,6 +22,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
         private readonly ISettingService _settingService;
         private readonly INotificationService _notificationService;
         private readonly ILocalizationService _localizationService;
+        private readonly IScheduleTaskService _scheduleTaskService;
 
         private readonly string _endPointBasePath = "~/Plugins/Shipping.NovaPoshta/Views/";
 
@@ -26,12 +30,14 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
             NovaPoshtaSettings novaPoshtaSettings, 
             ISettingService settingService,
             INotificationService notificationService,
-            ILocalizationService localizationService)
+            ILocalizationService localizationService,
+            IScheduleTaskService scheduleTaskService)
         {
             _novaPoshtaSettings = novaPoshtaSettings;
             _settingService = settingService;
             _notificationService = notificationService;
             _localizationService = localizationService;
+            _scheduleTaskService = scheduleTaskService;
         }
 
         public async Task<IActionResult> Configure()
@@ -61,7 +67,24 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
 
             _notificationService.SuccessNotification(
                 await _localizationService.GetResourceAsync("Admin.Plugins.Saved"));
+
+            if (string.IsNullOrEmpty(model.ApiUrl) || string.IsNullOrEmpty(model.ApiKey)) 
+                return await Configure();
             
+            try
+            {
+
+                var scheduleTask = await _scheduleTaskService.GetTaskByTypeAsync(NovaPoshtaDefaults.UPDATE_DATA_TASK_TYPE)
+                                   ?? throw new ArgumentException("Schedule task cannot be loaded",
+                                       NovaPoshtaDefaults.UPDATE_DATA_TASK_TYPE);
+                var task = new Task(scheduleTask) {Enabled = true};
+                await task.ExecuteAsync(true, false);;
+            }
+            catch (Exception e)
+            {
+                await _notificationService.ErrorNotificationAsync(e);
+            }
+
             return await Configure();
         }
 

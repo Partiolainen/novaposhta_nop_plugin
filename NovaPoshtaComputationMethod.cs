@@ -105,14 +105,14 @@ namespace Nop.Plugin.Shipping.NovaPoshta
         
         private async Task InstallScheduledTasks()
         {
-            if (await _scheduleTaskService.GetTaskByTypeAsync(NovaPoshtaDefaults.UPDATE_DATA_TASK) == null)
+            if (await _scheduleTaskService.GetTaskByTypeAsync(NovaPoshtaDefaults.UPDATE_DATA_TASK_TYPE) == null)
             {
                 await _scheduleTaskService.InsertTaskAsync(new ScheduleTask
                 {
                     Enabled = true,
                     Seconds = NovaPoshtaDefaults.DEFAULT_SYNCHRONIZATION_PERIOD * 60 * 60,
                     Name = NovaPoshtaDefaults.SYNCHRONIZATION_TASK_NAME,
-                    Type = NovaPoshtaDefaults.UPDATE_DATA_TASK
+                    Type = NovaPoshtaDefaults.UPDATE_DATA_TASK_TYPE
                 });
             }
         }
