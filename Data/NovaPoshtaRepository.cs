@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Nop.Core;
 using Nop.Core.Caching;
 using Nop.Core.Events;
 using Nop.Data;
@@ -8,7 +9,7 @@ using Nop.Plugin.Shipping.NovaPoshta.Domain;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Data
 {
-    public class NovaPoshtaRepository<T> : EntityRepository<T>, INovaPoshtaRepository<T> where T : NovaPoshtaEntity
+    public class NovaPoshtaRepository<T> : EntityRepository<T>, INovaPoshtaRepository<T> where T : BaseEntity, INovaPoshtaEntity
     {
         private readonly IStaticCacheManager _staticCacheManager;
 

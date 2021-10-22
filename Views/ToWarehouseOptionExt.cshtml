@@ -1,4 +1,12 @@
-﻿@using Nop.Plugin.Shipping.NovaPoshta.Services
-@inject INovaPoshtaService NovaPoshtaService
+﻿@model Nop.Core.Domain.Common.Address
+@using Nop.Plugin.Shipping.NovaPoshta.Services
+@inject INovaPoshtaService _novaPoshtaService
 
-<span style="font-weight: bold; color: blue">To nova Poshta warehouse extend options</span>
+<div >
+    <select class="form-control form-control-sm" id="nova-poshta-warehouses-select">
+        @foreach (var warehouse in await _novaPoshtaService.GetWarehousesByAddress(Model))
+        {
+            <option value="@warehouse.Ref">@warehouse.Description</option>
+        }
+    </select>
+</div>

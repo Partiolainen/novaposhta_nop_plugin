@@ -14,5 +14,7 @@
         public const string USE_ADDITIONAL_FEE = "Plugins.Shipping.NovaPoshta.Fields.UseAdditionalFee";
         public const string ADDITIONAL_FEE_IS_PERCENT = "Plugins.Shipping.NovaPoshta.Fields.AdditionalFeeIsPercent";
         public const string ADDITIONAL_FEE = "Plugins.Shipping.NovaPoshta.Fields.AdditionalFee";
+        public const string DB_LAST_SUCCESS_UPDATE = "Plugins.Shipping.NovaPoshta.Fields.DbLastSuccessUpdate";
+        public const string WAREHOUSE_CITIES = "Plugins.Shipping.NovaPoshta.Fields.WarehouseCities";
     }
 }

@@ -299,3 +299,4 @@ D:\Projects\nopCommerce\SOURCE\Plugins\Nop.Plugin.Shipping.NovaPoshta\obj\Debug\
 D:\Projects\nopCommerce\SOURCE\Plugins\Nop.Plugin.Shipping.NovaPoshta\obj\Debug\net5.0\Nop.Plugin.Shipping.NovaPoshta.pdb
 D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\ToWarehouseOptionExt.cshtml
 D:\Projects\nopCommerce\SOURCE\Plugins\Nop.Plugin.Shipping.NovaPoshta\obj\Debug\net5.0\Nop.Plugin.Shipping.NovaPoshta.csproj.AssemblyReference.cache
+D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\WarehouseCity.cshtml

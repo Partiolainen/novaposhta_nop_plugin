@@ -2,7 +2,7 @@
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Domain
 {
-    public class NovaPoshtaAddress : NovaPoshtaEntity
+    public class NovaPoshtaAddress : BaseEntity, INovaPoshtaEntity
     {
         public string Present { get; set; }
         public int Warehouses { get; set; }
@@ -17,5 +17,6 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Domain
         public string ParentRegionCode { get; set; }
         public string RegionTypes { get; set; }
         public string RegionTypesCode { get; set; }
+        public string Ref { get; set; }
     }
 }

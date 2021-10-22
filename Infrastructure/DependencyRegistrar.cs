@@ -15,6 +15,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Infrastructure
             services.AddScoped<ILocalizer, Localizer>();
             services.AddScoped<INovaPoshtaRepository<NovaPoshtaSettlement>, NovaPoshtaRepository<NovaPoshtaSettlement>>();
             services.AddScoped<INovaPoshtaRepository<NovaPoshtaWarehouse>, NovaPoshtaRepository<NovaPoshtaWarehouse>>();
+            services.AddScoped<INovaPoshtaRepository<NovaPoshtaArea>, NovaPoshtaRepository<NovaPoshtaArea>>();
             services.AddScoped<INovaPoshtaApiService, NovaPoshtaApiService>();
             services.AddScoped<INovaPoshtaService, NovaPoshtaService>();
         }

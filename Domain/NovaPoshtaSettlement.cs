@@ -2,7 +2,7 @@
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Domain
 {
-    public class NovaPoshtaSettlement : NovaPoshtaEntity
+    public class NovaPoshtaSettlement : BaseEntity, INovaPoshtaEntity
     {
         public string SettlementType { get; set; }
         public string Latitude { get; set; }
@@ -29,5 +29,6 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Domain
         public string Delivery7 { get; set; }
         public int SpecialCashCheck { get; set; }
         public string Warehouse { get; set; }
+        public string Ref { get; set; }
     }
 }

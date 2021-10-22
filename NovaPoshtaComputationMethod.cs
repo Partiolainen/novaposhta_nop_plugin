@@ -71,7 +71,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta
 
         public async Task<decimal?> GetFixedRateAsync(GetShippingOptionRequest getShippingOptionRequest)
         {
-            return 90;
+            return null;
         }
 
         public override string GetConfigurationPageUrl()
@@ -97,11 +97,13 @@ namespace Nop.Plugin.Shipping.NovaPoshta
             await base.InstallAsync();
         }
 
-        public override Task UninstallAsync()
+        public override async Task UninstallAsync()
         {
-            _localizer.RemoveLocaleResources();
+            await _localizer.RemoveLocaleResources();
+
+            await RemoveScheduledTasks();
             
-            return base.UninstallAsync();
+            await base.UninstallAsync();
         }
 
         private async Task InstallScheduledTasks()
@@ -115,6 +117,16 @@ namespace Nop.Plugin.Shipping.NovaPoshta
                     Name = NovaPoshtaDefaults.SYNCHRONIZATION_TASK_NAME,
                     Type = NovaPoshtaDefaults.UPDATE_DATA_TASK_TYPE
                 });
+            }
+        }
+        
+        private async Task RemoveScheduledTasks()
+        {
+            var scheduleTask = await _scheduleTaskService.GetTaskByTypeAsync(NovaPoshtaDefaults.UPDATE_DATA_TASK_TYPE);
+
+            if (scheduleTask != null)
+            {
+                await _scheduleTaskService.DeleteTaskAsync(scheduleTask);
             }
         }
     }

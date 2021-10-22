@@ -27,6 +27,8 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                 [NovaPoshtaDefaults.USE_ADDITIONAL_FEE] = "Use additional fee",
                 [NovaPoshtaDefaults.ADDITIONAL_FEE_IS_PERCENT] = "Additional commission as a percentage?",
                 [NovaPoshtaDefaults.ADDITIONAL_FEE] = "Additional fee",
+                [NovaPoshtaDefaults.DB_LAST_SUCCESS_UPDATE] = "Last database update",
+                [NovaPoshtaDefaults.WAREHOUSE_CITIES] = "Your warehouses"
             });
 
             var allLanguagesAsync = await _languageService.GetAllLanguagesAsync();
@@ -45,7 +47,9 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                         [NovaPoshtaDefaults.API_URL] = "API URL",
                         [NovaPoshtaDefaults.USE_ADDITIONAL_FEE] = "Использовать дополнительную комиссию",
                         [NovaPoshtaDefaults.ADDITIONAL_FEE_IS_PERCENT] = "Дополнительная комиссия в процентах?",
-                        [NovaPoshtaDefaults.ADDITIONAL_FEE] = "Дополнительная комиссия"
+                        [NovaPoshtaDefaults.ADDITIONAL_FEE] = "Дополнительная комиссия",
+                        [NovaPoshtaDefaults.DB_LAST_SUCCESS_UPDATE] = "Последнее обновление базы",
+                        [NovaPoshtaDefaults.WAREHOUSE_CITIES] = "Ваши склады"
                     }, language.Id);
                 }
                 if (languageName == "uk")
@@ -60,6 +64,8 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                         [NovaPoshtaDefaults.USE_ADDITIONAL_FEE] = "Використовувати додаткову комісію",
                         [NovaPoshtaDefaults.ADDITIONAL_FEE_IS_PERCENT] = "Додаткова комісія у відсотках?",
                         [NovaPoshtaDefaults.ADDITIONAL_FEE] = "Додаткова комісія",
+                        [NovaPoshtaDefaults.DB_LAST_SUCCESS_UPDATE] = "Останнє оновлення бази",
+                        [NovaPoshtaDefaults.WAREHOUSE_CITIES] = "Ваші склади"
                     }, language.Id);
                 }
             }
@@ -77,6 +83,8 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                 NovaPoshtaDefaults.USE_ADDITIONAL_FEE,
                 NovaPoshtaDefaults.ADDITIONAL_FEE_IS_PERCENT,
                 NovaPoshtaDefaults.ADDITIONAL_FEE,
+                NovaPoshtaDefaults.DB_LAST_SUCCESS_UPDATE,
+                NovaPoshtaDefaults.WAREHOUSE_CITIES
             });
 
             var allLanguagesAsync = await _languageService.GetAllLanguagesAsync();
@@ -96,6 +104,8 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                         NovaPoshtaDefaults.USE_ADDITIONAL_FEE,
                         NovaPoshtaDefaults.ADDITIONAL_FEE_IS_PERCENT,
                         NovaPoshtaDefaults.ADDITIONAL_FEE,
+                        NovaPoshtaDefaults.DB_LAST_SUCCESS_UPDATE,
+                        NovaPoshtaDefaults.WAREHOUSE_CITIES
                     }, language.Id);
                 }
                 if (languageName == "uk")
@@ -110,6 +120,8 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                         NovaPoshtaDefaults.USE_ADDITIONAL_FEE,
                         NovaPoshtaDefaults.ADDITIONAL_FEE_IS_PERCENT,
                         NovaPoshtaDefaults.ADDITIONAL_FEE,
+                        NovaPoshtaDefaults.DB_LAST_SUCCESS_UPDATE,
+                        NovaPoshtaDefaults.WAREHOUSE_CITIES
                     }, language.Id);
                 }
             }

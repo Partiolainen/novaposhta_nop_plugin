@@ -1,4 +1,7 @@
-﻿@model Nop.Plugin.Shipping.NovaPoshta.Models.NovaPoshtaModel
+﻿@using Nop.Plugin.Shipping.NovaPoshta.Data
+@using Nop.Plugin.Shipping.NovaPoshta.Domain
+@model Nop.Plugin.Shipping.NovaPoshta.Models.NovaPoshtaConfigurationSettingsModel
+@inject INovaPoshtaRepository<NovaPoshtaArea> _areasRepository
 
 @{
     Layout = "_ConfigurePlugin";
@@ -54,9 +57,66 @@
                         <span asp-validation-for="AdditionalFeeIsPercent"></span>
                     </div>
                 </div>
+
                 <div class="form-group row">
                     <div class="col-md-9 offset-md-3">
                         <button type="submit" name="save" class="btn btn-primary">@T("Admin.Common.Save")</button>
+                    </div>
+                </div>
+                <hr/>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="WarehouseCities"/>
+                    </div>
+                    <div class="col-md-9" style="display: flex; flex-direction: column">
+                        @foreach (var warehouseCity in Model.WarehouseCities)
+                        {
+                            await Html.RenderPartialAsync("/Plugins/Shipping.NovaPoshta/Views/WarehouseCity.cshtml", warehouseCity);
+                        }
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-9">
+                        <a class="btn btn-primary" href="/Admin/Shipping/Warehouses">Настройка складов</a>
+                    </div>
+                </div>
+
+                <hr/>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="DbLastSuccessUpdate"/>
+                    </div>
+                    <div class="col-md-6">
+                        <div style="border: 1px solid lightgray">
+                            @if (Model.DbLastSuccessUpdate == null)
+                            {
+                                <span style="line-height: 40px; margin-left: 10px;">
+                                    Нет данных. База не обновлялась или использованы неправильные настройки модуля
+                                </span>
+                            }
+                            else
+                            {
+                                <span style="line-height: 40px; margin-left: 10px;">
+                                    @Model.DbLastSuccessUpdate
+                                </span>
+                            }
+
+                        </div>
+                        <div style="margin-top: 10px;">
+                            @if (string.IsNullOrEmpty(Model.ApiKey) || string.IsNullOrEmpty(Model.ApiUrl))
+                            {
+                                <a class="btn btn-primary disabled" href="">Обновить сейчас</a>
+                                <span style="margin-left: 10px; color: red">Невозможно обновить, проверьте API URL и API ключ</span>
+                            }
+                            else
+                            {
+                                <a class="btn btn-primary" href="">Обновить сейчас</a>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>

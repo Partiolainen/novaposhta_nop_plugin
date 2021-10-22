@@ -102,6 +102,17 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             return apiResponse.Success ? apiResponse.Data : new List<NovaPoshtaWarehouse>();
         }
 
+        public async Task<List<NovaPoshtaArea>> GetAllAreas()
+        {
+            var apiResponse = await NovaPoshtaApiGetData<NovaPoshtaArea, BaseRequestProps>(props =>
+            {
+                props.ModelName = "Address";
+                props.CalledMethod = "getAreas";
+            });
+
+            return apiResponse.Success ? apiResponse.Data : new List<NovaPoshtaArea>();
+        }
+
         private async Task<NovaPoshtaSettings> GetNovaPoshtaSettings()
         {
             return await _settingService.LoadSettingAsync<NovaPoshtaSettings>();

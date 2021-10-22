@@ -11,5 +11,6 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         Task<List<NovaPoshtaSettlement>> GetSettlementsByRef(string @ref);
         Task<List<NovaPoshtaWarehouse>> GetAllWarehouses();
         Task<List<NovaPoshtaWarehouse>> GetWarehousesByCityRef(string cityRef);
+        Task<List<NovaPoshtaArea>> GetAllAreas();
     }
 }

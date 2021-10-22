@@ -2,7 +2,7 @@
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Domain
 {
-    public class NovaPoshtaEntity : BaseEntity
+    public interface INovaPoshtaEntity
     {
         public string Ref { get; set; }
     }

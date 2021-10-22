@@ -1,0 +1,46 @@
+﻿@model Nop.Plugin.Shipping.NovaPoshta.Models.NovaPoshtaConfigurationSettingsModel.WarehouseAvailability
+
+<div style="background-color: #d3deee; border: 1px solid darkblue; border-radius: 3px; width: 400px; padding: 5px; margin-bottom: 10px;">
+    <div class="row">
+        <div class="col-md-6">
+            Ваш склад:
+        </div>
+        <div class="col-md-6">
+            @Model.Warehouse.Name
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            Город:
+        </div>
+        <div class="col-md-6">
+            @Model.Address.ZipPostalCode, @Model.Address.City
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            Склады НП:
+        </div>
+        <div class="col-md-6">
+            @Model.NovaPoshtaWarehousesCount
+        </div>
+    </div>
+    
+    <div style="font-size: 18px">
+        @if (Model.IsAvailable)
+        {
+            <span class="badge badge-success">Может использоваться для расчётов доставки</span>
+        }
+        else
+        {
+            <span class="badge badge-danger">Не может использоваться для расчётов доставки</span>
+        }
+    </div>
+    
+    <hr style="margin: 3px 10px"/>
+    <div style="display: flex; justify-content: flex-end">
+        <a class="btn btn-sm btn-primary" href="/Admin/Shipping/EditWarehouse/@Model.Warehouse.Id">Настройки склада</a>
+    </div>
+    
+
+</div>
