@@ -12,5 +12,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         Task<List<NovaPoshtaWarehouse>> GetAllWarehouses();
         Task<List<NovaPoshtaWarehouse>> GetWarehousesByCityRef(string cityRef);
         Task<List<NovaPoshtaArea>> GetAllAreas();
+        Task<List<NovaPoshtaDocumentPrice>> GetDeliveryPrice(NovaPoshtaSettlement sender,
+            NovaPoshtaSettlement recipient);
     }
 }

@@ -16,11 +16,11 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Data.Migrations
 
         public override void Up()
         {
+            _migrationManager.BuildTable<Dimensions>(Create);
+            _migrationManager.BuildTable<WeekWorkTimes>(Create);
             _migrationManager.BuildTable<NovaPoshtaArea>(Create);
             _migrationManager.BuildTable<NovaPoshtaSettlement>(Create);
             _migrationManager.BuildTable<NovaPoshtaWarehouse>(Create);
-            _migrationManager.BuildTable<Dimensions>(Create);
-            _migrationManager.BuildTable<WeekWorkTimes>(Create);
         }
     }
 }

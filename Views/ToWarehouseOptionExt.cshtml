@@ -1,12 +1,15 @@
-﻿@model Nop.Core.Domain.Common.Address
+﻿@model Nop.Core.Domain.Shipping.ShippingOption
 @using Nop.Plugin.Shipping.NovaPoshta.Services
 @inject INovaPoshtaService _novaPoshtaService
 
 <div >
     <select class="form-control form-control-sm" id="nova-poshta-warehouses-select">
-        @foreach (var warehouse in await _novaPoshtaService.GetWarehousesByAddress(Model))
+        @foreach (var warehouse in await _novaPoshtaService.GetWarehousesByAddress(Model.Address))
         {
-            <option value="@warehouse.Ref">@warehouse.Description</option>
+            <option value="@warehouse.Ref">
+                @warehouse.Description
+                (@warehouse.ReceivingLimitationsOnDimensions.Height/@warehouse.ReceivingLimitationsOnDimensions.Width/@warehouse.ReceivingLimitationsOnDimensions.Length)
+            </option>
         }
     </select>
 </div>

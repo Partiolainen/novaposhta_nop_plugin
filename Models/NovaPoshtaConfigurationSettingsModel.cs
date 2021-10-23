@@ -33,10 +33,10 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Models
 
         public record WarehouseAvailability
         {
-            public Warehouse Warehouse { get; set; }
-            public Address Address { get; set; }
-            public bool IsAvailable { get; set; }
-            public int NovaPoshtaWarehousesCount { get; set; }
+            public Warehouse Warehouse { get; init; }
+            public Address Address { get; init; }
+            public bool IsAvailable { get; init; }
+            public int NovaPoshtaWarehousesCount { get; init; }
         }
     }
 }

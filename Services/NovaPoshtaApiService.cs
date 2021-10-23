@@ -113,6 +113,13 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             return apiResponse.Success ? apiResponse.Data : new List<NovaPoshtaArea>();
         }
 
+        public async Task<List<NovaPoshtaDocumentPrice>> GetDeliveryPrice(NovaPoshtaSettlement sender, NovaPoshtaSettlement recipient)
+        {
+
+
+            return new List<NovaPoshtaDocumentPrice>();
+        }
+
         private async Task<NovaPoshtaSettings> GetNovaPoshtaSettings()
         {
             return await _settingService.LoadSettingAsync<NovaPoshtaSettings>();
