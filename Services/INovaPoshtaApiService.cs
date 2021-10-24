@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Nop.Core.Domain.Catalog;
 using Nop.Plugin.Shipping.NovaPoshta.Domain;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Services
@@ -13,6 +14,6 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         Task<List<NovaPoshtaWarehouse>> GetWarehousesByCityRef(string cityRef);
         Task<List<NovaPoshtaArea>> GetAllAreas();
         Task<List<NovaPoshtaDocumentPrice>> GetDeliveryPrice(NovaPoshtaSettlement sender,
-            NovaPoshtaSettlement recipient);
+            NovaPoshtaSettlement recipient, Product product, bool toWarehouse = true);
     }
 }

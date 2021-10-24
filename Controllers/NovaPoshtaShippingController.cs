@@ -1,19 +1,14 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Nop.Core.Domain.Shipping;
-using Nop.Data;
 using Nop.Plugin.Shipping.NovaPoshta.Models;
 using Nop.Plugin.Shipping.NovaPoshta.Services;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
-using Nop.Services.Logging;
 using Nop.Services.Messages;
 using Nop.Services.Tasks;
 using Nop.Web.Framework;
 using Nop.Web.Framework.Controllers;
 using Nop.Web.Framework.Mvc.Filters;
-using Task = Nop.Services.Tasks.Task;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
 {
@@ -28,7 +23,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
         private readonly ILocalizationService _localizationService;
         private readonly IScheduleTaskService _scheduleTaskService;
         private readonly INovaPoshtaService _novaPoshtaService;
-        private readonly ILogger _logger;
+        private readonly INpScheduleTasksService _npScheduleTasksService;
 
         private readonly string _endPointBasePath = "~/Plugins/Shipping.NovaPoshta/Views/";
 
@@ -39,7 +34,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
             ILocalizationService localizationService,
             IScheduleTaskService scheduleTaskService,
             INovaPoshtaService novaPoshtaService,
-            ILogger logger)
+            INpScheduleTasksService npScheduleTasksService)
         {
             _novaPoshtaSettings = novaPoshtaSettings;
             _settingService = settingService;
@@ -47,7 +42,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
             _localizationService = localizationService;
             _scheduleTaskService = scheduleTaskService;
             _novaPoshtaService = novaPoshtaService;
-            _logger = logger;
+            _npScheduleTasksService = npScheduleTasksService;
         }
 
         public async Task<IActionResult> Configure(NovaPoshtaConfigurePageModel pageModel)
@@ -86,32 +81,9 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
             if (string.IsNullOrEmpty(configurationSettingsModel.ApiUrl) || string.IsNullOrEmpty(configurationSettingsModel.ApiKey)) 
                 return await Configure(new NovaPoshtaConfigurePageModel());
             
-            RunScheduledTasks();
+            await _npScheduleTasksService.UpdateDatabase();
 
             return await Configure(new NovaPoshtaConfigurePageModel(true));
-        }
-
-        public IActionResult ToWarehouseOptionExt()
-        {
-            return PartialView(_endPointBasePath + "ToWarehouseOptionExt.cshtml");
-        }
-        
-        [NonAction]
-        private async void RunScheduledTasks()
-        {
-            _notificationService.WarningNotification("Start Nova Poshta warehouses database update process");
-            try
-            {
-                var scheduleTask = await _scheduleTaskService.GetTaskByTypeAsync(NovaPoshtaDefaults.UPDATE_DATA_TASK_TYPE)
-                                   ?? throw new ArgumentException("Schedule task cannot be loaded",
-                                       NovaPoshtaDefaults.UPDATE_DATA_TASK_TYPE);
-                var task = new Task(scheduleTask) {Enabled = true};
-                await task.ExecuteAsync(true, false);
-            }
-            catch (Exception e)
-            {
-                await _logger.ErrorAsync($"Exception in : {NovaPoshtaDefaults.SYNCHRONIZATION_TASK_NAME}", e);
-            }
         }
     }
 }

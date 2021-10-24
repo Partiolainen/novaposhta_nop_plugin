@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Nop.Core.Domain.Catalog;
 using Nop.Plugin.Shipping.NovaPoshta.Domain;
 using Nop.Plugin.Shipping.NovaPoshta.Infrastructure;
 using Nop.Plugin.Shipping.NovaPoshta.Infrastructure.ApiRequest;
@@ -113,11 +114,33 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             return apiResponse.Success ? apiResponse.Data : new List<NovaPoshtaArea>();
         }
 
-        public async Task<List<NovaPoshtaDocumentPrice>> GetDeliveryPrice(NovaPoshtaSettlement sender, NovaPoshtaSettlement recipient)
+        public async Task<List<NovaPoshtaDocumentPrice>> GetDeliveryPrice(NovaPoshtaSettlement sender, 
+            NovaPoshtaSettlement recipient, Product product, bool toWarehouse = true)
         {
+            var apiResponse = await NovaPoshtaApiGetData<NovaPoshtaDocumentPrice, GetDeliveryCostProps>(props =>
+            {
+                props.ModelName = "InternetDocument";
+                props.CalledMethod = "getDocumentPrice";
+                props.CitySender = sender.Ref;
+                props.CityRecipient = recipient.Ref;
+                props.Weight = ((int)product.Weight).ToString();
+                props.ServiceType = toWarehouse ? "WarehouseWarehouse" : "WarehouseDoors";
+                props.Cost = ((int)product.Price).ToString();
+                props.CargoType = "Parcel";
+                props.SeatsAmount = "1";
+                props.OptionsSeat = new List<OptionSeat>
+                {
+                    new()
+                    {
+                        weight = ((int)product.Weight).ToString(),
+                        volumetricHeight = ((int)(product.Height * 100)).ToString(),
+                        volumetricLength = ((int)(product.Length * 100)).ToString(),
+                        volumetricWidth = ((int)(product.Width * 100)).ToString()
+                    }
+                };
+            });
 
-
-            return new List<NovaPoshtaDocumentPrice>();
+            return apiResponse.Success ? apiResponse.Data : new List<NovaPoshtaDocumentPrice>();
         }
 
         private async Task<NovaPoshtaSettings> GetNovaPoshtaSettings()

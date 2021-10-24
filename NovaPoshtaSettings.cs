@@ -8,6 +8,6 @@ namespace Nop.Plugin.Shipping.NovaPoshta
         public string ApiUrl { get; set; }
         public bool UseAdditionalFee { get; set; }
         public bool AdditionalFeeIsPercent { get; set; }
-        public float AdditionalFee { get; set; }
+        public decimal AdditionalFee { get; set; }
     }
 }

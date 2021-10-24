@@ -21,7 +21,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Models
         public bool AdditionalFeeIsPercent { get; set; }
         
         [NopResourceDisplayName("Plugins.Shipping.NovaPoshta.Fields.AdditionalFee")]
-        public float AdditionalFee { get; set; }
+        public decimal AdditionalFee { get; set; }
 
         public bool DbUpdateStarted { get; set; }
         
