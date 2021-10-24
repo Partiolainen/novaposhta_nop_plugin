@@ -7,6 +7,7 @@ using Nop.Plugin.Shipping.NovaPoshta.Models;
 using Nop.Plugin.Shipping.NovaPoshta.Services;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
+using Nop.Services.Logging;
 using Nop.Services.Messages;
 using Nop.Services.Tasks;
 using Nop.Web.Framework;
@@ -27,6 +28,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
         private readonly ILocalizationService _localizationService;
         private readonly IScheduleTaskService _scheduleTaskService;
         private readonly INovaPoshtaService _novaPoshtaService;
+        private readonly ILogger _logger;
 
         private readonly string _endPointBasePath = "~/Plugins/Shipping.NovaPoshta/Views/";
 
@@ -36,7 +38,8 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
             INotificationService notificationService,
             ILocalizationService localizationService,
             IScheduleTaskService scheduleTaskService,
-            INovaPoshtaService novaPoshtaService)
+            INovaPoshtaService novaPoshtaService,
+            ILogger logger)
         {
             _novaPoshtaSettings = novaPoshtaSettings;
             _settingService = settingService;
@@ -44,6 +47,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
             _localizationService = localizationService;
             _scheduleTaskService = scheduleTaskService;
             _novaPoshtaService = novaPoshtaService;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Configure(NovaPoshtaConfigurePageModel pageModel)
@@ -106,7 +110,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
             }
             catch (Exception e)
             {
-                await _notificationService.ErrorNotificationAsync(e);
+                await _logger.ErrorAsync($"Exception in : {NovaPoshtaDefaults.SYNCHRONIZATION_TASK_NAME}", e);
             }
         }
     }

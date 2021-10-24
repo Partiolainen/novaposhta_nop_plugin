@@ -19,16 +19,18 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         {
             await _localizationService.AddLocaleResourceAsync(new Dictionary<string, string>
             {
-                [NovaPoshtaDefaults.SHIPPING_METHOD_NAME] = "Nova Poshta",
-                [NovaPoshtaDefaults.SHIPPING_METHOD_TO_WAREHOUSE] = "to warehouse",
-                [NovaPoshtaDefaults.SHIPPING_METHOD_ADDRESS] = "to address",
-                [NovaPoshtaDefaults.API_KEY] = "API KEY",
-                [NovaPoshtaDefaults.API_URL] = "API URL",
-                [NovaPoshtaDefaults.USE_ADDITIONAL_FEE] = "Use additional fee",
-                [NovaPoshtaDefaults.ADDITIONAL_FEE_IS_PERCENT] = "Additional commission as a percentage?",
-                [NovaPoshtaDefaults.ADDITIONAL_FEE] = "Additional fee",
-                [NovaPoshtaDefaults.DB_LAST_SUCCESS_UPDATE] = "Last database update",
-                [NovaPoshtaDefaults.WAREHOUSE_CITIES] = "Your warehouses"
+                [LocalizationConst.SHIPPING_METHOD_NAME] = "Nova Poshta",
+                [LocalizationConst.SHIPPING_METHOD_TO_WAREHOUSE] = "to warehouse",
+                [LocalizationConst.SHIPPING_METHOD_ADDRESS] = "to address",
+                [LocalizationConst.API_KEY] = "API KEY",
+                [LocalizationConst.API_URL] = "API URL",
+                [LocalizationConst.USE_ADDITIONAL_FEE] = "Use additional fee",
+                [LocalizationConst.ADDITIONAL_FEE_IS_PERCENT] = "Additional commission as a percentage?",
+                [LocalizationConst.ADDITIONAL_FEE] = "Additional fee",
+                [LocalizationConst.DB_LAST_SUCCESS_UPDATE] = "Last database update",
+                [LocalizationConst.WAREHOUSE_CITIES] = "Your warehouses",
+                [LocalizationConst.WAREHOUSE_UNAVAILABLE_MESSAGE] = "Some warehouses cannot accept your goods " +
+                                                                    "(restrictions on size, weight, or declared value)"
             });
 
             var allLanguagesAsync = await _languageService.GetAllLanguagesAsync();
@@ -40,32 +42,38 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                 {
                     await _localizationService.AddLocaleResourceAsync(new Dictionary<string, string>
                     {
-                        [NovaPoshtaDefaults.SHIPPING_METHOD_NAME] = "Новая Почта",
-                        [NovaPoshtaDefaults.SHIPPING_METHOD_TO_WAREHOUSE] = "на склад",
-                        [NovaPoshtaDefaults.SHIPPING_METHOD_ADDRESS] = "на адрес",
-                        [NovaPoshtaDefaults.API_KEY] = "API ключ",
-                        [NovaPoshtaDefaults.API_URL] = "API URL",
-                        [NovaPoshtaDefaults.USE_ADDITIONAL_FEE] = "Использовать дополнительную комиссию",
-                        [NovaPoshtaDefaults.ADDITIONAL_FEE_IS_PERCENT] = "Дополнительная комиссия в процентах?",
-                        [NovaPoshtaDefaults.ADDITIONAL_FEE] = "Дополнительная комиссия",
-                        [NovaPoshtaDefaults.DB_LAST_SUCCESS_UPDATE] = "Последнее обновление базы",
-                        [NovaPoshtaDefaults.WAREHOUSE_CITIES] = "Ваши склады"
+                        [LocalizationConst.SHIPPING_METHOD_NAME] = "Новая Почта",
+                        [LocalizationConst.SHIPPING_METHOD_TO_WAREHOUSE] = "на склад",
+                        [LocalizationConst.SHIPPING_METHOD_ADDRESS] = "на адрес",
+                        [LocalizationConst.API_KEY] = "API ключ",
+                        [LocalizationConst.API_URL] = "API URL",
+                        [LocalizationConst.USE_ADDITIONAL_FEE] = "Использовать дополнительную комиссию",
+                        [LocalizationConst.ADDITIONAL_FEE_IS_PERCENT] = "Дополнительная комиссия в процентах?",
+                        [LocalizationConst.ADDITIONAL_FEE] = "Дополнительная комиссия",
+                        [LocalizationConst.DB_LAST_SUCCESS_UPDATE] = "Последнее обновление базы",
+                        [LocalizationConst.WAREHOUSE_CITIES] = "Ваши склады",
+                        [LocalizationConst.WAREHOUSE_UNAVAILABLE_MESSAGE] = "Некоторые отделения не могут принять Вашы " +
+                                                                            "товары (огрничения по размеру, весу или " +
+                                                                            "заявленной стоимости)"
                     }, language.Id);
                 }
                 if (languageName == "uk")
                 {
                     await _localizationService.AddLocaleResourceAsync(new Dictionary<string, string>
                     {
-                        [NovaPoshtaDefaults.SHIPPING_METHOD_NAME] = "Нова Пошта",
-                        [NovaPoshtaDefaults.SHIPPING_METHOD_TO_WAREHOUSE] = "на склад",
-                        [NovaPoshtaDefaults.SHIPPING_METHOD_ADDRESS] = "на адресу",
-                        [NovaPoshtaDefaults.API_KEY] = "API ключ",
-                        [NovaPoshtaDefaults.API_URL] = "API URL",
-                        [NovaPoshtaDefaults.USE_ADDITIONAL_FEE] = "Використовувати додаткову комісію",
-                        [NovaPoshtaDefaults.ADDITIONAL_FEE_IS_PERCENT] = "Додаткова комісія у відсотках?",
-                        [NovaPoshtaDefaults.ADDITIONAL_FEE] = "Додаткова комісія",
-                        [NovaPoshtaDefaults.DB_LAST_SUCCESS_UPDATE] = "Останнє оновлення бази",
-                        [NovaPoshtaDefaults.WAREHOUSE_CITIES] = "Ваші склади"
+                        [LocalizationConst.SHIPPING_METHOD_NAME] = "Нова Пошта",
+                        [LocalizationConst.SHIPPING_METHOD_TO_WAREHOUSE] = "на склад",
+                        [LocalizationConst.SHIPPING_METHOD_ADDRESS] = "на адресу",
+                        [LocalizationConst.API_KEY] = "API ключ",
+                        [LocalizationConst.API_URL] = "API URL",
+                        [LocalizationConst.USE_ADDITIONAL_FEE] = "Використовувати додаткову комісію",
+                        [LocalizationConst.ADDITIONAL_FEE_IS_PERCENT] = "Додаткова комісія у відсотках?",
+                        [LocalizationConst.ADDITIONAL_FEE] = "Додаткова комісія",
+                        [LocalizationConst.DB_LAST_SUCCESS_UPDATE] = "Останнє оновлення бази",
+                        [LocalizationConst.WAREHOUSE_CITIES] = "Ваші склади",
+                        [LocalizationConst.WAREHOUSE_UNAVAILABLE_MESSAGE] = "Деякі відділення не можуть прийняти ваші " +
+                                                                            "товари (обмеження за розміром, вагою або " +
+                                                                            "заявленої вартості)"
                     }, language.Id);
                 }
             }
@@ -75,16 +83,17 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         {
             await _localizationService.DeleteLocaleResourcesAsync(new List<string>
             {
-                NovaPoshtaDefaults.SHIPPING_METHOD_NAME,
-                NovaPoshtaDefaults.SHIPPING_METHOD_TO_WAREHOUSE,
-                NovaPoshtaDefaults.SHIPPING_METHOD_ADDRESS,
-                NovaPoshtaDefaults.API_KEY,
-                NovaPoshtaDefaults.API_URL,
-                NovaPoshtaDefaults.USE_ADDITIONAL_FEE,
-                NovaPoshtaDefaults.ADDITIONAL_FEE_IS_PERCENT,
-                NovaPoshtaDefaults.ADDITIONAL_FEE,
-                NovaPoshtaDefaults.DB_LAST_SUCCESS_UPDATE,
-                NovaPoshtaDefaults.WAREHOUSE_CITIES
+                LocalizationConst.SHIPPING_METHOD_NAME,
+                LocalizationConst.SHIPPING_METHOD_TO_WAREHOUSE,
+                LocalizationConst.SHIPPING_METHOD_ADDRESS,
+                LocalizationConst.API_KEY,
+                LocalizationConst.API_URL,
+                LocalizationConst.USE_ADDITIONAL_FEE,
+                LocalizationConst.ADDITIONAL_FEE_IS_PERCENT,
+                LocalizationConst.ADDITIONAL_FEE,
+                LocalizationConst.DB_LAST_SUCCESS_UPDATE,
+                LocalizationConst.WAREHOUSE_CITIES,
+                LocalizationConst.WAREHOUSE_UNAVAILABLE_MESSAGE,
             });
 
             var allLanguagesAsync = await _languageService.GetAllLanguagesAsync();
@@ -96,32 +105,34 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                 {
                     await _localizationService.DeleteLocaleResourcesAsync(new List<string>
                     {
-                        NovaPoshtaDefaults.SHIPPING_METHOD_NAME,
-                        NovaPoshtaDefaults.SHIPPING_METHOD_TO_WAREHOUSE,
-                        NovaPoshtaDefaults.SHIPPING_METHOD_ADDRESS,
-                        NovaPoshtaDefaults.API_KEY,
-                        NovaPoshtaDefaults.API_URL,
-                        NovaPoshtaDefaults.USE_ADDITIONAL_FEE,
-                        NovaPoshtaDefaults.ADDITIONAL_FEE_IS_PERCENT,
-                        NovaPoshtaDefaults.ADDITIONAL_FEE,
-                        NovaPoshtaDefaults.DB_LAST_SUCCESS_UPDATE,
-                        NovaPoshtaDefaults.WAREHOUSE_CITIES
+                        LocalizationConst.SHIPPING_METHOD_NAME,
+                        LocalizationConst.SHIPPING_METHOD_TO_WAREHOUSE,
+                        LocalizationConst.SHIPPING_METHOD_ADDRESS,
+                        LocalizationConst.API_KEY,
+                        LocalizationConst.API_URL,
+                        LocalizationConst.USE_ADDITIONAL_FEE,
+                        LocalizationConst.ADDITIONAL_FEE_IS_PERCENT,
+                        LocalizationConst.ADDITIONAL_FEE,
+                        LocalizationConst.DB_LAST_SUCCESS_UPDATE,
+                        LocalizationConst.WAREHOUSE_CITIES,
+                        LocalizationConst.WAREHOUSE_UNAVAILABLE_MESSAGE,
                     }, language.Id);
                 }
                 if (languageName == "uk")
                 {
                     await _localizationService.DeleteLocaleResourcesAsync(new List<string>
                     {
-                        NovaPoshtaDefaults.SHIPPING_METHOD_NAME,
-                        NovaPoshtaDefaults.SHIPPING_METHOD_TO_WAREHOUSE,
-                        NovaPoshtaDefaults.SHIPPING_METHOD_ADDRESS,
-                        NovaPoshtaDefaults.API_KEY,
-                        NovaPoshtaDefaults.API_URL,
-                        NovaPoshtaDefaults.USE_ADDITIONAL_FEE,
-                        NovaPoshtaDefaults.ADDITIONAL_FEE_IS_PERCENT,
-                        NovaPoshtaDefaults.ADDITIONAL_FEE,
-                        NovaPoshtaDefaults.DB_LAST_SUCCESS_UPDATE,
-                        NovaPoshtaDefaults.WAREHOUSE_CITIES
+                        LocalizationConst.SHIPPING_METHOD_NAME,
+                        LocalizationConst.SHIPPING_METHOD_TO_WAREHOUSE,
+                        LocalizationConst.SHIPPING_METHOD_ADDRESS,
+                        LocalizationConst.API_KEY,
+                        LocalizationConst.API_URL,
+                        LocalizationConst.USE_ADDITIONAL_FEE,
+                        LocalizationConst.ADDITIONAL_FEE_IS_PERCENT,
+                        LocalizationConst.ADDITIONAL_FEE,
+                        LocalizationConst.DB_LAST_SUCCESS_UPDATE,
+                        LocalizationConst.WAREHOUSE_CITIES,
+                        LocalizationConst.WAREHOUSE_UNAVAILABLE_MESSAGE,
                     }, language.Id);
                 }
             }

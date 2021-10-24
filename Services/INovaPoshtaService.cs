@@ -4,13 +4,14 @@ using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Shipping;
 using Nop.Plugin.Shipping.NovaPoshta.Domain;
 using Nop.Plugin.Shipping.NovaPoshta.Models;
+using Nop.Services.Shipping;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Services
 {
     public interface INovaPoshtaService
     {
-        Task<ShippingOption> GetToAddressShippingOption(Address shippingAddress);
-        Task<ShippingOption> GetToWarehouseShippingOption(Address shippingAddress);
+        Task<ShippingOption> GetToAddressShippingOption(GetShippingOptionRequest getShippingOptionRequest);
+        Task<ShippingOption> GetToWarehouseShippingOption(GetShippingOptionRequest getShippingOptionRequest);
         Task<IList<NovaPoshtaSettlement>> GetSettlementsByAddress(Address address);
         Task<IList<NovaPoshtaWarehouse>> GetWarehousesBySettlement(NovaPoshtaSettlement settlement);
         Task<List<NovaPoshtaWarehouse>> GetWarehousesByAddress(Address address);

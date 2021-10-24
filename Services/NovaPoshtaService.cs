@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Intrinsics.X86;
 using System.Threading.Tasks;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Shipping;
@@ -10,8 +9,7 @@ using Nop.Plugin.Shipping.NovaPoshta.Domain;
 using Nop.Plugin.Shipping.NovaPoshta.Models;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
-using Nop.Services.Tasks;
-using NUglify.Helpers;
+using Nop.Services.Shipping;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Services
 {
@@ -44,6 +42,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         {
             var novaPoshtaSettings = await GetSettings();
 
+            
 
             return 11;
         }
@@ -74,8 +73,10 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             return "На склад:";
         }
 
-        public async Task<ShippingOption> GetToWarehouseShippingOption(Address shippingAddress)
+        public async Task<ShippingOption> GetToWarehouseShippingOption(GetShippingOptionRequest getShippingOptionRequest)
         {
+            var shippingAddress = getShippingOptionRequest.ShippingAddress;
+
             var option = new ShippingOption
             {
                 Name = await _localizationService.GetResourceAsync(
@@ -83,11 +84,13 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                        + ", "
                        + await _localizationService.GetResourceAsync(
                            "Plugins.Shipping.NovaPoshta.views.shippingMethodToWarehouse"),
-                Description = $"{shippingAddress.ZipPostalCode}, {shippingAddress.City}:",
+                Description = $"{shippingAddress.ZipPostalCode}, {shippingAddress.City}",
                 Rate = await GetRateToWarehouse(shippingAddress),
                 TransitDays = await GetTransitToWarehouse(shippingAddress),
                 ExtendPartialView = "~/Plugins/Shipping.NovaPoshta/Views/ToWarehouseOptionExt.cshtml",
-                Address = shippingAddress
+                Address = shippingAddress,
+                Product = getShippingOptionRequest.Items.First().Product,
+                Quantity = getShippingOptionRequest.Items.First().GetQuantity()
             };
 
             return option;
@@ -123,7 +126,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         public async Task<List<NovaPoshtaWarehouse>> GetWarehousesByAddress(Address address)
         {
             var warehouses = new List<NovaPoshtaWarehouse>();
-            
+
             var settlements = await GetSettlementsByAddress(address);
             
             foreach (var settlement in settlements)
@@ -160,8 +163,10 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             return availability;
         }
 
-        public async Task<ShippingOption> GetToAddressShippingOption(Address shippingAddress)
+        public async Task<ShippingOption> GetToAddressShippingOption(GetShippingOptionRequest getShippingOptionRequest)
         {
+            var shippingAddress = getShippingOptionRequest.ShippingAddress;
+
             var option = new ShippingOption
             {
                 Name = await _localizationService.GetResourceAsync(
@@ -173,7 +178,9 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                     $"{shippingAddress.ZipPostalCode}, {shippingAddress.City}, {shippingAddress.Address1} ({shippingAddress.Address2})",
                 Rate = await GetRateToAddress(shippingAddress),
                 TransitDays = await GetTransitToAddress(shippingAddress),
-                Address = shippingAddress
+                Address = shippingAddress,
+                Product = getShippingOptionRequest.Items.First().Product,
+                Quantity = getShippingOptionRequest.Items.First().GetQuantity()
             };
 
             return option;

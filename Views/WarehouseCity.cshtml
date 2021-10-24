@@ -3,7 +3,7 @@
 <div style="background-color: #d3deee; border: 1px solid darkblue; border-radius: 3px; width: 400px; padding: 5px; margin-bottom: 10px;">
     <div class="row">
         <div class="col-md-6">
-            Ваш склад:
+            Название:
         </div>
         <div class="col-md-6">
             @Model.Warehouse.Name
@@ -11,15 +11,15 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            Город:
+            Город(индекс):
         </div>
         <div class="col-md-6">
-            @Model.Address.ZipPostalCode, @Model.Address.City
+            @Model.Address.City (@Model.Address.ZipPostalCode)
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
-            Склады НП:
+            Склады Новой почты:
         </div>
         <div class="col-md-6">
             @Model.NovaPoshtaWarehousesCount
@@ -39,7 +39,7 @@
     
     <hr style="margin: 3px 10px"/>
     <div style="display: flex; justify-content: flex-end">
-        <a class="btn btn-sm btn-primary" href="/Admin/Shipping/EditWarehouse/@Model.Warehouse.Id">Настройки склада</a>
+        <a class="btn btn-sm btn-outline-primary" href="/Admin/Shipping/EditWarehouse/@Model.Warehouse.Id">Параметры склада</a>
     </div>
     
 

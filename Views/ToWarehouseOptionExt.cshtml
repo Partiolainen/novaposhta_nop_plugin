@@ -1,15 +1,91 @@
-﻿@model Nop.Core.Domain.Shipping.ShippingOption
-@using Nop.Plugin.Shipping.NovaPoshta.Services
+﻿@using Nop.Plugin.Shipping.NovaPoshta.Services
+@using Nop.Plugin.Shipping.NovaPoshta.Domain
+@using Nop.Core
+@using Nop.Services.Catalog
+@using Nop.Services.Localization
+@using Nop.Services.Orders
+@model Nop.Core.Domain.Shipping.ShippingOption
 @inject INovaPoshtaService _novaPoshtaService
+@inject IWorkContext _workContext
+@inject IShoppingCartService _shoppingCartService
+@inject IProductService _productService
+@inject ILocalizationService _localizationService
 
 <div >
+    <style>
+        option:disabled {
+            color: lightgrey;
+        }
+    </style>
     <select class="form-control form-control-sm" id="nova-poshta-warehouses-select">
         @foreach (var warehouse in await _novaPoshtaService.GetWarehousesByAddress(Model.Address))
         {
-            <option value="@warehouse.Ref">
-                @warehouse.Description
-                (@warehouse.ReceivingLimitationsOnDimensions.Height/@warehouse.ReceivingLimitationsOnDimensions.Width/@warehouse.ReceivingLimitationsOnDimensions.Length)
-            </option>
+            @if (await WarehouseAvailability(warehouse))
+            {
+                <option value="@warehouse.Ref">
+                    @warehouse.Description
+                    (@warehouse.ReceivingLimitationsOnDimensions.Height/@warehouse.ReceivingLimitationsOnDimensions.Width/@warehouse.ReceivingLimitationsOnDimensions.Length)
+                </option>
+            }
+            else
+            {
+                <option value="@warehouse.Ref" disabled>
+                    @warehouse.Description
+                    (@warehouse.ReceivingLimitationsOnDimensions.Height/@warehouse.ReceivingLimitationsOnDimensions.Width/@warehouse.ReceivingLimitationsOnDimensions.Length)
+                </option>
+            }
         }
     </select>
+    <p style="font-weight: bold; color: red">@Message</p>
 </div>
+
+@functions
+{
+    public string Message { get; set; }
+    
+    private async Task<bool> WarehouseAvailability(NovaPoshtaWarehouse warehouse)
+    {
+        var currentCustomer = await _workContext.GetCurrentCustomerAsync();
+        var shoppingCartItems = await _shoppingCartService.GetShoppingCartAsync(currentCustomer);
+        var products = await _productService.GetProductsByIdsAsync(shoppingCartItems.Select(item => item.ProductId).ToArray());
+
+        var result = true;
+        
+        foreach (var product in products)
+        {
+            //Check for dimensions
+            result = result && FitParcel(new Dimensions().SetDimensionsByProduct(product), warehouse.ReceivingLimitationsOnDimensions);
+            
+            //Check for max weight
+            if (int.Parse(warehouse.PlaceMaxWeightAllowed) > 0)
+            {
+                result = result && product.Weight <= decimal.Parse(warehouse.PlaceMaxWeightAllowed);
+            }
+            else
+            {
+                if (int.Parse(warehouse.TotalMaxWeightAllowed) > 0)
+                {
+                    result = result && product.Weight <= decimal.Parse(warehouse.TotalMaxWeightAllowed);
+                }
+            }
+
+            //Check for max declared price
+            if (int.Parse(warehouse.MaxDeclaredCost) > 0)
+            {
+                result = result && product.Price <= decimal.Parse(warehouse.MaxDeclaredCost);
+            }
+        }
+
+        if (!result)
+        {
+            Message = await _localizationService.GetResourceAsync(LocalizationConst.WAREHOUSE_UNAVAILABLE_MESSAGE);
+        }
+        
+        return result;
+    }
+
+    private bool FitParcel(Dimensions productDimensions, Dimensions npWarehouseDimensions)
+    {
+        return npWarehouseDimensions >= productDimensions;
+    }
+}

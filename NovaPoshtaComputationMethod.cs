@@ -60,10 +60,10 @@ namespace Nop.Plugin.Shipping.NovaPoshta
                 return response;
             }
             
-            var toWarehouseShippingOption = await _novaPoshtaService.GetToWarehouseShippingOption(getShippingOptionRequest.ShippingAddress);
+            var toWarehouseShippingOption = await _novaPoshtaService.GetToWarehouseShippingOption(getShippingOptionRequest);
             response.ShippingOptions.Add(toWarehouseShippingOption);
 
-            var toAddressShippingOption = await _novaPoshtaService.GetToAddressShippingOption(getShippingOptionRequest.ShippingAddress);
+            var toAddressShippingOption = await _novaPoshtaService.GetToAddressShippingOption(getShippingOptionRequest);
             response.ShippingOptions.Add(toAddressShippingOption);
 
             return response;
