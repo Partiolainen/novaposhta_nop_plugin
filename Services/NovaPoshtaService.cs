@@ -59,8 +59,6 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                 TransitDays = 2,
                 ExtendPartialView = "~/Plugins/Shipping.NovaPoshta/Views/ToWarehouseOptionExt.cshtml",
                 Address = shippingAddress,
-                Product = getShippingOptionRequest.Items.First().Product,
-                Quantity = getShippingOptionRequest.Items.First().GetQuantity()
             };
 
             return option;
@@ -149,8 +147,6 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                 Rate = await GetRateToAddress(getShippingOptionRequest),
                 TransitDays = 3,
                 Address = shippingAddress,
-                Product = getShippingOptionRequest.Items.First().Product,
-                Quantity = getShippingOptionRequest.Items.First().GetQuantity()
             };
 
             return option;

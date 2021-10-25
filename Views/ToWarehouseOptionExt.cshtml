@@ -4,12 +4,18 @@
 @using Nop.Services.Catalog
 @using Nop.Services.Localization
 @using Nop.Services.Orders
+@using System.Text
 @model Nop.Core.Domain.Shipping.ShippingOption
 @inject INovaPoshtaService _novaPoshtaService
 @inject IWorkContext _workContext
 @inject IShoppingCartService _shoppingCartService
 @inject IProductService _productService
 @inject ILocalizationService _localizationService
+@inject IWebHelper _webHelper
+
+@{
+    var storeLocation = _webHelper.GetStoreLocation();
+}
 
 <div >
     <style>
@@ -17,7 +23,34 @@
             color: lightgrey;
         }
     </style>
-    <select class="form-control form-control-sm" id="nova-poshta-warehouses-select">
+    
+    <script>
+        $(document).ready(() => {
+            novaPoshtaSelectChange($('#nova-poshta-warehouses-select').val())
+        })
+        
+        function novaPoshtaSelectChange(value) {
+          console.log('Selector changed to ', value, 'route: ', '@(storeLocation)Plugins/NovaPoshta/SelectNpWarehouse');
+          $.ajax({
+            cache: false,
+            url: '@(storeLocation)Plugins/NovaPoshtaShipping/SelectNpWarehouse',
+            type: "POST",
+            data: {warehouseRef: value},
+            success: this.ajaxSuccess,
+            error: this.ajaxError
+          })
+        }
+        
+        function ajaxSuccess(response){
+            console.log('Response from AJAX', response)
+        }
+        
+        function ajaxError(err){
+             console.log("ajax error ", err.status)
+        }
+    </script>
+    
+    <select asp-for="SelectedNpWarehouseRef" class="form-control form-control-sm" id="nova-poshta-warehouses-select" name="nova-poshta-selected-warehouses" onchange="novaPoshtaSelectChange(value)">
         @foreach (var warehouse in await _novaPoshtaService.GetWarehousesByAddress(Model.Address))
         {
             @if (await WarehouseAvailability(warehouse))
