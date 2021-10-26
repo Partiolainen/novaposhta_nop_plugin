@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentMigrator.Runner.Generators.Postgres;
+using LinqToDB.Reflection;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Shipping;
 using Nop.Data;
@@ -43,7 +45,8 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             _novaPoshtaApiService = novaPoshtaApiService;
         }
 
-        public async Task<ShippingOption> GetToWarehouseShippingOption(GetShippingOptionRequest getShippingOptionRequest)
+        public async Task<ShippingOption> GetToWarehouseShippingOption(
+            GetShippingOptionRequest getShippingOptionRequest)
         {
             var shippingAddress = getShippingOptionRequest.ShippingAddress;
 
@@ -96,7 +99,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             var warehouses = new List<NovaPoshtaWarehouse>();
 
             var settlements = await GetSettlementsByAddress(address);
-            
+
             foreach (var settlement in settlements)
             {
                 warehouses.AddRange(await GetWarehousesBySettlement(settlement));
@@ -105,7 +108,8 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             return warehouses;
         }
 
-        public async Task<List<NovaPoshtaConfigurationSettingsModel.WarehouseAvailability>> GetCitiesForSendingAvailability()
+        public async Task<List<NovaPoshtaConfigurationSettingsModel.WarehouseAvailability>>
+            GetCitiesForSendingAvailability()
         {
             var availability = new List<NovaPoshtaConfigurationSettingsModel.WarehouseAvailability>();
 
@@ -116,7 +120,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                 var nopWarehouseAddress = await _addressService.GetAddressByIdAsync(nopWarehouse.AddressId);
 
                 if (nopWarehouseAddress == null) continue;
-                
+
                 var novaPoshtaWarehouses = await GetWarehousesByAddress(nopWarehouseAddress);
 
                 availability.Add(new NovaPoshtaConfigurationSettingsModel.WarehouseAvailability
@@ -156,18 +160,20 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         {
             return await _settingService.LoadSettingAsync<NovaPoshtaSettings>();
         }
-        
+
         private async Task<decimal> GetRateToWarehouse(GetShippingOptionRequest request)
         {
             decimal resultRate = 0;
-            
-            var warehouseAddress = await _addressService.GetAddressByIdAsync(request.WarehouseFrom.AddressId);
+
+            var warehouseAddress = await ExtractWarehouseAddress(request);
+
             var sender = (await GetSettlementsByAddress(warehouseAddress)).First();
             var recipient = (await GetSettlementsByAddress(request.ShippingAddress)).First();
 
             foreach (var requestItem in request.Items)
             {
-                var price = (await _novaPoshtaApiService.GetDeliveryPrice(sender, recipient, requestItem.Product)).First();
+                var price =
+                    (await _novaPoshtaApiService.GetDeliveryPrice(sender, recipient, requestItem.Product)).First();
                 resultRate += price.Cost * requestItem.GetQuantity();
             }
 
@@ -186,27 +192,48 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         private async Task<decimal> GetRateToAddress(GetShippingOptionRequest request)
         {
             decimal resultRate = 0;
-            
-            var warehouseAddress = await _addressService.GetAddressByIdAsync(request.WarehouseFrom.AddressId);
+
+            var warehouseAddress =  await ExtractWarehouseAddress(request);
             var sender = (await GetSettlementsByAddress(warehouseAddress)).First();
             var recipient = (await GetSettlementsByAddress(request.ShippingAddress)).First();
 
             foreach (var requestItem in request.Items)
             {
-                var price = (await _novaPoshtaApiService.GetDeliveryPrice(sender, recipient, requestItem.Product, false)).First();
+                var price =
+                    (await _novaPoshtaApiService.GetDeliveryPrice(sender, recipient, requestItem.Product, false))
+                    .First();
                 resultRate += price.Cost * requestItem.GetQuantity();
             }
-            
+
             var settings = await GetSettings();
-            
+
             if (settings.UseAdditionalFee)
             {
                 resultRate += settings.AdditionalFeeIsPercent
                     ? Math.Round(resultRate * settings.AdditionalFee * (decimal)0.01)
                     : settings.AdditionalFee;
             }
-            
+
             return resultRate;
+        }
+        
+        private async Task<Address> ExtractWarehouseAddress(GetShippingOptionRequest request)
+        {
+            Address warehouseAddress;
+            if (request.WarehouseFrom != null)
+            {
+                warehouseAddress = await _addressService.GetAddressByIdAsync(request.WarehouseFrom.AddressId);
+            }
+            else
+            {
+                var warehouseId = (await _nopWarehousesRepository.GetAllAsync(queryable => queryable)).First().AddressId;
+                if (warehouseId == 0)
+                    throw new ArgumentException("Warehouse not found");
+
+                warehouseAddress = await _addressService.GetAddressByIdAsync(warehouseId);
+            }
+
+            return warehouseAddress;
         }
     }
 }

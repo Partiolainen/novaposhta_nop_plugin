@@ -334,6 +334,9 @@
             "projectReferences": {
               "D:\\Projects\\nopCommerce\\SOURCE\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj": {
                 "projectPath": "D:\\Projects\\nopCommerce\\SOURCE\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj"
+              },
+              "D:\\Projects\\nopCommerce\\SOURCE\\Presentation\\Nop.Web\\Nop.Web.csproj": {
+                "projectPath": "D:\\Projects\\nopCommerce\\SOURCE\\Presentation\\Nop.Web\\Nop.Web.csproj"
               }
             }
           }
@@ -430,6 +433,74 @@
               "version": "[2.9.2, )"
             }
           },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Projects\\nopCommerce\\SOURCE\\Presentation\\Nop.Web\\Nop.Web.csproj": {
+      "version": "4.4.0",
+      "restore": {
+        "projectUniqueName": "D:\\Projects\\nopCommerce\\SOURCE\\Presentation\\Nop.Web\\Nop.Web.csproj",
+        "projectName": "Nop.Web",
+        "projectPath": "D:\\Projects\\nopCommerce\\SOURCE\\Presentation\\Nop.Web\\Nop.Web.csproj",
+        "packagesPath": "C:\\Users\\akorn\\.nuget\\packages\\",
+        "outputPath": "D:\\Projects\\nopCommerce\\SOURCE\\Presentation\\Nop.Web\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\akorn\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "D:\\Projects\\nopCommerce\\SOURCE\\Libraries\\Nop.Core\\Nop.Core.csproj": {
+                "projectPath": "D:\\Projects\\nopCommerce\\SOURCE\\Libraries\\Nop.Core\\Nop.Core.csproj"
+              },
+              "D:\\Projects\\nopCommerce\\SOURCE\\Libraries\\Nop.Data\\Nop.Data.csproj": {
+                "projectPath": "D:\\Projects\\nopCommerce\\SOURCE\\Libraries\\Nop.Data\\Nop.Data.csproj"
+              },
+              "D:\\Projects\\nopCommerce\\SOURCE\\Libraries\\Nop.Services\\Nop.Services.csproj": {
+                "projectPath": "D:\\Projects\\nopCommerce\\SOURCE\\Libraries\\Nop.Services\\Nop.Services.csproj"
+              },
+              "D:\\Projects\\nopCommerce\\SOURCE\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj": {
+                "projectPath": "D:\\Projects\\nopCommerce\\SOURCE\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
           "imports": [
             "net461",
             "net462",

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.Extensions.DependencyInjection;
 using Nop.Core.Configuration;
 using Nop.Core.Infrastructure;
 using Nop.Core.Infrastructure.DependencyManagement;
@@ -21,6 +22,11 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Infrastructure
             services.AddScoped<IRepository<Dimensions>, EntityRepository<Dimensions>>();
             services.AddScoped<INovaPoshtaApiService, NovaPoshtaApiService>();
             services.AddScoped<INovaPoshtaService, NovaPoshtaService>();
+
+            services.Configure<RazorViewEngineOptions>(options =>
+            {
+                options.ViewLocationExpanders.Add(new NovaPoshtaViewLocationExpander());
+            });
         }
 
         public int Order => 1;

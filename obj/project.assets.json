@@ -4412,6 +4412,25 @@
           "Microsoft.AspNetCore.App"
         ]
       },
+      "Nop.Web/4.4.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "Nop.Core": "4.4.0",
+          "Nop.Data": "4.4.0",
+          "Nop.Services": "4.4.0",
+          "Nop.Web.Framework": "4.4.0"
+        },
+        "compile": {
+          "bin/placeholder/Nop.Web.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Nop.Web.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "Nop.Web.Framework/4.4.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
@@ -13383,6 +13402,11 @@
       "path": "../../Libraries/Nop.Services/Nop.Services.csproj",
       "msbuildProject": "../../Libraries/Nop.Services/Nop.Services.csproj"
     },
+    "Nop.Web/4.4.0": {
+      "type": "project",
+      "path": "../../Presentation/Nop.Web/Nop.Web.csproj",
+      "msbuildProject": "../../Presentation/Nop.Web/Nop.Web.csproj"
+    },
     "Nop.Web.Framework/4.4.0": {
       "type": "project",
       "path": "../../Presentation/Nop.Web.Framework/Nop.Web.Framework.csproj",
@@ -13391,6 +13415,7 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
+      "Nop.Web >= 4.4.0",
       "Nop.Web.Framework >= 4.4.0"
     ]
   },
@@ -13421,6 +13446,9 @@
           "projectReferences": {
             "D:\\Projects\\nopCommerce\\SOURCE\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj": {
               "projectPath": "D:\\Projects\\nopCommerce\\SOURCE\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj"
+            },
+            "D:\\Projects\\nopCommerce\\SOURCE\\Presentation\\Nop.Web\\Nop.Web.csproj": {
+              "projectPath": "D:\\Projects\\nopCommerce\\SOURCE\\Presentation\\Nop.Web\\Nop.Web.csproj"
             }
           }
         }
