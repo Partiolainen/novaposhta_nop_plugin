@@ -117,6 +117,8 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         public async Task<List<NovaPoshtaDocumentPrice>> GetDeliveryPrice(NovaPoshtaSettlement sender, 
             NovaPoshtaSettlement recipient, Product product, bool toWarehouse = true)
         {
+            //TODO Check and recalculate dimensions
+            
             var apiResponse = await NovaPoshtaApiGetData<NovaPoshtaDocumentPrice, GetDeliveryCostProps>(props =>
             {
                 props.ModelName = "InternetDocument";

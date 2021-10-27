@@ -6,6 +6,7 @@ using Nop.Core.Infrastructure.DependencyManagement;
 using Nop.Data;
 using Nop.Plugin.Shipping.NovaPoshta.Data;
 using Nop.Plugin.Shipping.NovaPoshta.Domain;
+using Nop.Plugin.Shipping.NovaPoshta.Routing;
 using Nop.Plugin.Shipping.NovaPoshta.Services;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Infrastructure

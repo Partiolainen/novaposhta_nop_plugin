@@ -164,6 +164,15 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         private async Task<decimal> GetRateToWarehouse(GetShippingOptionRequest request)
         {
             decimal resultRate = 0;
+            
+            var settings = await GetSettings();
+
+            if (settings.UseAdditionalFee)
+            {
+                resultRate += settings.AdditionalFeeIsPercent
+                    ? Math.Round(resultRate * settings.AdditionalFee * (decimal)0.01)
+                    : settings.AdditionalFee;
+            }
 
             var warehouseAddress = await ExtractWarehouseAddress(request);
 
@@ -172,18 +181,16 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
 
             foreach (var requestItem in request.Items)
             {
-                var price =
-                    (await _novaPoshtaApiService.GetDeliveryPrice(sender, recipient, requestItem.Product)).First();
-                resultRate += price.Cost * requestItem.GetQuantity();
-            }
-
-            var settings = await GetSettings();
-
-            if (settings.UseAdditionalFee)
-            {
-                resultRate += settings.AdditionalFeeIsPercent
-                    ? Math.Round(resultRate * settings.AdditionalFee * (decimal)0.01)
-                    : settings.AdditionalFee;
+                var price = 
+                    await _novaPoshtaApiService.GetDeliveryPrice(sender, recipient, requestItem.Product);
+                if (price.Any())
+                {
+                    resultRate += price.First().Cost * requestItem.GetQuantity();
+                }
+                else
+                {
+                    resultRate = 0;
+                }
             }
 
             return resultRate;
@@ -192,19 +199,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         private async Task<decimal> GetRateToAddress(GetShippingOptionRequest request)
         {
             decimal resultRate = 0;
-
-            var warehouseAddress =  await ExtractWarehouseAddress(request);
-            var sender = (await GetSettlementsByAddress(warehouseAddress)).First();
-            var recipient = (await GetSettlementsByAddress(request.ShippingAddress)).First();
-
-            foreach (var requestItem in request.Items)
-            {
-                var price =
-                    (await _novaPoshtaApiService.GetDeliveryPrice(sender, recipient, requestItem.Product, false))
-                    .First();
-                resultRate += price.Cost * requestItem.GetQuantity();
-            }
-
+            
             var settings = await GetSettings();
 
             if (settings.UseAdditionalFee)
@@ -212,6 +207,24 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                 resultRate += settings.AdditionalFeeIsPercent
                     ? Math.Round(resultRate * settings.AdditionalFee * (decimal)0.01)
                     : settings.AdditionalFee;
+            }
+
+            var warehouseAddress =  await ExtractWarehouseAddress(request);
+            var sender = (await GetSettlementsByAddress(warehouseAddress)).First();
+            var recipient = (await GetSettlementsByAddress(request.ShippingAddress)).First();
+
+            foreach (var requestItem in request.Items)
+            {
+                var price = 
+                    await _novaPoshtaApiService.GetDeliveryPrice(sender, recipient, requestItem.Product, false);
+                if (price.Any())
+                {
+                    resultRate += price.First().Cost * requestItem.GetQuantity();
+                }
+                else
+                {
+                    resultRate = 0;
+                }
             }
 
             return resultRate;
