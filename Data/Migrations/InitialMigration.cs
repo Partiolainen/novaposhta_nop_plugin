@@ -1,4 +1,5 @@
 ﻿using FluentMigrator;
+using Nop.Core.Domain.Orders;
 using Nop.Data.Migrations;
 using Nop.Plugin.Shipping.NovaPoshta.Domain;
 
@@ -21,6 +22,15 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Data.Migrations
             _migrationManager.BuildTable<NovaPoshtaArea>(Create);
             _migrationManager.BuildTable<NovaPoshtaSettlement>(Create);
             _migrationManager.BuildTable<NovaPoshtaWarehouse>(Create);
+            _migrationManager.BuildTable<NovaPoshtaWarehouseForOrder>(Create);
+            
+            
+
+            Create
+                .Column(nameof(Order.ShippingType))
+                .OnTable(nameof(Order))
+                .AsString(255)
+                .Nullable();
         }
     }
 }

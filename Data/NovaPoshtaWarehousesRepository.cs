@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentMigrator.Runner.Generators.Postgres;
 using Nop.Core.Caching;
 using Nop.Core.Events;
 using Nop.Data;
 using Nop.Plugin.Shipping.NovaPoshta.Domain;
+using NUglify.Helpers;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Data
 {

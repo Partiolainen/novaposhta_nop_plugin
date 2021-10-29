@@ -53,7 +53,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                 var deleted = await _areasRepository.DeleteAsync(_ => true);
                 await _logger.InformationAsync($"Deleted from database {deleted} area entities");
                 
-                await _areasRepository.InsertAsync(areas);
+                await _areasRepository.InsertAsync(areas, false);
             }
         }
 
@@ -68,7 +68,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                 var deleted = await _settlementsRepository.DeleteAsync(_ => true);
                 await _logger.InformationAsync($"Deleted from database {deleted} settlement entities");
                 
-                await _settlementsRepository.InsertAsync(allSettlements);
+                await _settlementsRepository.InsertAsync(allSettlements, false);
             }
         }
 
@@ -83,7 +83,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                 var deleted = await _warehousesRepository.DeleteAsync(_ => true);
                 await _logger.InformationAsync($"Deleted from database {deleted} warehouse entities");
                 
-                await _warehousesRepository.InsertAsync(allWarehouses);
+                await _warehousesRepository.InsertAsync(allWarehouses, false);
             }
         }
     }

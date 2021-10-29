@@ -15,6 +15,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Routing
             {
                 "/Plugins/Shipping.NovaPoshta/Views/{0}" + RazorViewEngine.ViewExtension,
                 "/Plugins/Shipping.NovaPoshta/Views/{1}/{0}" + RazorViewEngine.ViewExtension,
+                "/Plugins/Shipping.NovaPoshta/Areas/{2}/Views/{0}" + RazorViewEngine.ViewExtension,
                 "/Plugins/Shipping.NovaPoshta/Areas/{2}/Views/{1}/{0}" + RazorViewEngine.ViewExtension
             };
 

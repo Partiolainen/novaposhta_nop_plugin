@@ -57,10 +57,12 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                        + ", "
                        + await _localizationService.GetResourceAsync(
                            "Plugins.Shipping.NovaPoshta.views.shippingMethodToWarehouse"),
+                ShippingType = NovaPoshtaShippingType.WAREHOUSE.ToString(),
                 Description = $"{shippingAddress.ZipPostalCode}, {shippingAddress.City}",
                 Rate = await GetRateToWarehouse(getShippingOptionRequest),
                 TransitDays = 2,
-                ExtendPartialView = "~/Plugins/Shipping.NovaPoshta/Views/ToWarehouseOptionExt.cshtml",
+                CheckoutShippingOptionsExtPartialView = "~/Plugins/Shipping.NovaPoshta/Views/_CheckoutToWarehouseOptionExt.cshtml",
+                OrderShippingMethodExtPartialView = "~/Plugins/Shipping.NovaPoshta/Views/_OrderShippingMethodExtPartialView.cshtml",
                 Address = shippingAddress,
             };
 
@@ -146,6 +148,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                        + ", "
                        + await _localizationService.GetResourceAsync(
                            "Plugins.Shipping.NovaPoshta.views.shippingMethodAddress"),
+                ShippingType = NovaPoshtaShippingType.ADDRESS.ToString(),
                 Description =
                     $"{shippingAddress.ZipPostalCode}, {shippingAddress.City}, {shippingAddress.Address1} ({shippingAddress.Address2})",
                 Rate = await GetRateToAddress(getShippingOptionRequest),

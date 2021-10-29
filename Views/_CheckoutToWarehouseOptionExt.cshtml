@@ -4,7 +4,6 @@
 @using Nop.Services.Catalog
 @using Nop.Services.Localization
 @using Nop.Services.Orders
-@using System.Text
 @model Nop.Core.Domain.Shipping.ShippingOption
 @inject INovaPoshtaService _novaPoshtaService
 @inject IWorkContext _workContext
@@ -39,14 +38,6 @@
             success: this.ajaxSuccess,
             error: this.ajaxError
           })
-        }
-        
-        function ajaxSuccess(response){
-            console.log('Response from AJAX', response)
-        }
-        
-        function ajaxError(err){
-             console.log("ajax error ", err.status)
         }
     </script>
     

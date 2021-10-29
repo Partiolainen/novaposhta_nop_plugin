@@ -23,6 +23,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Infrastructure
             services.AddScoped<IRepository<Dimensions>, EntityRepository<Dimensions>>();
             services.AddScoped<INovaPoshtaApiService, NovaPoshtaApiService>();
             services.AddScoped<INovaPoshtaService, NovaPoshtaService>();
+            services.AddScoped<INovaPoshtaWarehouseForOrderService, NovaPoshtaWarehouseForOrderService>();
 
             services.Configure<RazorViewEngineOptions>(options =>
             {

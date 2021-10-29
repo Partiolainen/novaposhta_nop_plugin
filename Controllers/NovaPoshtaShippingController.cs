@@ -81,9 +81,18 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
             if (string.IsNullOrEmpty(configurationSettingsModel.ApiUrl) || string.IsNullOrEmpty(configurationSettingsModel.ApiKey)) 
                 return await Configure(new NovaPoshtaConfigurePageModel());
             
-            await _npScheduleTasksService.UpdateDatabase();
+            _npScheduleTasksService.UpdateDatabase();
 
             return await Configure(new NovaPoshtaConfigurePageModel(true));
+        }
+
+        [HttpPost, ActionName("Configure")]
+        [FormValueRequired("UpdateDatabase")]
+        public async Task<IActionResult> UpdateDatabase(NovaPoshtaConfigurePageModel pageModel)
+        {
+            _npScheduleTasksService.UpdateDatabase();
+
+            return await Configure(pageModel);
         }
     }
 }

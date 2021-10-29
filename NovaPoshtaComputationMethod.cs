@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Nop.Core;
 using Nop.Core.Domain.Tasks;
+using Nop.Plugin.Shipping.NovaPoshta.Domain;
 using Nop.Plugin.Shipping.NovaPoshta.Services;
 using Nop.Services.Configuration;
 using Nop.Services.Plugins;
@@ -77,6 +78,25 @@ namespace Nop.Plugin.Shipping.NovaPoshta
         public override string GetConfigurationPageUrl()
         {
             return $"{_webHelper.GetStoreLocation()}Admin/NovaPoshtaShipping/Configure";
+        }
+
+        public string GetCheckoutShippingOptionExtPartialViewUrl(string optionType)
+        {
+            if (optionType == NovaPoshtaShippingType.WAREHOUSE.ToString())
+            {
+                return "~/Plugins/Shipping.NovaPoshta/Views/_CheckoutToWarehouseOptionExt.cshtml";
+            }
+            return "";
+        }
+
+        public string GetOrderShippingOptionExtPartialViewUrl(string optionType)
+        {
+            if (optionType == NovaPoshtaShippingType.WAREHOUSE.ToString())
+            {
+                return "~/Plugins/Shipping.NovaPoshta/Views/_OrderShippingMethodExtPartialView.cshtml";
+            }
+            
+            return "";
         }
 
         public override async Task InstallAsync()
