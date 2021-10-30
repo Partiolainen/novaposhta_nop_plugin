@@ -110,8 +110,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             return warehouses;
         }
 
-        public async Task<List<NovaPoshtaConfigurationSettingsModel.WarehouseAvailability>>
-            GetCitiesForSendingAvailability()
+        public async Task<List<NovaPoshtaConfigurationSettingsModel.WarehouseAvailability>> GetCitiesForSendingAvailability()
         {
             var availability = new List<NovaPoshtaConfigurationSettingsModel.WarehouseAvailability>();
 
@@ -135,6 +134,13 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             }
 
             return availability;
+        }
+
+        public async Task<NovaPoshtaWarehouse> GetWarehouseByRef(string novaPoshtaWarehouseRef)
+        {
+            var novaPoshtaWarehouse = await _warehousesRepository.GetByRefAsync(novaPoshtaWarehouseRef);
+
+            return novaPoshtaWarehouse;
         }
 
         public async Task<ShippingOption> GetToAddressShippingOption(GetShippingOptionRequest getShippingOptionRequest)

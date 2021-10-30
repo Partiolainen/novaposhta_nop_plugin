@@ -1,4 +1,7 @@
-﻿namespace Nop.Plugin.Shipping.NovaPoshta.Services
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Nop.Plugin.Shipping.NovaPoshta.Services
 {
     public static class LocalizationConst
     {
@@ -13,5 +16,15 @@
         public const string DB_LAST_SUCCESS_UPDATE = "Plugins.Shipping.NovaPoshta.Fields.DbLastSuccessUpdate";
         public const string WAREHOUSE_CITIES = "Plugins.Shipping.NovaPoshta.Fields.WarehouseCities";
         public const string WAREHOUSE_UNAVAILABLE_MESSAGE = "Plugins.Shipping.NovaPoshta.Fields.WarehouseUnavailableMessge";
+        public const string SHIPPING_DETAILS = "Plugins.Shipping.NovaPoshta.Fields.ShippingDetails";
+        public const string SHIPPING_POINT_DETAILS = "Plugins.Shipping.NovaPoshta.Fields.ShippingPointDetails";
+        public const string SHIPPING_POINT = "Plugins.Shipping.NovaPoshta.Fields.ShippingPoint";
+        public const string CHANGE_SHIPPING_POINT = "Plugins.Shipping.NovaPoshta.Fields.ChangeShippingPoint";
+        public const string CREATE_SHIPMENT_WAYBILL = "Plugins.Shipping.NovaPoshta.Fields.CreateShipmentWaybill";
+        
+        public static IList<string> GetValues()
+        {
+            return typeof(LocalizationConst).GetFields().Select(fieldInfo => fieldInfo.Name).ToList();
+        }
     }
 }

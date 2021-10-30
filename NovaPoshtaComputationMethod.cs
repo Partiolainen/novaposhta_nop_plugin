@@ -93,7 +93,12 @@ namespace Nop.Plugin.Shipping.NovaPoshta
         {
             if (optionType == NovaPoshtaShippingType.WAREHOUSE.ToString())
             {
-                return "~/Plugins/Shipping.NovaPoshta/Views/_OrderShippingMethodExtPartialView.cshtml";
+                return "~/Plugins/Shipping.NovaPoshta/Views/_OrderNpWarehouseShippingMethodExtPartialView.cshtml";
+            }
+
+            if (optionType == NovaPoshtaShippingType.ADDRESS.ToString())
+            {
+                return "~/Plugins/Shipping.NovaPoshta/Views/_OrderNpAddressShippingMethodExtPartialView.cshtml.cshtml";
             }
             
             return "";

@@ -51,7 +51,12 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
       <None Remove="Views\_OrderShippingMethodExtPartialView.cshtml" />
-      <Content Include="Views\_OrderShippingMethodExtPartialView.cshtml">
+      <None Remove="Views\_OrderNpWarehouseShippingMethodExtPartialView.cshtml" />
+      <Content Include="Views\_OrderNpWarehouseShippingMethodExtPartialView.cshtml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Views\_OrderNpAddressShippingMethodExtPartialView.cshtml" />
+      <Content Include="Views\_OrderNpAddressShippingMethodExtPartialView.cshtml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
     </ItemGroup>

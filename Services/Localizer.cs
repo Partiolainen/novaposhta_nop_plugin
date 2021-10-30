@@ -30,7 +30,12 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                 [LocalizationConst.DB_LAST_SUCCESS_UPDATE] = "Last database update",
                 [LocalizationConst.WAREHOUSE_CITIES] = "Your warehouses",
                 [LocalizationConst.WAREHOUSE_UNAVAILABLE_MESSAGE] = "Some warehouses cannot accept your goods " +
-                                                                    "(restrictions on size, weight, or declared value)"
+                                                                    "(restrictions on size, weight, or declared value)",
+                [LocalizationConst.CREATE_SHIPMENT_WAYBILL] = "Create new waybill",
+                [LocalizationConst.CHANGE_SHIPPING_POINT] = "Change pickup point",
+                [LocalizationConst.SHIPPING_DETAILS] = "Shipping details",
+                [LocalizationConst.SHIPPING_POINT_DETAILS] = "Shipping point details",
+                [LocalizationConst.SHIPPING_POINT] = "Shipping point",
             });
 
             var allLanguagesAsync = await _languageService.GetAllLanguagesAsync();
@@ -54,7 +59,12 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                         [LocalizationConst.WAREHOUSE_CITIES] = "Ваши склады",
                         [LocalizationConst.WAREHOUSE_UNAVAILABLE_MESSAGE] = "Некоторые отделения не могут принять Вашы " +
                                                                             "товары (огрничения по размеру, весу или " +
-                                                                            "заявленной стоимости)"
+                                                                            "заявленной стоимости)",
+                        [LocalizationConst.CREATE_SHIPMENT_WAYBILL] = "Создать накладную",
+                        [LocalizationConst.CHANGE_SHIPPING_POINT] = "Изменить точку",
+                        [LocalizationConst.SHIPPING_DETAILS] = "Детали доставки",
+                        [LocalizationConst.SHIPPING_POINT_DETAILS] = "Данные точки доставки",
+                        [LocalizationConst.SHIPPING_POINT] = "Точка доставки",
                     }, language.Id);
                 }
                 if (languageName == "uk")
@@ -73,7 +83,12 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                         [LocalizationConst.WAREHOUSE_CITIES] = "Ваші склади",
                         [LocalizationConst.WAREHOUSE_UNAVAILABLE_MESSAGE] = "Деякі відділення не можуть прийняти ваші " +
                                                                             "товари (обмеження за розміром, вагою або " +
-                                                                            "заявленої вартості)"
+                                                                            "заявленої вартості)",
+                        [LocalizationConst.CREATE_SHIPMENT_WAYBILL] = "Створити накладну",
+                        [LocalizationConst.CHANGE_SHIPPING_POINT] = "Змінити точку",
+                        [LocalizationConst.SHIPPING_DETAILS] = "Подробиці доставки",
+                        [LocalizationConst.SHIPPING_POINT_DETAILS] = "Дані точки доставки",
+                        [LocalizationConst.SHIPPING_POINT] = "Точка доставки",
                     }, language.Id);
                 }
             }
@@ -81,59 +96,20 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         
         public async Task RemoveLocaleResources()
         {
-            await _localizationService.DeleteLocaleResourcesAsync(new List<string>
-            {
-                LocalizationConst.SHIPPING_METHOD_NAME,
-                LocalizationConst.SHIPPING_METHOD_TO_WAREHOUSE,
-                LocalizationConst.SHIPPING_METHOD_ADDRESS,
-                LocalizationConst.API_KEY,
-                LocalizationConst.API_URL,
-                LocalizationConst.USE_ADDITIONAL_FEE,
-                LocalizationConst.ADDITIONAL_FEE_IS_PERCENT,
-                LocalizationConst.ADDITIONAL_FEE,
-                LocalizationConst.DB_LAST_SUCCESS_UPDATE,
-                LocalizationConst.WAREHOUSE_CITIES,
-                LocalizationConst.WAREHOUSE_UNAVAILABLE_MESSAGE,
-            });
+            await _localizationService.DeleteLocaleResourcesAsync(LocalizationConst.GetValues());
 
             var allLanguagesAsync = await _languageService.GetAllLanguagesAsync();
             
             foreach (var language in allLanguagesAsync)
             {
                 var languageName = _languageService.GetTwoLetterIsoLanguageName(language);
-                if (languageName == "ru")
+                
+                switch (languageName)
                 {
-                    await _localizationService.DeleteLocaleResourcesAsync(new List<string>
-                    {
-                        LocalizationConst.SHIPPING_METHOD_NAME,
-                        LocalizationConst.SHIPPING_METHOD_TO_WAREHOUSE,
-                        LocalizationConst.SHIPPING_METHOD_ADDRESS,
-                        LocalizationConst.API_KEY,
-                        LocalizationConst.API_URL,
-                        LocalizationConst.USE_ADDITIONAL_FEE,
-                        LocalizationConst.ADDITIONAL_FEE_IS_PERCENT,
-                        LocalizationConst.ADDITIONAL_FEE,
-                        LocalizationConst.DB_LAST_SUCCESS_UPDATE,
-                        LocalizationConst.WAREHOUSE_CITIES,
-                        LocalizationConst.WAREHOUSE_UNAVAILABLE_MESSAGE,
-                    }, language.Id);
-                }
-                if (languageName == "uk")
-                {
-                    await _localizationService.DeleteLocaleResourcesAsync(new List<string>
-                    {
-                        LocalizationConst.SHIPPING_METHOD_NAME,
-                        LocalizationConst.SHIPPING_METHOD_TO_WAREHOUSE,
-                        LocalizationConst.SHIPPING_METHOD_ADDRESS,
-                        LocalizationConst.API_KEY,
-                        LocalizationConst.API_URL,
-                        LocalizationConst.USE_ADDITIONAL_FEE,
-                        LocalizationConst.ADDITIONAL_FEE_IS_PERCENT,
-                        LocalizationConst.ADDITIONAL_FEE,
-                        LocalizationConst.DB_LAST_SUCCESS_UPDATE,
-                        LocalizationConst.WAREHOUSE_CITIES,
-                        LocalizationConst.WAREHOUSE_UNAVAILABLE_MESSAGE,
-                    }, language.Id);
+                    case "ru":
+                    case "uk":
+                        await _localizationService.DeleteLocaleResourcesAsync(LocalizationConst.GetValues(), language.Id);
+                        break;
                 }
             }
         }

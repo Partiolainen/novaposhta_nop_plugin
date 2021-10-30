@@ -1,0 +1,88 @@
+﻿@using Nop.Plugin.Shipping.NovaPoshta.Services
+@using Nop.Plugin.Shipping.NovaPoshta.Domain
+@model Nop.Web.Areas.Admin.Models.Orders.OrderModel
+@inject INovaPoshtaWarehouseForOrderService _warehouseForOrderService
+@inject INovaPoshtaService _novaPoshtaService
+
+@{
+    var novaPoshtaWarehouseForOrder = await _warehouseForOrderService.GetByOrderId(Model.Id);
+    
+    NovaPoshtaWarehouse novaPoshtaWarehouse = null;
+    if (novaPoshtaWarehouseForOrder != null && !string.IsNullOrEmpty(novaPoshtaWarehouseForOrder.NovaPoshtaWarehouseRef))
+    {
+        novaPoshtaWarehouse = await _novaPoshtaService.GetWarehouseByRef(novaPoshtaWarehouseForOrder.NovaPoshtaWarehouseRef);
+    }
+}
+
+<style>
+    p{
+        margin: 5px 0;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-3" style="display: flex; justify-content: flex-end">
+        <span style="font-weight: 600; margin-right: 22px;">@T("Plugins.Shipping.NovaPoshta.Fields.ShippingDetails")</span>
+    </div>
+    @if (novaPoshtaWarehouse != null)
+    {
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-body">
+                    
+                    <table class="table table-sm table-bordered table-hover">
+                        <tbody>
+                        <tr>
+                            <th colspan="2">
+                                <strong>@T("Plugins.Shipping.NovaPoshta.Fields.ShippingPointDetails")</strong>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                @T("Admin.Orders.Address.StateProvince")
+                            </td>
+                            <td>
+                                @novaPoshtaWarehouse.SettlementAreaDescription
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @T("Admin.Orders.Address.County")
+                            </td>
+                            <td>
+                                @novaPoshtaWarehouse.SettlementRegionsDescription
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @T("Admin.Orders.Address.City")
+                            </td>
+                            <td>
+                                @novaPoshtaWarehouse.CityDescription
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @T("Plugins.Shipping.NovaPoshta.Fields.ShippingPoint")
+                            </td>
+                            <td>
+                                @novaPoshtaWarehouse.Description
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-sm btn-primary" style="width: 150px" type="button" disabled>
+                        @T("Plugins.Shipping.NovaPoshta.Fields.CreateShipmentWaybill")
+                    </button>
+                    <button class="btn btn-sm btn-warning" style="width: 150px" type="button" disabled>
+                        @T("Plugins.Shipping.NovaPoshta.Fields.ChangeShippingPoint")
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

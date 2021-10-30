@@ -16,5 +16,6 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         Task<IList<NovaPoshtaWarehouse>> GetWarehousesBySettlement(NovaPoshtaSettlement settlement);
         Task<List<NovaPoshtaWarehouse>> GetWarehousesByAddress(Address address);
         Task<List<NovaPoshtaConfigurationSettingsModel.WarehouseAvailability>> GetCitiesForSendingAvailability();
+        Task<NovaPoshtaWarehouse> GetWarehouseByRef(string novaPoshtaWarehouseRef);
     }
 }
