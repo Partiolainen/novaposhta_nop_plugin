@@ -1,0 +1,19 @@
+﻿@using Nop.Plugin.Shipping.NovaPoshta.Services
+@using Nop.Plugin.Shipping.NovaPoshta.Domain
+@inject INpOrderDataService _orderDataService
+@model Nop.Web.Areas.Admin.Models.Orders.OrderModel
+@{
+    var orderShippingData = await _orderDataService.GetByOrderId(Model.Id);
+}
+
+<div>
+    @if (orderShippingData.ShippingType == NovaPoshtaShippingType.WAREHOUSE.ToString())
+    {
+        await Html.RenderPartialAsync("_OrderNpWarehouseShippingMethodExtPartialView.cshtml", Model);
+    }
+    
+    @if (orderShippingData.ShippingType == NovaPoshtaShippingType.ADDRESS.ToString())
+    {
+        await Html.RenderPartialAsync("_OrderNpAddressShippingMethodExtPartialView.cshtml", Model);
+    }
+</div>

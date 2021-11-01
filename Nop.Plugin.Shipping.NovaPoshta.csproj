@@ -59,6 +59,24 @@
       <Content Include="Views\_OrderNpAddressShippingMethodExtPartialView.cshtml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+      <None Remove="Views\_CheckoutToAddressOptionExt.cshtml" />
+      <Content Include="Views\_CheckoutToAddressOptionExt.cshtml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Views\_OrderShippingAdminAreaPartialView.cshtml" />
+      <Content Include="Views\_OrderShippingAdminAreaPartialView.cshtml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Views\_CheckoutShippingMainAreaPartialView.cshtml" />
+      <Content Include="Views\_CheckoutShippingMainAreaPartialView.cshtml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Views\Shared\Components\TextInput\Default.cshtml" />
+      <Content Include="Views\Shared\Components\TextInput\Default.cshtml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Views\Shared\Components\TextInput\textInput.cshtml" />
+      <None Remove="Content\style.css" />
     </ItemGroup>
     <!-- This target execute after "Build" target -->
     <Target Name="NopTarget" AfterTargets="Build">

@@ -1,0 +1,46 @@
+﻿@model Nop.Plugin.Shipping.NovaPoshta.Components.TextInputModel
+
+@{
+
+}
+
+<script>
+
+</script>
+
+<style>
+    .ti {
+        border-radius: 3px;
+        display: flex;
+    }
+    .ti-title {
+        width: @(Model.TitleWidthPercent)%;
+        background-color: lightgrey;
+        font-weight: bold;
+        color: dimgrey;
+        text-align: left;
+        padding: 1px 5px;
+        border-bottom-left-radius: 3px;
+        border-top-left-radius: 3px;
+    }
+    .ti-input:focus {
+        outline: 1px solid rgba(66,154,255,0.5);
+    }
+    .ti-input:disabled {
+        background-color: #eaeaea;
+        color: gray;
+    }
+
+</style>
+
+<div class="ti">
+    <div class="ti-title">
+        <span>@Model.Title</span>
+    </div>
+    <input type="text" 
+           class="ti-input"
+           style="width: @(100 - Model.TitleWidthPercent)%; height: initial; padding: 1px 5px; border-top-right-radius: 3px; border-bottom-right-radius: 3px"
+           disabled="@(Model.Disabled)" 
+           id="@Model.Id" 
+           value="@Model.Value"/>
+</div>

@@ -6,11 +6,14 @@ using Nop.Plugin.Shipping.NovaPoshta.Domain;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Data.Mapping
 {
-    public class NpWarehouseForOrderBuilder : NopEntityBuilder<NovaPoshtaWarehouseForOrder>
+    public class NpCustomerAddressForOrderBuilder : NopEntityBuilder<NpCustomerAddressForOrder>
     {
         public override void MapEntity(CreateTableExpressionBuilder table)
         {
-            table.WithColumn(nameof(NovaPoshtaWarehouseForOrder.OrderId)).AsInt32().ForeignKey<Order>();
+            table
+                .WithColumn(nameof(NpCustomerAddressForOrder.OrderId))
+                .AsInt32()
+                .ForeignKey<Order>();
         }
     }
 }

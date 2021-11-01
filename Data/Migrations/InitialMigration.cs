@@ -22,15 +22,8 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Data.Migrations
             _migrationManager.BuildTable<NovaPoshtaArea>(Create);
             _migrationManager.BuildTable<NovaPoshtaSettlement>(Create);
             _migrationManager.BuildTable<NovaPoshtaWarehouse>(Create);
-            _migrationManager.BuildTable<NovaPoshtaWarehouseForOrder>(Create);
-            
-            
-
-            Create
-                .Column(nameof(Order.ShippingType))
-                .OnTable(nameof(Order))
-                .AsString(255)
-                .Nullable();
+            _migrationManager.BuildTable<NpCustomerAddressForOrder>(Create);
+            _migrationManager.BuildTable<NpOrderShippingData>(Create);
         }
     }
 }

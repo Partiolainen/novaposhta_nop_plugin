@@ -22,7 +22,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
         private readonly INotificationService _notificationService;
         private readonly ILocalizationService _localizationService;
         private readonly IScheduleTaskService _scheduleTaskService;
-        private readonly INovaPoshtaService _novaPoshtaService;
+        private readonly INpService _npService;
         private readonly INpScheduleTasksService _npScheduleTasksService;
 
         private readonly string _endPointBasePath = "~/Plugins/Shipping.NovaPoshta/Views/";
@@ -33,7 +33,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
             INotificationService notificationService,
             ILocalizationService localizationService,
             IScheduleTaskService scheduleTaskService,
-            INovaPoshtaService novaPoshtaService,
+            INpService npService,
             INpScheduleTasksService npScheduleTasksService)
         {
             _novaPoshtaSettings = novaPoshtaSettings;
@@ -41,7 +41,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
             _notificationService = notificationService;
             _localizationService = localizationService;
             _scheduleTaskService = scheduleTaskService;
-            _novaPoshtaService = novaPoshtaService;
+            _npService = npService;
             _npScheduleTasksService = npScheduleTasksService;
         }
 
@@ -58,7 +58,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
                 AdditionalFeeIsPercent = _novaPoshtaSettings.AdditionalFeeIsPercent,
                 DbUpdateStarted = pageModel.DataBaseUpdateStarted,
                 DbLastSuccessUpdate = scheduleTask.LastSuccessUtc,
-                WarehouseCities = await _novaPoshtaService.GetCitiesForSendingAvailability()
+                WarehouseCities = await _npService.GetCitiesForSendingAvailability()
             };
 
             return View(_endPointBasePath + "Configure.cshtml", model);
@@ -90,7 +90,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
         [FormValueRequired("UpdateDatabase")]
         public async Task<IActionResult> UpdateDatabase(NovaPoshtaConfigurePageModel pageModel)
         {
-            _npScheduleTasksService.UpdateDatabase();
+            _npScheduleTasksService.UpdateDatabase(true);
 
             return await Configure(pageModel);
         }

@@ -5,7 +5,7 @@
 @using Nop.Services.Localization
 @using Nop.Services.Orders
 @model Nop.Core.Domain.Shipping.ShippingOption
-@inject INovaPoshtaService _novaPoshtaService
+@inject INpService _npService
 @inject IWorkContext _workContext
 @inject IShoppingCartService _shoppingCartService
 @inject IProductService _productService
@@ -42,7 +42,7 @@
     </script>
     
     <select asp-for="SelectedNpWarehouseRef" class="form-control form-control-sm" id="nova-poshta-warehouses-select" name="nova-poshta-selected-warehouses" onchange="novaPoshtaSelectChange(value)">
-        @foreach (var warehouse in await _novaPoshtaService.GetWarehousesByAddress(Model.Address))
+        @foreach (var warehouse in await _npService.GetWarehousesByAddress(Model.Address))
         {
             @if (await WarehouseAvailability(warehouse))
             {

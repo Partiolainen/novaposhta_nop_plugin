@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FluentMigrator.Runner.Generators.Postgres;
-using LinqToDB.Reflection;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Shipping;
 using Nop.Data;
@@ -14,10 +12,12 @@ using Nop.Services.Common;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
 using Nop.Services.Shipping;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+using static System.Int32;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Services
 {
-    public class NovaPoshtaService : INovaPoshtaService
+    public class NpService : INpService
     {
         private readonly ISettingService _settingService;
         private readonly ILocalizationService _localizationService;
@@ -25,16 +25,16 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         private readonly INovaPoshtaRepository<NovaPoshtaWarehouse> _warehousesRepository;
         private readonly IRepository<Warehouse> _nopWarehousesRepository;
         private readonly IAddressService _addressService;
-        private readonly INovaPoshtaApiService _novaPoshtaApiService;
+        private readonly INpApiService _npApiService;
 
-        public NovaPoshtaService(
+        public NpService(
             ISettingService settingService,
             ILocalizationService localizationService,
             INovaPoshtaRepository<NovaPoshtaSettlement> settlementsRepository,
             INovaPoshtaRepository<NovaPoshtaWarehouse> warehousesRepository,
             IRepository<Warehouse> nopWarehousesRepository,
             IAddressService addressService,
-            INovaPoshtaApiService novaPoshtaApiService)
+            INpApiService npApiService)
         {
             _settingService = settingService;
             _localizationService = localizationService;
@@ -42,7 +42,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             _warehousesRepository = warehousesRepository;
             _nopWarehousesRepository = nopWarehousesRepository;
             _addressService = addressService;
-            _novaPoshtaApiService = novaPoshtaApiService;
+            _npApiService = npApiService;
         }
 
         public async Task<ShippingOption> GetToWarehouseShippingOption(
@@ -71,13 +71,20 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
 
         public async Task<IList<NovaPoshtaSettlement>> GetSettlementsByAddress(Address address)
         {
+            if (string.IsNullOrEmpty(address.City)
+                || string.IsNullOrEmpty(address.ZipPostalCode)
+                || !TryParse(address.ZipPostalCode, out var intZipPostalCode))
+            {
+                return new List<NovaPoshtaSettlement>();
+            }
+
             var settlements = await _settlementsRepository
                 .GetAllAsync(query =>
                 {
                     query = query.Where(settlement =>
                         (settlement.Description == address.City || settlement.DescriptionRu == address.City)
-                        && int.Parse(address.ZipPostalCode) >= int.Parse(settlement.Index1)
-                        && int.Parse(address.ZipPostalCode) <= int.Parse(settlement.Index2)
+                        && intZipPostalCode >= Parse(settlement.Index1)
+                        && intZipPostalCode <= Parse(settlement.Index2)
                     );
 
                     return query;
@@ -155,8 +162,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                        + await _localizationService.GetResourceAsync(
                            "Plugins.Shipping.NovaPoshta.views.shippingMethodAddress"),
                 ShippingType = NovaPoshtaShippingType.ADDRESS.ToString(),
-                Description =
-                    $"{shippingAddress.ZipPostalCode}, {shippingAddress.City}, {shippingAddress.Address1} ({shippingAddress.Address2})",
+                Description = "Курьерская доставка",
                 Rate = await GetRateToAddress(getShippingOptionRequest),
                 TransitDays = 3,
                 Address = shippingAddress,
@@ -191,7 +197,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             foreach (var requestItem in request.Items)
             {
                 var price = 
-                    await _novaPoshtaApiService.GetDeliveryPrice(sender, recipient, requestItem.Product);
+                    await _npApiService.GetDeliveryPrice(sender, recipient, requestItem.Product);
                 if (price.Any())
                 {
                     resultRate += price.First().Cost * requestItem.GetQuantity();
@@ -225,7 +231,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             foreach (var requestItem in request.Items)
             {
                 var price = 
-                    await _novaPoshtaApiService.GetDeliveryPrice(sender, recipient, requestItem.Product, false);
+                    await _npApiService.GetDeliveryPrice(sender, recipient, requestItem.Product, false);
                 if (price.Any())
                 {
                     resultRate += price.First().Cost * requestItem.GetQuantity();

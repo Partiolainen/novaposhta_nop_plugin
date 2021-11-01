@@ -89,16 +89,21 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Data
 
         public override async Task InsertAsync(IList<NovaPoshtaWarehouse> warehouseEntities, bool publishEvent = true)
         {
-            foreach (var novaPoshtaWarehouse in warehouseEntities)
+            await _dimensionsRepository.InsertAsync(
+                warehouseEntities
+                    .Select(warehouse => warehouse.ReceivingLimitationsOnDimensions)
+                    .ToList(), false);
+            
+            await _dimensionsRepository.InsertAsync(
+                warehouseEntities
+                    .Select(warehouse => warehouse.SendingLimitationsOnDimensions)
+                    .ToList(), false);
+            
+            warehouseEntities.ForEach(warehouse =>
             {
-                await _dimensionsRepository.InsertAsync(novaPoshtaWarehouse.SendingLimitationsOnDimensions);
-                await _dimensionsRepository.InsertAsync(novaPoshtaWarehouse.ReceivingLimitationsOnDimensions);
-
-                novaPoshtaWarehouse.SendingLimitationsOnDimensionsId =
-                    novaPoshtaWarehouse.SendingLimitationsOnDimensions.Id;
-                novaPoshtaWarehouse.ReceivingLimitationsOnDimensionsId =
-                    novaPoshtaWarehouse.ReceivingLimitationsOnDimensions.Id;
-            }
+                warehouse.ReceivingLimitationsOnDimensionsId = warehouse.ReceivingLimitationsOnDimensions.Id;
+                warehouse.SendingLimitationsOnDimensionsId = warehouse.SendingLimitationsOnDimensions.Id;
+            });
 
             await base.InsertAsync(warehouseEntities, publishEvent);
         }

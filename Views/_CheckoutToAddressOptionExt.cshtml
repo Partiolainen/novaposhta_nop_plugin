@@ -1,0 +1,199 @@
+﻿@using Nop.Plugin.Shipping.NovaPoshta.Services
+@using Nop.Core
+@using Nop.Plugin.Shipping.NovaPoshta.Domain
+@model Nop.Core.Domain.Shipping.ShippingOption
+@inject INpCustomerAddressService _npCustomerAddressService
+@inject IWorkContext _workContext
+
+@{
+    NpCustomerAddressForOrder customerAddressForOrder = null;
+    var customer = await _workContext.GetCurrentCustomerAsync();
+    if (customer != null)
+    {
+        customerAddressForOrder = await _npCustomerAddressService.GetLastUsedAddressByCustomer(customer);
+    }
+
+    customerAddressForOrder ??= await _npCustomerAddressService.TryExtractNpCustomerAddress(Model.Address);
+
+}
+
+<style>
+    .card {
+        border: 1px solid rgba(0, 0, 0, .125); 
+        border-radius: 3px;
+    }
+    
+    .card-header {
+        border-bottom: 1px solid rgba(0, 0, 0, .125); 
+        background-color: lightgrey;
+        padding: 3px;
+    }
+
+    .card-body {
+        padding: 2px;
+    }
+    
+    .card-footer {
+        border-top: 1px solid rgba(0, 0, 0, .125); 
+        background-color: lightgrey;
+        padding: 3px;
+        display: flex;
+        justify-content: flex-end;
+    }
+</style>
+
+<div>
+    <script>
+        $(document).ready(() => {
+            
+            ShippingMethod.validate = function() {
+                
+                let zipPostal = $('#zip_code_input').val();
+                let area = $('#area_input').val();
+                let region = $('#region_input').val();
+                let city = $('#city_input').val();
+                let street = $('#street_input').val();
+                let house = $('#house_input').val();
+                            
+                let methods = document.getElementsByName('shippingoption');
+                if (methods.length === 0) {
+                    alert(this.localized_data.NotAvailableMethodsError);
+                    return false;
+                }               
+
+                for (var i = 0; i < methods.length; i++) {
+                    if (methods[i].checked) {
+                        if (methods[i].id === 'shippingoption_ADDRESS') {
+                            if (isNullOrEmpty(zipPostal) || isNullOrEmpty(area) || isNullOrEmpty(region) 
+                            || isNullOrEmpty(city) || isNullOrEmpty(street) || isNullOrEmpty(house)) {
+                                alert("Одно или несколько обязательных полей в адресе доставки не заполнено");
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                }
+                alert(this.localized_data.SpecifyMethodError);
+                return false;
+            }
+            
+            ShippingMethod.save = function() {
+                
+                if (Checkout.loadWaiting !== false) return;
+                
+                if (this.validate()) {
+                    Checkout.setLoadWaiting('shipping-method');
+        
+                    $.ajax({
+                        cache: false,
+                        url: this.saveUrl,
+                        data: $(this.form).serialize(),
+                        type: "POST",
+                        success: this.nextStep,
+                        complete: this.resetLoadWaiting,
+                        error: Checkout.ajaxFailure
+                    });
+                }
+            }
+        });
+        
+        function isNullOrEmpty(value) {
+            return value == null || value === '';           
+        }
+        
+    </script>
+    
+    <div class="card">
+        <div class="card-header">
+            <span style="font-weight: bold">Адресс доставки</span>
+        </div>
+        <div class="card-body">
+            
+            <div style="margin-bottom: 1px; font-size: 14px">
+                @await Component.InvokeAsync(
+                    "TextInput",
+                    new
+                    {
+                        title = "Zip code",
+                        id = "zip_code_input",
+                        disabled = true,
+                        value = customerAddressForOrder.ZipPostalCode
+                    })
+            </div>
+
+            <div style="margin-bottom: 1px; font-size: 14px">
+                @await Component.InvokeAsync(
+                    "TextInput",
+                    new
+                    {
+                        title = "Area",
+                        id = "area_input",
+                        disabled = true,
+                        value = customerAddressForOrder.Area
+                    })
+            </div>
+            
+            <div style="margin-bottom: 1px; font-size: 14px">
+                @await Component.InvokeAsync(
+                    "TextInput",
+                    new
+                    {
+                        title = "Region",
+                        id = "region_input",
+                        disabled = true,
+                        value = customerAddressForOrder.Region
+                    })
+            </div>
+
+            <div style="margin-bottom: 1px; font-size: 14px">
+                @await Component.InvokeAsync(
+                    "TextInput",
+                    new
+                    {
+                        title = "City",
+                        id = "city_input",
+                        disabled = true,
+                        value = customerAddressForOrder.City
+                    })
+            </div>
+            
+            <div style="margin-bottom: 1px; font-size: 14px">
+                @await Component.InvokeAsync(
+                    "TextInput",
+                    new
+                    {
+                        title = "Street",
+                        id = "street_input",
+                        value = customerAddressForOrder.Street
+                    })
+            </div>
+            
+            <div style="margin-bottom: 1px; font-size: 14px">
+                @await Component.InvokeAsync(
+                    "TextInput",
+                    new
+                    {
+                        title = "House",
+                        id = "house_input",
+                        value = customerAddressForOrder.House
+                    })
+            </div>
+            
+            <div style="margin-bottom: 1px; font-size: 14px">
+                @await Component.InvokeAsync(
+                    "TextInput",
+                    new
+                    {
+                        title = "Flat",
+                        id = "flat_input",
+                        value = customerAddressForOrder.Flat
+                    })
+            </div>
+            
+        </div>
+        <div class="card-footer">
+            <a href="#" onclick="Checkout.back(); return false;">Change address</a>
+        </div>
+    </div>
+    
+</div>

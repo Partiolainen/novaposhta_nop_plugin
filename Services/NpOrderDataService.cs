@@ -5,23 +5,23 @@ using Nop.Plugin.Shipping.NovaPoshta.Domain;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Services
 {
-    public class NovaPoshtaWarehouseForOrderService : INovaPoshtaWarehouseForOrderService
+    public class NpOrderDataService : INpOrderDataService
     {
-        private readonly IRepository<NovaPoshtaWarehouseForOrder> _repository;
+        private readonly IRepository<NpOrderShippingData> _repository;
 
-        public NovaPoshtaWarehouseForOrderService(IRepository<NovaPoshtaWarehouseForOrder> repository)
+        public NpOrderDataService(IRepository<NpOrderShippingData> repository)
         {
             _repository = repository;
         }
 
-        public async Task<NovaPoshtaWarehouseForOrder> AddRecord(NovaPoshtaWarehouseForOrder record)
+        public async Task<NpOrderShippingData> AddRecord(NpOrderShippingData record)
         {
             await _repository.InsertAsync(record);
 
             return record;
         }
 
-        public async Task<NovaPoshtaWarehouseForOrder> GetByOrderId(int orderId)
+        public async Task<NpOrderShippingData> GetByOrderId(int orderId)
         {
             var novaPoshtaWarehouseForOrderRecords = await _repository.GetAllAsync(query =>
             {

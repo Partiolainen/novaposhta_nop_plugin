@@ -18,6 +18,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         public const string WAREHOUSE_UNAVAILABLE_MESSAGE = "Plugins.Shipping.NovaPoshta.Fields.WarehouseUnavailableMessge";
         public const string SHIPPING_DETAILS = "Plugins.Shipping.NovaPoshta.Fields.ShippingDetails";
         public const string SHIPPING_POINT_DETAILS = "Plugins.Shipping.NovaPoshta.Fields.ShippingPointDetails";
+        public const string SHIPPING_POINT_NUMBER = "Plugins.Shipping.NovaPoshta.Fields.ShippingPointNumber";
         public const string SHIPPING_POINT = "Plugins.Shipping.NovaPoshta.Fields.ShippingPoint";
         public const string CHANGE_SHIPPING_POINT = "Plugins.Shipping.NovaPoshta.Fields.ChangeShippingPoint";
         public const string CREATE_SHIPMENT_WAYBILL = "Plugins.Shipping.NovaPoshta.Fields.CreateShipmentWaybill";

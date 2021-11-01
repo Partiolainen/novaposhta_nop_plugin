@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Nop.Plugin.Shipping.NovaPoshta.Data;
 using Nop.Plugin.Shipping.NovaPoshta.Domain;
 using Nop.Services.Logging;
@@ -8,26 +7,26 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Services
 {
-    public class NovaPoshtaUpdateScheduledTask : IScheduleTask
+    public class NpUpdateScheduledTask : IScheduleTask
     {
         private readonly INovaPoshtaRepository<NovaPoshtaSettlement> _settlementsRepository;
         private readonly INovaPoshtaRepository<NovaPoshtaWarehouse> _warehousesRepository;
         private readonly INovaPoshtaRepository<NovaPoshtaArea> _areasRepository;
-        private readonly INovaPoshtaApiService _novaPoshtaApiService;
+        private readonly INpApiService _npApiService;
         private readonly ILogger _logger;
 
-        public NovaPoshtaUpdateScheduledTask(
+        public NpUpdateScheduledTask(
             INovaPoshtaRepository<NovaPoshtaSettlement> settlementsRepository,
             INovaPoshtaRepository<NovaPoshtaWarehouse> warehousesRepository,
             INovaPoshtaRepository<NovaPoshtaArea> areasRepository,
-            INovaPoshtaApiService novaPoshtaApiService,
+            INpApiService npApiService,
             ILogger logger
         )
         {
             _settlementsRepository = settlementsRepository;
             _warehousesRepository = warehousesRepository;
             _areasRepository = areasRepository;
-            _novaPoshtaApiService = novaPoshtaApiService;
+            _npApiService = npApiService;
             _logger = logger;
         }
 
@@ -44,7 +43,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         
         private async Task UpdateAreas()
         {
-            var areas = await _novaPoshtaApiService.GetAllAreas();
+            var areas = await _npApiService.GetAllAreas();
             
             await _logger.InformationAsync($"Received from API-server {areas.Count} area objects");
             
@@ -59,7 +58,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
 
         private async Task UpdateSettlements()
         {
-            var allSettlements = await _novaPoshtaApiService.GetAllSettlements();
+            var allSettlements = await _npApiService.GetAllSettlements();
             
             await _logger.InformationAsync($"Received from API-server {allSettlements.Count} settlement objects");
 
@@ -74,7 +73,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
 
         private async Task UpdateWarehouses()
         {
-            var allWarehouses = await _novaPoshtaApiService.GetAllWarehouses();
+            var allWarehouses = await _npApiService.GetAllWarehouses();
             
             await _logger.InformationAsync($"Received from API-server {allWarehouses.Count} warehouse objects");
 

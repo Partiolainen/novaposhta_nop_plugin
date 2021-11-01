@@ -1,16 +1,16 @@
 ﻿@using Nop.Plugin.Shipping.NovaPoshta.Services
 @using Nop.Plugin.Shipping.NovaPoshta.Domain
 @model Nop.Web.Areas.Admin.Models.Orders.OrderModel
-@inject INovaPoshtaWarehouseForOrderService _warehouseForOrderService
-@inject INovaPoshtaService _novaPoshtaService
+@inject INpOrderDataService _npOrderDataService
+@inject INpService _npService
 
 @{
-    var novaPoshtaWarehouseForOrder = await _warehouseForOrderService.GetByOrderId(Model.Id);
+    var novaPoshtaWarehouseForOrder = await _npOrderDataService.GetByOrderId(Model.Id);
     
     NovaPoshtaWarehouse novaPoshtaWarehouse = null;
     if (novaPoshtaWarehouseForOrder != null && !string.IsNullOrEmpty(novaPoshtaWarehouseForOrder.NovaPoshtaWarehouseRef))
     {
-        novaPoshtaWarehouse = await _novaPoshtaService.GetWarehouseByRef(novaPoshtaWarehouseForOrder.NovaPoshtaWarehouseRef);
+        novaPoshtaWarehouse = await _npService.GetWarehouseByRef(novaPoshtaWarehouseForOrder.NovaPoshtaWarehouseRef);
     }
 }
 
@@ -59,6 +59,14 @@
                             </td>
                             <td>
                                 @novaPoshtaWarehouse.CityDescription
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @T("Plugins.Shipping.NovaPoshta.Fields.ShippingPointNumber")
+                            </td>
+                            <td>
+                                @novaPoshtaWarehouse.Number
                             </td>
                         </tr>
                         <tr>

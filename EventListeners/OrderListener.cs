@@ -16,18 +16,18 @@ namespace Nop.Plugin.Shipping.NovaPoshta.EventListeners
         private readonly IGenericAttributeService _genericAttributeService;
         private readonly IWorkContext _workContext;
         private readonly IStoreContext _storeContext;
-        private readonly INovaPoshtaWarehouseForOrderService _warehouseForOrderService;
+        private readonly INpOrderDataService _npOrderDataService;
 
         public OrderListener(
             IGenericAttributeService genericAttributeService,
             IWorkContext workContext,
             IStoreContext storeContext,
-            INovaPoshtaWarehouseForOrderService warehouseForOrderService)
+            INpOrderDataService npOrderDataService)
         {
             _genericAttributeService = genericAttributeService;
             _workContext = workContext;
             _storeContext = storeContext;
-            _warehouseForOrderService = warehouseForOrderService;
+            _npOrderDataService = npOrderDataService;
         }
 
         public async Task HandleEventAsync(EntityInsertedEvent<Order> eventMessage)
@@ -42,13 +42,14 @@ namespace Nop.Plugin.Shipping.NovaPoshta.EventListeners
                 return;
             }
 
-            var novaPoshtaWarehouseForOrder = new NovaPoshtaWarehouseForOrder
+            var orderShippingData = new NpOrderShippingData
             {
                 OrderId = eventMessage.Entity.Id,
-                NovaPoshtaWarehouseRef = shippingOptions.SelectedNpWarehouseRef
+                NovaPoshtaWarehouseRef = shippingOptions.SelectedNpWarehouseRef,
+                ShippingType = shippingOptions.ShippingType,
             };
 
-            await _warehouseForOrderService.AddRecord(novaPoshtaWarehouseForOrder);
+            await _npOrderDataService.AddRecord(orderShippingData);
         }
     }
 }

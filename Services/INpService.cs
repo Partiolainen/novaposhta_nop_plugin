@@ -8,7 +8,7 @@ using Nop.Services.Shipping;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Services
 {
-    public interface INovaPoshtaService
+    public interface INpService
     {
         Task<ShippingOption> GetToAddressShippingOption(GetShippingOptionRequest getShippingOptionRequest);
         Task<ShippingOption> GetToWarehouseShippingOption(GetShippingOptionRequest getShippingOptionRequest);

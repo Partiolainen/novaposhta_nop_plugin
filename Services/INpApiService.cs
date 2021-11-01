@@ -5,7 +5,7 @@ using Nop.Plugin.Shipping.NovaPoshta.Domain;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Services
 {
-    public interface INovaPoshtaApiService
+    public interface INpApiService
     {
         Task<List<NovaPoshtaAddress>> GetAddressesByCityName(string cityName);
         Task<List<NovaPoshtaSettlement>> GetAllSettlements();

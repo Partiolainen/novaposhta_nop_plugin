@@ -34,8 +34,9 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                 [LocalizationConst.CREATE_SHIPMENT_WAYBILL] = "Create new waybill",
                 [LocalizationConst.CHANGE_SHIPPING_POINT] = "Change pickup point",
                 [LocalizationConst.SHIPPING_DETAILS] = "Shipping details",
-                [LocalizationConst.SHIPPING_POINT_DETAILS] = "Shipping point details",
-                [LocalizationConst.SHIPPING_POINT] = "Shipping point",
+                [LocalizationConst.SHIPPING_POINT_DETAILS] = "Branch details",
+                [LocalizationConst.SHIPPING_POINT_NUMBER] = "Branch number",
+                [LocalizationConst.SHIPPING_POINT] = "Description",
             });
 
             var allLanguagesAsync = await _languageService.GetAllLanguagesAsync();
@@ -63,8 +64,9 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                         [LocalizationConst.CREATE_SHIPMENT_WAYBILL] = "Создать накладную",
                         [LocalizationConst.CHANGE_SHIPPING_POINT] = "Изменить точку",
                         [LocalizationConst.SHIPPING_DETAILS] = "Детали доставки",
-                        [LocalizationConst.SHIPPING_POINT_DETAILS] = "Данные точки доставки",
-                        [LocalizationConst.SHIPPING_POINT] = "Точка доставки",
+                        [LocalizationConst.SHIPPING_POINT_DETAILS] = "Данные отделения доставки",
+                        [LocalizationConst.SHIPPING_POINT_NUMBER] = "Номер отделения",
+                        [LocalizationConst.SHIPPING_POINT] = "Описание",
                     }, language.Id);
                 }
                 if (languageName == "uk")
@@ -85,10 +87,12 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                                                                             "товари (обмеження за розміром, вагою або " +
                                                                             "заявленої вартості)",
                         [LocalizationConst.CREATE_SHIPMENT_WAYBILL] = "Створити накладну",
-                        [LocalizationConst.CHANGE_SHIPPING_POINT] = "Змінити точку",
+                        [LocalizationConst.CHANGE_SHIPPING_POINT] = "Змінити відділення",
                         [LocalizationConst.SHIPPING_DETAILS] = "Подробиці доставки",
-                        [LocalizationConst.SHIPPING_POINT_DETAILS] = "Дані точки доставки",
-                        [LocalizationConst.SHIPPING_POINT] = "Точка доставки",
+                        [LocalizationConst.SHIPPING_POINT_NUMBER] = "Номер відділення",
+                        [LocalizationConst.SHIPPING_POINT_DETAILS] = "Дані відділення",
+                        
+                        [LocalizationConst.SHIPPING_POINT] = "Опис",
                     }, language.Id);
                 }
             }

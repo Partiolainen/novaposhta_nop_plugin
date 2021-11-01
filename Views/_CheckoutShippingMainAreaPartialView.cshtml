@@ -1,0 +1,15 @@
+﻿@using Nop.Plugin.Shipping.NovaPoshta.Domain
+@model CheckoutShippingMethodModel.ShippingMethodModel
+
+<div>
+    @if (Model.ShippingOption.ShippingType == NovaPoshtaShippingType.WAREHOUSE.ToString())
+    {
+        await Html.RenderPartialAsync("_CheckoutToWarehouseOptionExt.cshtml", Model.ShippingOption);
+    }
+    
+    @if (Model.ShippingOption.ShippingType == NovaPoshtaShippingType.ADDRESS.ToString())
+    {
+        await Html.RenderPartialAsync("_CheckoutToAddressOptionExt.cshtml", Model.ShippingOption);
+    }
+    
+</div>

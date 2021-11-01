@@ -307,4 +307,9 @@ D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\
 D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Nop.Web.exe
 D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\_ViewStart.cshtml
 D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\_CheckoutToWarehouseOptionExt.cshtml
-D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\_OrderShippingMethodExtPartialView.cshtml
+D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\_OrderNpWarehouseShippingMethodExtPartialView.cshtml
+D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\_OrderNpAddressShippingMethodExtPartialView.cshtml
+D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\_CheckoutToAddressOptionExt.cshtml
+D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\_OrderShippingAdminAreaPartialView.cshtml
+D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\_CheckoutShippingMainAreaPartialView.cshtml
+D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\Shared\Components\TextInput\Default.cshtml

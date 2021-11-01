@@ -14,6 +14,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Routing
             var result = new List<string>(viewLocations)
             {
                 "/Plugins/Shipping.NovaPoshta/Views/{0}" + RazorViewEngine.ViewExtension,
+                "/Plugins/Shipping.NovaPoshta/Views/Shared/{0}" + RazorViewEngine.ViewExtension,
                 "/Plugins/Shipping.NovaPoshta/Views/{1}/{0}" + RazorViewEngine.ViewExtension,
                 "/Plugins/Shipping.NovaPoshta/Areas/{2}/Views/{0}" + RazorViewEngine.ViewExtension,
                 "/Plugins/Shipping.NovaPoshta/Areas/{2}/Views/{1}/{0}" + RazorViewEngine.ViewExtension

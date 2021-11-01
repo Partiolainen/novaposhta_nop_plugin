@@ -13,11 +13,11 @@ using Nop.Services.Configuration;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Services
 {
-    public class NovaPoshtaApiService : INovaPoshtaApiService
+    public class NpApiService : INpApiService
     {
         private readonly ISettingService _settingService;
 
-        public NovaPoshtaApiService(ISettingService settingService)
+        public NpApiService(ISettingService settingService)
         {
             _settingService = settingService;
         }

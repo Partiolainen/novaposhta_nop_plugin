@@ -20,7 +20,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta
 
         private readonly IWebHelper _webHelper;
         private readonly ISettingService _settingService;
-        private readonly INovaPoshtaService _novaPoshtaService;
+        private readonly INpService _npService;
         private readonly IScheduleTaskService _scheduleTaskService;
         private readonly ILocalizer _localizer;
 
@@ -31,13 +31,13 @@ namespace Nop.Plugin.Shipping.NovaPoshta
         public NovaPoshtaComputationMethod(
             IWebHelper webHelper, 
             ISettingService settingService,
-            INovaPoshtaService novaPoshtaService,
+            INpService npService,
             IScheduleTaskService scheduleTaskService,
             ILocalizer localizer)
         {
             _webHelper = webHelper;
             _settingService = settingService;
-            _novaPoshtaService = novaPoshtaService;
+            _npService = npService;
             _scheduleTaskService = scheduleTaskService;
             _localizer = localizer;
         }
@@ -61,10 +61,10 @@ namespace Nop.Plugin.Shipping.NovaPoshta
                 return response;
             }
             
-            var toWarehouseShippingOption = await _novaPoshtaService.GetToWarehouseShippingOption(getShippingOptionRequest);
+            var toWarehouseShippingOption = await _npService.GetToWarehouseShippingOption(getShippingOptionRequest);
             response.ShippingOptions.Add(toWarehouseShippingOption);
 
-            var toAddressShippingOption = await _novaPoshtaService.GetToAddressShippingOption(getShippingOptionRequest);
+            var toAddressShippingOption = await _npService.GetToAddressShippingOption(getShippingOptionRequest);
             response.ShippingOptions.Add(toAddressShippingOption);
 
             return response;
@@ -80,17 +80,32 @@ namespace Nop.Plugin.Shipping.NovaPoshta
             return $"{_webHelper.GetStoreLocation()}Admin/NovaPoshtaShipping/Configure";
         }
 
-        public string GetCheckoutShippingOptionExtPartialViewUrl(string optionType)
+        public string GetCheckoutShippingOptionExtPartialViewUrl(string optionType = null)
         {
+            if (string.IsNullOrEmpty(optionType))
+            {
+                return "~/Plugins/Shipping.NovaPoshta/Views/_CheckoutShippingMainAreaPartialView.cshtml";
+            }
+            
             if (optionType == NovaPoshtaShippingType.WAREHOUSE.ToString())
             {
                 return "~/Plugins/Shipping.NovaPoshta/Views/_CheckoutToWarehouseOptionExt.cshtml";
             }
+            
+            if (optionType == NovaPoshtaShippingType.ADDRESS.ToString())
+            {
+                return "~/Plugins/Shipping.NovaPoshta/Views/_CheckoutToAddressOptionExt.cshtml";
+            }
             return "";
         }
 
-        public string GetOrderShippingOptionExtPartialViewUrl(string optionType)
+        public string GetOrderShippingOptionExtPartialViewUrl(string optionType = null)
         {
+            if (string.IsNullOrEmpty(optionType))
+            {
+                return "~/Plugins/Shipping.NovaPoshta/Views/_OrderShippingAdminAreaPartialView.cshtml";
+            }
+            
             if (optionType == NovaPoshtaShippingType.WAREHOUSE.ToString())
             {
                 return "~/Plugins/Shipping.NovaPoshta/Views/_OrderNpWarehouseShippingMethodExtPartialView.cshtml";
