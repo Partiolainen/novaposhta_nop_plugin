@@ -1,0 +1,26 @@
+﻿@using Nop.Services.Common
+@using Nop.Core.Domain.Shipping
+@using Nop.Core
+@using Nop.Core.Domain.Customers
+@using Nop.Plugin.Shipping.NovaPoshta.Domain
+@inject IGenericAttributeService _genericAttributeService
+@inject IWorkContext _workContext
+@inject IStoreContext _storeContext
+
+
+@{
+    var selectedShippingOption = await _genericAttributeService.GetAttributeAsync<ShippingOption>(
+        await _workContext.GetCurrentCustomerAsync(),
+        NopCustomerDefaults.SelectedShippingOptionAttribute,
+        (await _storeContext.GetCurrentStoreAsync()).Id);
+
+    if (selectedShippingOption.ShippingType == NovaPoshtaShippingType.WAREHOUSE.ToString())
+    {
+        await Html.RenderPartialAsync("_CheckoutOrderSummaryWarehouseShippingPartialView.cshtml", selectedShippingOption);
+    }
+    
+    if (selectedShippingOption.ShippingType == NovaPoshtaShippingType.ADDRESS.ToString())
+    {
+        await Html.RenderPartialAsync("_CheckoutOrderSummaryAddressShippingPartialView.cshtml", selectedShippingOption);
+    }
+}

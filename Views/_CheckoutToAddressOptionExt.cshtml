@@ -1,16 +1,21 @@
 ﻿@using Nop.Plugin.Shipping.NovaPoshta.Services
 @using Nop.Core
 @using Nop.Plugin.Shipping.NovaPoshta.Domain
+@using Nop.Services.Localization
 @model Nop.Core.Domain.Shipping.ShippingOption
 @inject INpCustomerAddressService _npCustomerAddressService
 @inject IWorkContext _workContext
+@inject IWebHelper _webHelper
+@inject ILocalizationService _localizationService
 
 @{
+    var storeLocation = _webHelper.GetStoreLocation();
+    
     NpCustomerAddressForOrder customerAddressForOrder = null;
     var customer = await _workContext.GetCurrentCustomerAsync();
     if (customer != null)
     {
-        customerAddressForOrder = await _npCustomerAddressService.GetLastUsedAddressByCustomer(customer);
+        customerAddressForOrder = await _npCustomerAddressService.GetLastUsedAddressByCustomer(customer, Model.Address);
     }
 
     customerAddressForOrder ??= await _npCustomerAddressService.TryExtractNpCustomerAddress(Model.Address);
@@ -83,7 +88,28 @@
                 
                 if (this.validate()) {
                     Checkout.setLoadWaiting('shipping-method');
-        
+                    
+                    var npCustomerAddressForOrder = {
+                        FirstName: $('#first_name_input').val(),
+                        LastName: $('#last_name_input').val(),
+                        PhoneNumber: $('#phone_number_input').val(),
+                        ZipPostalCode: $('#zip_code_input').val(),
+                        Area: $('#area_input').val(),
+                        Region: $('#region_input').val(),
+                        City: $('#city_input').val(),
+                        Street: $('#street_input').val(),
+                        House: $('#house_input').val(),
+                        Flat: $('#flat_input').val()
+                    }
+
+                    $.ajax({
+                        cache: false,
+                        url: '@(storeLocation)Plugins/NovaPoshtaShipping/SaveCheckoutShippingAddress',
+                        data: npCustomerAddressForOrder,
+                        type: 'POST',
+                        error: Checkout.ajaxFailure
+                    })
+                    
                     $.ajax({
                         cache: false,
                         url: this.saveUrl,
@@ -114,7 +140,7 @@
                     "TextInput",
                     new
                     {
-                        title = "Zip code",
+                        title = await _localizationService.GetResourceAsync(LocalizationConst.ZipPostalCode),
                         id = "zip_code_input",
                         disabled = true,
                         value = customerAddressForOrder.ZipPostalCode
@@ -126,7 +152,7 @@
                     "TextInput",
                     new
                     {
-                        title = "Area",
+                        title = await _localizationService.GetResourceAsync(LocalizationConst.Area),
                         id = "area_input",
                         disabled = true,
                         value = customerAddressForOrder.Area
@@ -138,7 +164,7 @@
                     "TextInput",
                     new
                     {
-                        title = "Region",
+                        title = await _localizationService.GetResourceAsync(LocalizationConst.Region),
                         id = "region_input",
                         disabled = true,
                         value = customerAddressForOrder.Region
@@ -150,7 +176,7 @@
                     "TextInput",
                     new
                     {
-                        title = "City",
+                        title = await _localizationService.GetResourceAsync(LocalizationConst.City),
                         id = "city_input",
                         disabled = true,
                         value = customerAddressForOrder.City
@@ -162,7 +188,7 @@
                     "TextInput",
                     new
                     {
-                        title = "Street",
+                        title = await _localizationService.GetResourceAsync(LocalizationConst.Street),
                         id = "street_input",
                         value = customerAddressForOrder.Street
                     })
@@ -173,7 +199,7 @@
                     "TextInput",
                     new
                     {
-                        title = "House",
+                        title = await _localizationService.GetResourceAsync(LocalizationConst.House),
                         id = "house_input",
                         value = customerAddressForOrder.House
                     })
@@ -184,9 +210,42 @@
                     "TextInput",
                     new
                     {
-                        title = "Flat",
+                        title = await _localizationService.GetResourceAsync(LocalizationConst.Flat) + "*",
                         id = "flat_input",
                         value = customerAddressForOrder.Flat
+                    })
+            </div>
+            
+            <div style="margin-bottom: 1px; font-size: 14px">
+                @await Component.InvokeAsync(
+                    "TextInput",
+                    new
+                    {
+                        title = await _localizationService.GetResourceAsync(LocalizationConst.FirstName),
+                        id = "first_name_input",
+                        value = customerAddressForOrder.FirstName
+                    })
+            </div>
+            
+            <div style="margin-bottom: 1px; font-size: 14px">
+                @await Component.InvokeAsync(
+                    "TextInput",
+                    new
+                    {
+                        title = await _localizationService.GetResourceAsync(LocalizationConst.LastName),
+                        id = "last_name_input",
+                        value = customerAddressForOrder.LastName
+                    })
+            </div>
+            
+            <div style="margin-bottom: 1px; font-size: 14px">
+                @await Component.InvokeAsync(
+                    "TextInput",
+                    new
+                    {
+                        title = await _localizationService.GetResourceAsync(LocalizationConst.PhoneNumber),
+                        id = "phone_number_input",
+                        value = customerAddressForOrder.PhoneNumber
                     })
             </div>
             

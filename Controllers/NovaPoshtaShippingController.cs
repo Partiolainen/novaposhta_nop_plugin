@@ -47,7 +47,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
 
         public async Task<IActionResult> Configure(NovaPoshtaConfigurePageModel pageModel)
         {
-            var scheduleTask = await _scheduleTaskService.GetTaskByTypeAsync(NovaPoshtaDefaults.UPDATE_DATA_TASK_TYPE);
+            var scheduleTask = await _scheduleTaskService.GetTaskByTypeAsync(NovaPoshtaDefaults.UpdateDataTaskType);
 
             var model = new NovaPoshtaConfigurationSettingsModel
             {

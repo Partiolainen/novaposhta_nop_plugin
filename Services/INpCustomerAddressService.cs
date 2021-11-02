@@ -10,7 +10,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
     {
         public Task<NpCustomerAddressForOrder> InsertAddress(NpCustomerAddressForOrder npCustomerAddressForOrder);
         public Task<NpCustomerAddressForOrder> GetAddressByOrder(Order order);
-        public Task<NpCustomerAddressForOrder> GetLastUsedAddressByCustomer(Customer customer);
+        public Task<NpCustomerAddressForOrder> GetLastUsedAddressByCustomer(Customer customer, Address selectedAddress);
         public Task<NpCustomerAddressForOrder> TryExtractNpCustomerAddress(Address address);
     }
 }

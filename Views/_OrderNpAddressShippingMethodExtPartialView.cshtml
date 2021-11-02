@@ -1,1 +1,131 @@
-﻿<h2>To address</h2>
+﻿@using Nop.Plugin.Shipping.NovaPoshta.Services
+@using Nop.Plugin.Shipping.NovaPoshta.Domain
+@using Nop.Services.Orders
+
+@model Nop.Web.Areas.Admin.Models.Orders.OrderModel
+
+@inject INpOrderDataService _npOrderDataService
+@inject INpService _npService
+@inject INpCustomerAddressService _customerAddressService
+@inject IOrderService _orderService
+
+@{
+    var order = await _orderService.GetOrderByIdAsync(Model.Id);
+    var customerAddressForOrder = await _customerAddressService.GetAddressByOrder(order);
+
+}
+
+<div class="row">
+    <div class="col-md-3" style="display: flex; justify-content: flex-end">
+        <span style="font-weight: 600; margin-right: 22px;">@T("Plugins.Shipping.NovaPoshta.Fields.ShippingDetails")</span>
+    </div>
+    @if (customerAddressForOrder != null)
+    {
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-body">
+                    
+                    <table class="table table-sm table-bordered table-hover">
+                        <tbody>
+                        <tr>
+                            <th colspan="2">
+                                <strong>@T("Plugins.Shipping.NovaPoshta.Fields.ShippingPointDetails")</strong>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                @T(LocalizationConst.ZipPostalCode)
+                            </td>
+                            <td>
+                                @customerAddressForOrder.ZipPostalCode
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @T(LocalizationConst.Area)
+                            </td>
+                            <td>
+                                @customerAddressForOrder.Area
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @T(LocalizationConst.Region)
+                            </td>
+                            <td>
+                                @customerAddressForOrder.Region
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @T(LocalizationConst.City)
+                            </td>
+                            <td>
+                                @customerAddressForOrder.City
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @T(LocalizationConst.Street)
+                            </td>
+                            <td>
+                                @customerAddressForOrder.Street
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @T(LocalizationConst.House)
+                            </td>
+                            <td>
+                                @customerAddressForOrder.House
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @T(LocalizationConst.Flat)
+                            </td>
+                            <td>
+                                @customerAddressForOrder.Flat
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @T(LocalizationConst.FirstName)
+                            </td>
+                            <td>
+                                @customerAddressForOrder.FirstName
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @T(LocalizationConst.LastName)
+                            </td>
+                            <td>
+                                @customerAddressForOrder.LastName
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @T(LocalizationConst.PhoneNumber)
+                            </td>
+                            <td>
+                                @customerAddressForOrder.PhoneNumber
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-sm btn-primary" style="width: 150px" type="button" disabled>
+                        @T("Plugins.Shipping.NovaPoshta.Fields.CreateShipmentWaybill")
+                    </button>
+                    <button class="btn btn-sm btn-warning" style="width: 150px" type="button" disabled>
+                        @T("Plugins.Shipping.NovaPoshta.Fields.ChangeShippingPoint")
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

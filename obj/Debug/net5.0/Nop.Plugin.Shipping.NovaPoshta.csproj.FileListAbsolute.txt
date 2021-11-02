@@ -313,3 +313,6 @@ D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\
 D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\_OrderShippingAdminAreaPartialView.cshtml
 D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\_CheckoutShippingMainAreaPartialView.cshtml
 D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\Shared\Components\TextInput\Default.cshtml
+D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\_CheckoutOrderSummaryShippingPartialView.cshtml
+D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\_CheckoutOrderSummaryAddressShippingPartialView.cshtml
+D:\Projects\nopCommerce\SOURCE\Presentation\Nop.Web\Plugins\Shipping.NovaPoshta\Views\_CheckoutOrderSummaryWarehouseShippingPartialView.cshtml

@@ -20,6 +20,11 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Routing
                 "Plugin.Shipping.NovaPoshta.SelectNpWarehouse",
                 "Plugins/NovaPoshtaShipping/SelectNpWarehouse",
                 new { controller = "NovaPoshtaHandle", action = "SelectWarehouse" });
+            
+            endpointRouteBuilder.MapControllerRoute(
+                "Plugin.Shipping.NovaPoshta.SaveCheckoutShippingAddress",
+                "Plugins/NovaPoshtaShipping/SaveCheckoutShippingAddress",
+                new { controller = "NovaPoshtaHandle", action = "SaveCheckoutShippingAddress" });
         }
 
         public int Priority => 0;

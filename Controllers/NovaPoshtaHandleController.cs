@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Nop.Core;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Shipping;
+using Nop.Plugin.Shipping.NovaPoshta.Domain;
 using Nop.Plugin.Shipping.NovaPoshta.Services;
 using Nop.Services.Common;
 using Nop.Services.Localization;
@@ -39,7 +41,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
                 (await _storeContext.GetCurrentStoreAsync()).Id);
 
             var toWarehouse =
-                await _localizationService.GetResourceAsync(LocalizationConst.SHIPPING_METHOD_TO_WAREHOUSE);
+                await _localizationService.GetResourceAsync(LocalizationConst.ShippingMethodToWarehouse);
 
             var shippingOption = shippingOptions.Find(option => option.Name.Contains(toWarehouse));
 
@@ -56,6 +58,18 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
             );
 
             return Ok("success");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveCheckoutShippingAddress(NpCustomerAddressForOrder customerAddressForOrder)
+        {
+            await _genericAttributeService.SaveAttributeAsync(
+                await _workContext.GetCurrentCustomerAsync(),
+                NovaPoshtaDefaults.CustomerAddressForOrder,
+                JsonSerializer.Serialize(customerAddressForOrder),
+                (await _storeContext.GetCurrentStoreAsync()).Id);
+
+            return Ok();
         }
     }
 }

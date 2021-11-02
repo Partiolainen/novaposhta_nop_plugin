@@ -22,9 +22,9 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         {
             try
             {
-                var scheduleTask = await _scheduleTaskService.GetTaskByTypeAsync(NovaPoshtaDefaults.UPDATE_DATA_TASK_TYPE)
+                var scheduleTask = await _scheduleTaskService.GetTaskByTypeAsync(NovaPoshtaDefaults.UpdateDataTaskType)
                                    ?? throw new ArgumentException("Schedule task cannot be loaded",
-                                       NovaPoshtaDefaults.UPDATE_DATA_TASK_TYPE);
+                                       NovaPoshtaDefaults.UpdateDataTaskType);
 
                 if (!force)
                 {
@@ -44,7 +44,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             }
             catch (Exception e)
             {
-                await _logger.ErrorAsync($"Exception in : {NovaPoshtaDefaults.SYNCHRONIZATION_TASK_NAME}", e);
+                await _logger.ErrorAsync($"Exception in : {NovaPoshtaDefaults.SynchronizationTaskName}", e);
             }
         }
     }

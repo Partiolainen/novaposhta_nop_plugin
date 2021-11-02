@@ -5,12 +5,12 @@
 @inject INpService _npService
 
 @{
-    var novaPoshtaWarehouseForOrder = await _npOrderDataService.GetByOrderId(Model.Id);
+    var orderShippingData = await _npOrderDataService.GetByOrderId(Model.Id);
     
     NovaPoshtaWarehouse novaPoshtaWarehouse = null;
-    if (novaPoshtaWarehouseForOrder != null && !string.IsNullOrEmpty(novaPoshtaWarehouseForOrder.NovaPoshtaWarehouseRef))
+    if (orderShippingData != null && !string.IsNullOrEmpty(orderShippingData.NovaPoshtaWarehouseRef))
     {
-        novaPoshtaWarehouse = await _npService.GetWarehouseByRef(novaPoshtaWarehouseForOrder.NovaPoshtaWarehouseRef);
+        novaPoshtaWarehouse = await _npService.GetWarehouseByRef(orderShippingData.NovaPoshtaWarehouseRef);
     }
 }
 
@@ -39,7 +39,7 @@
                         </tr>
                         <tr>
                             <td>
-                                @T("Admin.Orders.Address.StateProvince")
+                                @T(LocalizationConst.Area)
                             </td>
                             <td>
                                 @novaPoshtaWarehouse.SettlementAreaDescription
@@ -47,7 +47,7 @@
                         </tr>
                         <tr>
                             <td>
-                                @T("Admin.Orders.Address.County")
+                                @T(LocalizationConst.Region)
                             </td>
                             <td>
                                 @novaPoshtaWarehouse.SettlementRegionsDescription
@@ -55,7 +55,7 @@
                         </tr>
                         <tr>
                             <td>
-                                @T("Admin.Orders.Address.City")
+                                @T(LocalizationConst.City)
                             </td>
                             <td>
                                 @novaPoshtaWarehouse.CityDescription

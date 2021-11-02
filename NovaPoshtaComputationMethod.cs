@@ -46,7 +46,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta
         
         public IShipmentTracker ShipmentTracker { get; }
 
-        public async Task<GetShippingOptionResponse> GetShippingOptionsAsync(GetShippingOptionRequest getShippingOptionRequest)
+       public async Task<GetShippingOptionResponse> GetShippingOptionsAsync(GetShippingOptionRequest getShippingOptionRequest)
         {
             if (getShippingOptionRequest == null)
             {
@@ -98,6 +98,11 @@ namespace Nop.Plugin.Shipping.NovaPoshta
             }
             return "";
         }
+        
+        public string GetCheckoutOrderSummaryShippingOptionExtPartialViewUrl()
+        {
+            return "~/Plugins/Shipping.NovaPoshta/Views/_CheckoutOrderSummaryShippingPartialView.cshtml";
+        }
 
         public string GetOrderShippingOptionExtPartialViewUrl(string optionType = null)
         {
@@ -148,21 +153,21 @@ namespace Nop.Plugin.Shipping.NovaPoshta
 
         private async Task InstallScheduledTasks()
         {
-            if (await _scheduleTaskService.GetTaskByTypeAsync(NovaPoshtaDefaults.UPDATE_DATA_TASK_TYPE) == null)
+            if (await _scheduleTaskService.GetTaskByTypeAsync(NovaPoshtaDefaults.UpdateDataTaskType) == null)
             {
                 await _scheduleTaskService.InsertTaskAsync(new ScheduleTask
                 {
                     Enabled = true,
-                    Seconds = NovaPoshtaDefaults.DEFAULT_SYNCHRONIZATION_PERIOD * 60 * 60,
-                    Name = NovaPoshtaDefaults.SYNCHRONIZATION_TASK_NAME,
-                    Type = NovaPoshtaDefaults.UPDATE_DATA_TASK_TYPE
+                    Seconds = NovaPoshtaDefaults.DefaultSynchronizationPeriod * 60 * 60,
+                    Name = NovaPoshtaDefaults.SynchronizationTaskName,
+                    Type = NovaPoshtaDefaults.UpdateDataTaskType
                 });
             }
         }
         
         private async Task RemoveScheduledTasks()
         {
-            var scheduleTask = await _scheduleTaskService.GetTaskByTypeAsync(NovaPoshtaDefaults.UPDATE_DATA_TASK_TYPE);
+            var scheduleTask = await _scheduleTaskService.GetTaskByTypeAsync(NovaPoshtaDefaults.UpdateDataTaskType);
 
             if (scheduleTask != null)
             {

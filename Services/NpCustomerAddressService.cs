@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
@@ -8,8 +6,6 @@ using Nop.Core.Domain.Orders;
 using Nop.Data;
 using Nop.Plugin.Shipping.NovaPoshta.Domain;
 using Nop.Plugin.Shipping.NovaPoshta.Services.Factories;
-using Nop.Services.Directory;
-using Nop.Services.Orders;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Services
 {
@@ -17,24 +13,23 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
     {
         private readonly IRepository<NpCustomerAddressForOrder> _customerAddressForOrderRepository;
         private readonly IRepository<Order> _orderRepository;
-        private readonly IOrderService _orderService;
         private readonly INpService _npService;
 
         public NpCustomerAddressService(
             IRepository<NpCustomerAddressForOrder> customerAddressForOrderRepository,
             IRepository<Order> orderRepository,
-            IOrderService orderService,
             INpService npService)
         {
             _customerAddressForOrderRepository = customerAddressForOrderRepository;
             _orderRepository = orderRepository;
-            _orderService = orderService;
             _npService = npService;
         }
 
-        public Task<NpCustomerAddressForOrder> InsertAddress(NpCustomerAddressForOrder npCustomerAddressForOrder)
+        public async Task<NpCustomerAddressForOrder> InsertAddress(NpCustomerAddressForOrder npCustomerAddressForOrder)
         {
-            throw new System.NotImplementedException();
+            await _customerAddressForOrderRepository.InsertAsync(npCustomerAddressForOrder);
+
+            return npCustomerAddressForOrder;
         }
 
         public async Task<NpCustomerAddressForOrder> GetAddressByOrder(Order order)
@@ -46,7 +41,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             return customerAddressForOrder.Any() ? customerAddressForOrder.First() : null;
         }
 
-        public async Task<NpCustomerAddressForOrder> GetLastUsedAddressByCustomer(Customer customer)
+        public async Task<NpCustomerAddressForOrder> GetLastUsedAddressByCustomer(Customer customer, Address selectedAddress)
         {
             var orders = await _orderRepository
                 .GetAllAsync(query => query
@@ -60,7 +55,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             foreach (var order in ordersByDescending)
             {
                 var customerAddressForOrder = await GetAddressByOrder(order);
-                if (customerAddressForOrder != null)
+                if (customerAddressForOrder != null && customerAddressForOrder.ZipPostalCode == selectedAddress.ZipPostalCode)
                 {
                     return customerAddressForOrder;
                 }

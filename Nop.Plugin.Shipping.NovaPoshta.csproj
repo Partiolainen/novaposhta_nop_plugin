@@ -77,6 +77,18 @@
       </Content>
       <None Remove="Views\Shared\Components\TextInput\textInput.cshtml" />
       <None Remove="Content\style.css" />
+      <None Remove="Views\_CheckoutOrderSummaryShippingPartialView.cshtml" />
+      <Content Include="Views\_CheckoutOrderSummaryShippingPartialView.cshtml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Views\_CheckoutOrderSummaryAddressShippingPartialView.cshtml" />
+      <Content Include="Views\_CheckoutOrderSummaryAddressShippingPartialView.cshtml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Views\_CheckoutOrderSummaryWarehouseShippingPartialView.cshtml" />
+      <Content Include="Views\_CheckoutOrderSummaryWarehouseShippingPartialView.cshtml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
     <!-- This target execute after "Build" target -->
     <Target Name="NopTarget" AfterTargets="Build">
