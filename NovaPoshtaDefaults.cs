@@ -6,5 +6,6 @@
         public static int DefaultSynchronizationPeriod => 24;
         public static string SynchronizationTaskName => "Update data (Nova Poshta plugin)";
         public static string CustomerAddressForOrder => "CustomerAddressForOrder";
+        public static string CustomerMainInfoForOrder => "CustomerMainInfoForOrder";
     }
 }

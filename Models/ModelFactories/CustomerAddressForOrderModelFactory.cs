@@ -4,10 +4,10 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Models.ModelFactories
 {
     public class CustomerAddressForOrderModelFactory
     {
-        public CustomerAddressForOrderModel BuildModel(NpCustomerAddressForOrder customerAddressForOrder,
+        public CustomerAddressForOrderPartialViewModel BuildPartialViewModel(NpCustomerAddressForOrder customerAddressForOrder,
             bool disabledByDefault = false)
         {
-            var customerAddressForOrderModel = new CustomerAddressForOrderModel(customerAddressForOrder)
+            var customerAddressForOrderModel = new CustomerAddressForOrderPartialViewModel(customerAddressForOrder)
                 {
                     ZipPostalCodeDisabled = disabledByDefault,
                     AreaDisabled = disabledByDefault,
@@ -22,6 +22,44 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Models.ModelFactories
                 };
 
             return customerAddressForOrderModel;
+        }
+
+        public NpCustomerAddressForOrderModel BuildModel(NpCustomerAddressForOrder customerAddressForOrder)
+        {
+            return new NpCustomerAddressForOrderModel
+            {
+                Id = customerAddressForOrder.Id,
+                OrderId = customerAddressForOrder.OrderId,
+                ZipPostalCode = customerAddressForOrder.ZipPostalCode,
+                Area = customerAddressForOrder.Area,
+                Region = customerAddressForOrder.Region,
+                City = customerAddressForOrder.City,
+                Street = customerAddressForOrder.Street,
+                House = customerAddressForOrder.House,
+                Flat = customerAddressForOrder.Flat,
+                FirstName = customerAddressForOrder.FirstName,
+                LastName = customerAddressForOrder.LastName,
+                PhoneNumber = customerAddressForOrder.PhoneNumber,
+            };
+        }
+
+        public NpCustomerAddressForOrder BuildAddress(NpCustomerAddressForOrderModel customerAddressForOrderModel)
+        {
+            return new NpCustomerAddressForOrder
+            {
+                Id = customerAddressForOrderModel.Id,
+                OrderId = customerAddressForOrderModel.OrderId,
+                ZipPostalCode = customerAddressForOrderModel.ZipPostalCode,
+                Area = customerAddressForOrderModel.Area,
+                Region = customerAddressForOrderModel.Region,
+                City = customerAddressForOrderModel.City,
+                Street = customerAddressForOrderModel.Street,
+                House = customerAddressForOrderModel.House,
+                Flat = customerAddressForOrderModel.Flat,
+                FirstName = customerAddressForOrderModel.FirstName,
+                LastName = customerAddressForOrderModel.LastName,
+                PhoneNumber = customerAddressForOrderModel.PhoneNumber,
+            };
         }
     }
 }

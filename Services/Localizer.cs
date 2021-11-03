@@ -48,6 +48,10 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                 [LocalizationConst.PhoneNumber] = "Phone number",
                 [LocalizationConst.FirstName] = "First name",
                 [LocalizationConst.LastName] = "Last name",
+                [LocalizationConst.ShippingAddressTitle] = "Shipping Address",
+                [LocalizationConst.RecipientMainDataTitle] = "Recipient data",
+                [LocalizationConst.ChangeData] = "Change Data",
+                [LocalizationConst.SelectBranch] = "Select branch",
             });
 
             var allLanguagesAsync = await _languageService.GetAllLanguagesAsync();
@@ -89,6 +93,10 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                         [LocalizationConst.PhoneNumber] = "Номер телефона",
                         [LocalizationConst.FirstName] = "Имя",
                         [LocalizationConst.LastName] = "Фамилия",
+                        [LocalizationConst.ShippingAddressTitle] = "Адрес доставки",
+                        [LocalizationConst.RecipientMainDataTitle] = "Данные получателя",
+                        [LocalizationConst.ChangeData] = "Изменить данные",
+                        [LocalizationConst.SelectBranch] = "Выберите отделение",
                     }, language.Id);
                 }
                 if (languageName == "uk")
@@ -125,6 +133,10 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                         [LocalizationConst.PhoneNumber] = "Номер телефону",
                         [LocalizationConst.FirstName] = "Ім'я",
                         [LocalizationConst.LastName] = "Прізвище",
+                        [LocalizationConst.ShippingAddressTitle] = "Адреса доставки",
+                        [LocalizationConst.RecipientMainDataTitle] = "Дані отримувача",
+                        [LocalizationConst.ChangeData] = "Змінити дані",
+                        [LocalizationConst.SelectBranch] = "Виберіть відділення",
                     }, language.Id);
                 }
             }

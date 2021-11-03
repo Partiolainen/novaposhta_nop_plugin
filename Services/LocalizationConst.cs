@@ -23,6 +23,10 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         public static string ShippingPoint => "Plugins.Shipping.NovaPoshta.Fields.ShippingPoint";
         public static string ChangeShippingPoint => "Plugins.Shipping.NovaPoshta.Fields.ChangeShippingPoint";
         public static string CreateShipmentWaybill => "Plugins.Shipping.NovaPoshta.Fields.CreateShipmentWaybill";
+        public static string ShippingAddressTitle => "Plugins.Shipping.NovaPoshta.Fields.ShippingAddressTitle";
+        public static string RecipientMainDataTitle => "Plugins.Shipping.NovaPoshta.Fields.RecipientMainDataTitle";
+        public static string ChangeData => "Plugins.Shipping.NovaPoshta.Fields.ChangeData";
+        public static string SelectBranch => "Plugins.Shipping.NovaPoshta.Fields.SelectBranch";
 
         #region Address
 

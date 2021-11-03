@@ -3,9 +3,12 @@
 
 @inject ILocalizationService _localizationService
 
-@model Nop.Plugin.Shipping.NovaPoshta.Domain.NovaPoshtaWarehouse
+@model Nop.Plugin.Shipping.NovaPoshta.Models.ShippingToWarehouseInfoModel
 
 <div style="border: 1px solid lightgrey; padding: 2px; border-radius: 3px">
+    
+    <span style="display: block; margin: 3px 0 3px 5px; font-weight: 600">@T(LocalizationConst.ShippingDetailsToWarehouse):</span>
+    
     <div style="margin-bottom: 1px; font-size: 14px">
         @await Component.InvokeAsync(
             "TextInput",
@@ -13,10 +16,10 @@
             {
                 title = await _localizationService.GetResourceAsync(LocalizationConst.Area),
                 disabled = true,
-                value = Model.SettlementAreaDescription
+                value = Model.NovaPoshtaWarehouse.SettlementAreaDescription
             })
     </div>
-    
+
     <div style="margin-bottom: 1px; font-size: 14px">
         @await Component.InvokeAsync(
             "TextInput",
@@ -24,10 +27,10 @@
             {
                 title = await _localizationService.GetResourceAsync(LocalizationConst.Region),
                 disabled = true,
-                value = Model.SettlementRegionsDescription
+                value = Model.NovaPoshtaWarehouse.SettlementRegionsDescription
             })
     </div>
-    
+
     <div style="margin-bottom: 1px; font-size: 14px">
         @await Component.InvokeAsync(
             "TextInput",
@@ -35,10 +38,10 @@
             {
                 title = await _localizationService.GetResourceAsync(LocalizationConst.City),
                 disabled = true,
-                value = Model.CityDescription
+                value = Model.NovaPoshtaWarehouse.CityDescription
             })
     </div>
-    
+
     <div style="margin-bottom: 1px; font-size: 14px">
         @await Component.InvokeAsync(
             "TextInput",
@@ -46,10 +49,10 @@
             {
                 title = await _localizationService.GetResourceAsync(LocalizationConst.ShippingPointNumber),
                 disabled = true,
-                value = Model.Number
+                value = Model.NovaPoshtaWarehouse.Number
             })
     </div>
-    
+
     <div style="font-size: 14px">
         @await Component.InvokeAsync(
             "TextInput",
@@ -57,8 +60,43 @@
             {
                 title = await _localizationService.GetResourceAsync(LocalizationConst.ShippingPoint),
                 disabled = true,
-                value = Model.Description
+                value = Model.NovaPoshtaWarehouse.Description
             })
     </div>
-    
+
+    <span style="display: block; margin: 10px 0 3px 5px; font-weight: 600">@T(LocalizationConst.RecipientMainDataTitle):</span>
+
+    <div style="margin-bottom: 1px; font-size: 14px">
+        @await Component.InvokeAsync(
+            "TextInput",
+            new
+            {
+                title = await _localizationService.GetResourceAsync(LocalizationConst.FirstName),
+                disabled = true,
+                value = Model.ToWarehouseCustomerMainInfo.FirstName
+            })
+    </div>
+
+    <div style="margin-bottom: 1px; font-size: 14px">
+        @await Component.InvokeAsync(
+            "TextInput",
+            new
+            {
+                title = await _localizationService.GetResourceAsync(LocalizationConst.LastName),
+                disabled = true,
+                value = Model.ToWarehouseCustomerMainInfo.LastName
+            })
+    </div>
+
+    <div style="font-size: 14px">
+        @await Component.InvokeAsync(
+            "TextInput",
+            new
+            {
+                title = await _localizationService.GetResourceAsync(LocalizationConst.PhoneNumber),
+                disabled = true,
+                value = Model.ToWarehouseCustomerMainInfo.PhoneNumber
+            })
+    </div>
+
 </div>

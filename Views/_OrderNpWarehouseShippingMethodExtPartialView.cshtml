@@ -34,11 +34,11 @@
                         <tbody>
                         <tr>
                             <th colspan="2">
-                                <strong>@T("Plugins.Shipping.NovaPoshta.Fields.ShippingPointDetails")</strong>
+                                <strong>@T(LocalizationConst.ShippingDetailsToWarehouse)</strong>
                             </th>
                         </tr>
                         <tr>
-                            <td>
+                            <td style="width: 25%">
                                 @T(LocalizationConst.Area)
                             </td>
                             <td>
@@ -63,7 +63,7 @@
                         </tr>
                         <tr>
                             <td>
-                                @T("Plugins.Shipping.NovaPoshta.Fields.ShippingPointNumber")
+                                @T(LocalizationConst.ShippingPointNumber)
                             </td>
                             <td>
                                 @novaPoshtaWarehouse.Number
@@ -71,10 +71,44 @@
                         </tr>
                         <tr>
                             <td>
-                                @T("Plugins.Shipping.NovaPoshta.Fields.ShippingPoint")
+                                @T(LocalizationConst.ShippingPoint)
                             </td>
                             <td>
                                 @novaPoshtaWarehouse.Description
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    
+                    <table class="table table-sm table-bordered table-hover" style="margin-top: 10px;">
+                        <tbody>
+                        <tr>
+                            <th colspan="2">
+                                <strong>@T(LocalizationConst.RecipientMainDataTitle)</strong>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td style="width: 25%">
+                                @T(LocalizationConst.FirstName)
+                            </td>
+                            <td>
+                                @orderShippingData.FirstName
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @T(LocalizationConst.LastName)
+                            </td>
+                            <td>
+                                @orderShippingData.LastName
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @T(LocalizationConst.PhoneNumber)
+                            </td>
+                            <td>
+                                @orderShippingData.PhoneNumber
                             </td>
                         </tr>
                         </tbody>

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Nop.Core;
-using Nop.Core.Domain.Customers;
-using Nop.Core.Domain.Shipping;
-using Nop.Plugin.Shipping.NovaPoshta.Domain;
-using Nop.Plugin.Shipping.NovaPoshta.Services;
+using Nop.Plugin.Shipping.NovaPoshta.Infrastructure.GenericAttributes;
+using Nop.Plugin.Shipping.NovaPoshta.Models;
+using Nop.Plugin.Shipping.NovaPoshta.Models.ModelFactories;
 using Nop.Services.Common;
 using Nop.Services.Localization;
 
@@ -33,27 +29,20 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SelectWarehouse(string warehouseRef)
+        public async Task<IActionResult> SelectWarehouse(string warehouseRef, string firstName, string lastName, string phoneNumber)
         {
-            var shippingOptions = await _genericAttributeService.GetAttributeAsync<List<ShippingOption>>(
-                await _workContext.GetCurrentCustomerAsync(),
-                NopCustomerDefaults.OfferedShippingOptionsAttribute,
-                (await _storeContext.GetCurrentStoreAsync()).Id);
-
-            var toWarehouse =
-                await _localizationService.GetResourceAsync(LocalizationConst.ShippingMethodToWarehouse);
-
-            var shippingOption = shippingOptions.Find(option => option.Name.Contains(toWarehouse));
-
-            if (shippingOption != null)
-                shippingOption.SelectedNpWarehouseRef = warehouseRef;
-            else
-                throw new Exception("Selected shipping method can't be loaded");
+            var toWarehouseCustomerMainInfo = new ToWarehouseCustomerMainInfo
+            {
+                WarehouseRef = warehouseRef,
+                FirstName = firstName,
+                LastName = lastName,
+                PhoneNumber = phoneNumber
+            };
 
             await _genericAttributeService.SaveAttributeAsync(
                 await _workContext.GetCurrentCustomerAsync(),
-                NopCustomerDefaults.OfferedShippingOptionsAttribute,
-                shippingOptions,
+                NovaPoshtaDefaults.CustomerMainInfoForOrder,
+                toWarehouseCustomerMainInfo,
                 (await _storeContext.GetCurrentStoreAsync()).Id
             );
 
@@ -61,12 +50,14 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveCheckoutShippingAddress(NpCustomerAddressForOrder customerAddressForOrder)
+        public async Task<IActionResult> SaveCheckoutShippingAddress(NpCustomerAddressForOrderModel customerAddressForOrderModel)
         {
+            var npCustomerAddressForOrder = new CustomerAddressForOrderModelFactory().BuildAddress(customerAddressForOrderModel);
+
             await _genericAttributeService.SaveAttributeAsync(
                 await _workContext.GetCurrentCustomerAsync(),
                 NovaPoshtaDefaults.CustomerAddressForOrder,
-                JsonSerializer.Serialize(customerAddressForOrder),
+                npCustomerAddressForOrder,
                 (await _storeContext.GetCurrentStoreAsync()).Id);
 
             return Ok();

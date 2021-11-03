@@ -2,9 +2,9 @@
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Models
 {
-    public class CustomerAddressForOrderModel
+    public class CustomerAddressForOrderPartialViewModel
     {
-        public CustomerAddressForOrderModel(NpCustomerAddressForOrder customerAddressForOrder)
+        public CustomerAddressForOrderPartialViewModel(NpCustomerAddressForOrder customerAddressForOrder)
         {
             CustomerAddressForOrder = customerAddressForOrder;
         }
