@@ -1,6 +1,7 @@
 ﻿@using Nop.Plugin.Shipping.NovaPoshta.Services
 @using Nop.Core
 @using Nop.Plugin.Shipping.NovaPoshta.Domain
+@using Nop.Plugin.Shipping.NovaPoshta.Models.ModelFactories
 @using Nop.Services.Localization
 @model Nop.Core.Domain.Shipping.ShippingOption
 @inject INpCustomerAddressService _npCustomerAddressService
@@ -135,120 +136,17 @@
         </div>
         <div class="card-body">
             
-            <div style="margin-bottom: 1px; font-size: 14px">
-                @await Component.InvokeAsync(
-                    "TextInput",
-                    new
-                    {
-                        title = await _localizationService.GetResourceAsync(LocalizationConst.ZipPostalCode),
-                        id = "zip_code_input",
-                        disabled = true,
-                        value = customerAddressForOrder.ZipPostalCode
-                    })
-            </div>
+            @{
+                var customerAddressForOrderModel = new CustomerAddressForOrderModelFactory().BuildModel(customerAddressForOrder);
+                customerAddressForOrderModel.ZipPostalCodeDisabled = true;
+                customerAddressForOrderModel.AreaDisabled = true;
+                customerAddressForOrderModel.RegionDisabled = true;
+                customerAddressForOrderModel.CityDisabled = true;
 
-            <div style="margin-bottom: 1px; font-size: 14px">
-                @await Component.InvokeAsync(
-                    "TextInput",
-                    new
-                    {
-                        title = await _localizationService.GetResourceAsync(LocalizationConst.Area),
-                        id = "area_input",
-                        disabled = true,
-                        value = customerAddressForOrder.Area
-                    })
-            </div>
-            
-            <div style="margin-bottom: 1px; font-size: 14px">
-                @await Component.InvokeAsync(
-                    "TextInput",
-                    new
-                    {
-                        title = await _localizationService.GetResourceAsync(LocalizationConst.Region),
-                        id = "region_input",
-                        disabled = true,
-                        value = customerAddressForOrder.Region
-                    })
-            </div>
+                await Html.RenderPartialAsync("_CheckoutOrderSummaryAddressShippingPartialView.cshtml",
+                    customerAddressForOrderModel);
+            }
 
-            <div style="margin-bottom: 1px; font-size: 14px">
-                @await Component.InvokeAsync(
-                    "TextInput",
-                    new
-                    {
-                        title = await _localizationService.GetResourceAsync(LocalizationConst.City),
-                        id = "city_input",
-                        disabled = true,
-                        value = customerAddressForOrder.City
-                    })
-            </div>
-            
-            <div style="margin-bottom: 1px; font-size: 14px">
-                @await Component.InvokeAsync(
-                    "TextInput",
-                    new
-                    {
-                        title = await _localizationService.GetResourceAsync(LocalizationConst.Street),
-                        id = "street_input",
-                        value = customerAddressForOrder.Street
-                    })
-            </div>
-            
-            <div style="margin-bottom: 1px; font-size: 14px">
-                @await Component.InvokeAsync(
-                    "TextInput",
-                    new
-                    {
-                        title = await _localizationService.GetResourceAsync(LocalizationConst.House),
-                        id = "house_input",
-                        value = customerAddressForOrder.House
-                    })
-            </div>
-            
-            <div style="margin-bottom: 1px; font-size: 14px">
-                @await Component.InvokeAsync(
-                    "TextInput",
-                    new
-                    {
-                        title = await _localizationService.GetResourceAsync(LocalizationConst.Flat) + "*",
-                        id = "flat_input",
-                        value = customerAddressForOrder.Flat
-                    })
-            </div>
-            
-            <div style="margin-bottom: 1px; font-size: 14px">
-                @await Component.InvokeAsync(
-                    "TextInput",
-                    new
-                    {
-                        title = await _localizationService.GetResourceAsync(LocalizationConst.FirstName),
-                        id = "first_name_input",
-                        value = customerAddressForOrder.FirstName
-                    })
-            </div>
-            
-            <div style="margin-bottom: 1px; font-size: 14px">
-                @await Component.InvokeAsync(
-                    "TextInput",
-                    new
-                    {
-                        title = await _localizationService.GetResourceAsync(LocalizationConst.LastName),
-                        id = "last_name_input",
-                        value = customerAddressForOrder.LastName
-                    })
-            </div>
-            
-            <div style="margin-bottom: 1px; font-size: 14px">
-                @await Component.InvokeAsync(
-                    "TextInput",
-                    new
-                    {
-                        title = await _localizationService.GetResourceAsync(LocalizationConst.PhoneNumber),
-                        id = "phone_number_input",
-                        value = customerAddressForOrder.PhoneNumber
-                    })
-            </div>
-            
         </div>
         <div class="card-footer">
             <a href="#" onclick="Checkout.back(); return false;">Change address</a>

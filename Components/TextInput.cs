@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
+using Nop.Plugin.Shipping.NovaPoshta.Components.ComponentModels;
 using Nop.Web.Framework.Components;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Components

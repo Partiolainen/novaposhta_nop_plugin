@@ -1,14 +1,9 @@
 ﻿@using Nop.Plugin.Shipping.NovaPoshta.Services
 @using Nop.Services.Localization
 
-@inject INpService _npService
 @inject ILocalizationService _localizationService
 
-@model Nop.Core.Domain.Shipping.ShippingOption
-
-@{
-    var novaPoshtaWarehouse = await _npService.GetWarehouseByRef(Model.SelectedNpWarehouseRef);
-}
+@model Nop.Plugin.Shipping.NovaPoshta.Domain.NovaPoshtaWarehouse
 
 <div style="border: 1px solid lightgrey; padding: 2px; border-radius: 3px">
     <div style="margin-bottom: 1px; font-size: 14px">
@@ -18,7 +13,7 @@
             {
                 title = await _localizationService.GetResourceAsync(LocalizationConst.Area),
                 disabled = true,
-                value = novaPoshtaWarehouse.SettlementAreaDescription
+                value = Model.SettlementAreaDescription
             })
     </div>
     
@@ -29,7 +24,7 @@
             {
                 title = await _localizationService.GetResourceAsync(LocalizationConst.Region),
                 disabled = true,
-                value = novaPoshtaWarehouse.SettlementRegionsDescription
+                value = Model.SettlementRegionsDescription
             })
     </div>
     
@@ -40,7 +35,7 @@
             {
                 title = await _localizationService.GetResourceAsync(LocalizationConst.City),
                 disabled = true,
-                value = novaPoshtaWarehouse.CityDescription
+                value = Model.CityDescription
             })
     </div>
     
@@ -51,7 +46,7 @@
             {
                 title = await _localizationService.GetResourceAsync(LocalizationConst.ShippingPointNumber),
                 disabled = true,
-                value = novaPoshtaWarehouse.Number
+                value = Model.Number
             })
     </div>
     
@@ -62,7 +57,7 @@
             {
                 title = await _localizationService.GetResourceAsync(LocalizationConst.ShippingPoint),
                 disabled = true,
-                value = novaPoshtaWarehouse.Description
+                value = Model.Description
             })
     </div>
     

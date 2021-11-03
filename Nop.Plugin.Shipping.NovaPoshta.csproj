@@ -89,6 +89,7 @@
       <Content Include="Views\_CheckoutOrderSummaryWarehouseShippingPartialView.cshtml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+      <None Remove="Views\Shared\Components\CustomerAddressForOrder\Default.cshtml" />
     </ItemGroup>
     <!-- This target execute after "Build" target -->
     <Target Name="NopTarget" AfterTargets="Build">

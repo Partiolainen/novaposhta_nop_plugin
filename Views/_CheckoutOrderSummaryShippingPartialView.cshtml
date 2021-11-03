@@ -2,25 +2,63 @@
 @using Nop.Core.Domain.Shipping
 @using Nop.Core
 @using Nop.Core.Domain.Customers
+@using Nop.Plugin.Shipping.NovaPoshta
 @using Nop.Plugin.Shipping.NovaPoshta.Domain
+@using System.Text.Json
+@using Nop.Plugin.Shipping.NovaPoshta.Models.ModelFactories
+@using Nop.Plugin.Shipping.NovaPoshta.Services
 @inject IGenericAttributeService _genericAttributeService
 @inject IWorkContext _workContext
 @inject IStoreContext _storeContext
+@inject INpCustomerAddressService _customerAddressService
+@inject INpService _npService
+@inject INpOrderDataService _npOrderDataService
 
+@model Nop.Core.Domain.Orders.Order
 
 @{
-    var selectedShippingOption = await _genericAttributeService.GetAttributeAsync<ShippingOption>(
-        await _workContext.GetCurrentCustomerAsync(),
-        NopCustomerDefaults.SelectedShippingOptionAttribute,
-        (await _storeContext.GetCurrentStoreAsync()).Id);
+    //IF Model.Id equal 0, this means that Partial View has invoked in Checkout-sequence page (Order not created yet),
+    //but if not, then it has invoked in customer info page (Order already created)
+    if (Model.Id == 0)
+    {
+        var selectedShippingOption = await _genericAttributeService.GetAttributeAsync<ShippingOption>(
+            await _workContext.GetCurrentCustomerAsync(),
+            NopCustomerDefaults.SelectedShippingOptionAttribute,
+            (await _storeContext.GetCurrentStoreAsync()).Id);
 
-    if (selectedShippingOption.ShippingType == NovaPoshtaShippingType.WAREHOUSE.ToString())
-    {
-        await Html.RenderPartialAsync("_CheckoutOrderSummaryWarehouseShippingPartialView.cshtml", selectedShippingOption);
+        if (selectedShippingOption.ShippingType == NovaPoshtaShippingType.WAREHOUSE.ToString())
+        {
+            var novaPoshtaWarehouse = await _npService.GetWarehouseByRef(selectedShippingOption.SelectedNpWarehouseRef);
+            await Html.RenderPartialAsync("_CheckoutOrderSummaryWarehouseShippingPartialView.cshtml", novaPoshtaWarehouse);
+        }
+        
+        if (selectedShippingOption.ShippingType == NovaPoshtaShippingType.ADDRESS.ToString())
+        {
+            var customerAddressForOrderString = await _genericAttributeService.GetAttributeAsync<string>(
+                await _workContext.GetCurrentCustomerAsync(),
+                NovaPoshtaDefaults.CustomerAddressForOrder,
+                (await _storeContext.GetCurrentStoreAsync()).Id);
+
+            var customerAddressForOrder = JsonSerializer.Deserialize<NpCustomerAddressForOrder>(customerAddressForOrderString);
+            await Html.RenderPartialAsync("_CheckoutOrderSummaryAddressShippingPartialView.cshtml", 
+                new CustomerAddressForOrderModelFactory().BuildModel(customerAddressForOrder, true));
+        }
     }
-    
-    if (selectedShippingOption.ShippingType == NovaPoshtaShippingType.ADDRESS.ToString())
+    else
     {
-        await Html.RenderPartialAsync("_CheckoutOrderSummaryAddressShippingPartialView.cshtml", selectedShippingOption);
+        var orderShippingData = await _npOrderDataService.GetByOrderId(Model.Id);
+
+        if (orderShippingData.ShippingType == NovaPoshtaShippingType.WAREHOUSE.ToString())
+        {
+            var novaPoshtaWarehouse = await _npService.GetWarehouseByRef(orderShippingData.NovaPoshtaWarehouseRef);
+            await Html.RenderPartialAsync("_CheckoutOrderSummaryWarehouseShippingPartialView.cshtml", novaPoshtaWarehouse);
+        }
+        
+        if (orderShippingData.ShippingType == NovaPoshtaShippingType.ADDRESS.ToString())
+        {
+            var customerAddressForOrder = await _customerAddressService.GetAddressByOrder(Model);
+            await Html.RenderPartialAsync("_CheckoutOrderSummaryAddressShippingPartialView.cshtml", 
+                new CustomerAddressForOrderModelFactory().BuildModel(customerAddressForOrder, true));
+        }
     }
 }

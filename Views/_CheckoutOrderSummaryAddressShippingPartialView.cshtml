@@ -1,30 +1,8 @@
-﻿@using Nop.Services.Common
-@using Nop.Plugin.Shipping.NovaPoshta.Domain
-@using Nop.Core
-@using Nop.Plugin.Shipping.NovaPoshta
-@using System.Text.Json
-@using Nop.Plugin.Shipping.NovaPoshta.Services
+﻿@using Nop.Plugin.Shipping.NovaPoshta.Services
 @using Nop.Services.Localization
-@inject IGenericAttributeService _genericAttributeService
-@inject IWorkContext _workContext
-@inject IStoreContext _storeContext
+@model Nop.Plugin.Shipping.NovaPoshta.Models.CustomerAddressForOrderModel
+
 @inject ILocalizationService _localizationService
-
-@model Nop.Core.Domain.Shipping.ShippingOption
-
-@{
-    var customerAddressForOrderString = await _genericAttributeService.GetAttributeAsync<string>(
-        await _workContext.GetCurrentCustomerAsync(),
-        NovaPoshtaDefaults.CustomerAddressForOrder,
-        (await _storeContext.GetCurrentStoreAsync()).Id);
-
-    var customerAddressForOrder = JsonSerializer.Deserialize<NpCustomerAddressForOrder>(customerAddressForOrderString);
-
-    if (customerAddressForOrder == null)
-    {
-        throw new Exception("Can't get customer address for current order");
-    }
-}
 
 <div style="border: 1px solid lightgrey; padding: 2px; border-radius: 3px">
                 
@@ -35,8 +13,8 @@
             {
                 title = await _localizationService.GetResourceAsync(LocalizationConst.ZipPostalCode),
                 id = "zip_code_input",
-                disabled = true,
-                value = customerAddressForOrder.ZipPostalCode
+                disabled = Model.ZipPostalCodeDisabled,
+                value = Model.CustomerAddressForOrder.ZipPostalCode
             })
     </div>
 
@@ -47,8 +25,8 @@
             {
                 title = await _localizationService.GetResourceAsync(LocalizationConst.Area),
                 id = "area_input",
-                disabled = true,
-                value = customerAddressForOrder.Area
+                disabled = Model.AreaDisabled,
+                value = Model.CustomerAddressForOrder.Area
             })
     </div>
     
@@ -59,8 +37,8 @@
             {
                 title = await _localizationService.GetResourceAsync(LocalizationConst.Region),
                 id = "region_input",
-                disabled = true,
-                value = customerAddressForOrder.Region
+                disabled = Model.RegionDisabled,
+                value = Model.CustomerAddressForOrder.Region
             })
     </div>
 
@@ -71,8 +49,8 @@
             {
                 title = await _localizationService.GetResourceAsync(LocalizationConst.City),
                 id = "city_input",
-                disabled = true,
-                value = customerAddressForOrder.City
+                disabled = Model.CityDisabled,
+                value = Model.CustomerAddressForOrder.City
             })
     </div>
     
@@ -83,8 +61,8 @@
             {
                 title = await _localizationService.GetResourceAsync(LocalizationConst.Street),
                 id = "street_input",
-                disabled = true,
-                value = customerAddressForOrder.Street
+                disabled = Model.StreetDisabled,
+                value = Model.CustomerAddressForOrder.Street
             })
     </div>
     
@@ -95,8 +73,8 @@
             {
                 title = await _localizationService.GetResourceAsync(LocalizationConst.House),
                 id = "house_input",
-                disabled = true,
-                value = customerAddressForOrder.House
+                disabled = Model.HouseDisabled,
+                value = Model.CustomerAddressForOrder.House
             })
     </div>
     
@@ -107,8 +85,8 @@
             {
                 title = await _localizationService.GetResourceAsync(LocalizationConst.Flat),
                 id = "flat_input",
-                disabled = true,
-                value = customerAddressForOrder.Flat
+                disabled = Model.FlatDisabled,
+                value = Model.CustomerAddressForOrder.Flat
             })
     </div>
     
@@ -119,8 +97,8 @@
             {
                 title = await _localizationService.GetResourceAsync(LocalizationConst.FirstName),
                 id = "first_name_input",
-                disabled = true,
-                value = customerAddressForOrder.FirstName
+                disabled = Model.FirstNameDisabled,
+                value = Model.CustomerAddressForOrder.FirstName
             })
     </div>
     
@@ -131,8 +109,8 @@
             {
                 title = await _localizationService.GetResourceAsync(LocalizationConst.LastName),
                 id = "last_name_input",
-                disabled = true,
-                value = customerAddressForOrder.LastName
+                disabled = Model.LastNameDisabled,
+                value = Model.CustomerAddressForOrder.LastName
             })
     </div>
     
@@ -143,9 +121,10 @@
             {
                 title = await _localizationService.GetResourceAsync(LocalizationConst.PhoneNumber),
                 id = "phone_number_input",
-                disabled = true,
-                value = customerAddressForOrder.PhoneNumber
+                disabled = Model.PhoneNumberDisabled,
+                value = Model.CustomerAddressForOrder.PhoneNumber
             })
     </div>
                 
 </div>
+    

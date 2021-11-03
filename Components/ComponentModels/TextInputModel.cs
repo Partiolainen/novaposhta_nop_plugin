@@ -1,4 +1,4 @@
-﻿namespace Nop.Plugin.Shipping.NovaPoshta.Components
+﻿namespace Nop.Plugin.Shipping.NovaPoshta.Components.ComponentModels
 {
     public class TextInputModel
     {

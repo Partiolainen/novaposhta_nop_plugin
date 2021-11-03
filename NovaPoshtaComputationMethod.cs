@@ -80,48 +80,19 @@ namespace Nop.Plugin.Shipping.NovaPoshta
             return $"{_webHelper.GetStoreLocation()}Admin/NovaPoshtaShipping/Configure";
         }
 
-        public string GetCheckoutShippingOptionExtPartialViewUrl(string optionType = null)
+        public string GetCheckoutShippingOptionExtPartialView()
         {
-            if (string.IsNullOrEmpty(optionType))
-            {
-                return "~/Plugins/Shipping.NovaPoshta/Views/_CheckoutShippingMainAreaPartialView.cshtml";
-            }
-            
-            if (optionType == NovaPoshtaShippingType.WAREHOUSE.ToString())
-            {
-                return "~/Plugins/Shipping.NovaPoshta/Views/_CheckoutToWarehouseOptionExt.cshtml";
-            }
-            
-            if (optionType == NovaPoshtaShippingType.ADDRESS.ToString())
-            {
-                return "~/Plugins/Shipping.NovaPoshta/Views/_CheckoutToAddressOptionExt.cshtml";
-            }
-            return "";
+            return "~/Plugins/Shipping.NovaPoshta/Views/_CheckoutShippingMainAreaPartialView.cshtml";
         }
         
-        public string GetCheckoutOrderSummaryShippingOptionExtPartialViewUrl()
+        public string GetOrderSummaryShippingOptionExtPartialView()
         {
             return "~/Plugins/Shipping.NovaPoshta/Views/_CheckoutOrderSummaryShippingPartialView.cshtml";
         }
 
-        public string GetOrderShippingOptionExtPartialViewUrl(string optionType = null)
+        public string GetAdminAreaOrderShippingOptionExtPartialView()
         {
-            if (string.IsNullOrEmpty(optionType))
-            {
-                return "~/Plugins/Shipping.NovaPoshta/Views/_OrderShippingAdminAreaPartialView.cshtml";
-            }
-            
-            if (optionType == NovaPoshtaShippingType.WAREHOUSE.ToString())
-            {
-                return "~/Plugins/Shipping.NovaPoshta/Views/_OrderNpWarehouseShippingMethodExtPartialView.cshtml";
-            }
-
-            if (optionType == NovaPoshtaShippingType.ADDRESS.ToString())
-            {
-                return "~/Plugins/Shipping.NovaPoshta/Views/_OrderNpAddressShippingMethodExtPartialView.cshtml.cshtml";
-            }
-            
-            return "";
+            return "~/Plugins/Shipping.NovaPoshta/Views/_OrderShippingAdminAreaPartialView.cshtml";
         }
 
         public override async Task InstallAsync()
