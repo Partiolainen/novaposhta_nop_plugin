@@ -7,54 +7,135 @@
     Layout = "_ConfigurePlugin";
 }
 
+<style>
+    .np-settings-group {
+        border: 1px solid lightgrey; 
+        border-radius: 5px; 
+        padding: 5px 5px 0 5px; 
+        margin-bottom: 10px;
+        box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+        background-color: #fff;
+    }
+    .accent {
+        color: darkred;
+        font-weight: 800;
+    }
+    .np-common-link{
+        text-decoration: underline;
+        font-weight: 800;
+    }
+</style>
+
 <form asp-controller="NovaPoshtaShipping" asp-action="Configure" method="post">
 
     <div class="cards-group">
         <div class="card card-default">
             <div class="card-body">
-                <div class="form-group row">
-                    <div class="col-md-3">
-                        <nop-label asp-for="ApiUrl"/>
+                <div class="np-settings-group">
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="ApiUrl"/>
+                        </div>
+                        <div class="col-md-6">
+                            <nop-editor asp-for="ApiUrl"/>
+                            <span asp-validation-for="ApiUrl"></span>
+                        </div>
                     </div>
-                    <div class="col-md-9">
-                        <nop-editor asp-for="ApiUrl"/>
-                        <span asp-validation-for="ApiUrl"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-md-3">
-                        <nop-label asp-for="ApiKey"/>
-                    </div>
-                    <div class="col-md-9">
-                        <nop-editor asp-for="ApiKey"/>
-                        <span asp-validation-for="ApiKey"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-md-3">
-                        <nop-label asp-for="UseAdditionalFee"/>
-                    </div>
-                    <div class="col-md-9">
-                        <nop-editor asp-for="UseAdditionalFee"/>
-                        <span asp-validation-for="UseAdditionalFee"></span>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="ApiKey"/>
+                        </div>
+                        <div class="col-md-6">
+                            <nop-editor asp-for="ApiKey"/>
+                            <span asp-validation-for="ApiKey"></span>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <div class="col-md-3">
-                        <nop-label asp-for="AdditionalFee"/>
+                <div class="np-settings-group">
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="MeasureDimensionId"/>
+                        </div>
+                        <div class="col-md-3">
+                            <nop-select asp-for="MeasureDimensionId" asp-items="Model.AvailableMeasureDimensions"/>
+                            <span asp-validation-for="MeasureDimensionId"></span>
+                        </div>
+                        <div class="col-md-3">
+                            
+                        </div>
                     </div>
-                    <div class="col-md-9">
-                        <nop-editor asp-for="AdditionalFee"/>
-                        <span asp-validation-for="AdditionalFee"></span>
+                    <div class="row">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <p style="font-size: 14px; font-weight: 600; color: darkcyan; margin-top: -5px; margin-bottom: 5px;">
+                                Выберите единицу измерения <span class="accent">размеров</span>, соответствующую 
+                                <span class="accent">сантиметрам</span>.
+                                Если такой единицы нет в Вышем магазине, то 
+                                <a class="np-common-link" href="/Admin/Measure/List">создайте её</a>.
+                                Так же проследите за правильностью коэфициента пересчёта
+                                к основной еденице размера, выбранной в Вашем магазине
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-top: 20px;">
+                        <div class="col-md-3">
+                            <nop-label asp-for="MeasureWeightId"/>
+                        </div>
+                        <div class="col-md-3">
+                            <nop-select asp-for="MeasureWeightId" asp-items="Model.AvailableMeasureWeights"/>
+                            <span asp-validation-for="MeasureWeightId"></span>
+                        </div>
+                        <div class="col-md-3">
+                            
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <p style="font-size: 14px; font-weight: 600; color: darkcyan; margin-top: -5px; margin-bottom: 5px;">
+                                Выберите единицу измерения <span class="accent">веса</span>, соответствующую 
+                                <span class="accent">килограммам</span>.
+                                Если такой единицы нет в Вышем магазине, то 
+                                <a class="np-common-link" href="/Admin/Measure/List">создайте её</a>.
+                                Так же проследите за правильностью коэфициента пересчёта
+                                к основной еденице веса, выбранной в Вашем магазине
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 20px; margin-bottom: 10px;">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-9">
+                            <a class="btn btn-sm btn-outline-primary" href="/Admin/Measure/List">Настройка единиц измерения</a>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <div class="col-md-3">
-                        <nop-label asp-for="AdditionalFeeIsPercent"/>
+                <div class="np-settings-group">
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="UseAdditionalFee"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="UseAdditionalFee"/>
+                            <span asp-validation-for="UseAdditionalFee"></span>
+                        </div>
                     </div>
-                    <div class="col-md-9">
-                        <nop-editor asp-for="AdditionalFeeIsPercent"/>
-                        <span asp-validation-for="AdditionalFeeIsPercent"></span>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="AdditionalFee"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="AdditionalFee"/>
+                            <span asp-validation-for="AdditionalFee"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="AdditionalFeeIsPercent"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="AdditionalFeeIsPercent"/>
+                            <span asp-validation-for="AdditionalFeeIsPercent"></span>
+                        </div>
                     </div>
                 </div>
 
@@ -72,7 +153,7 @@
                     <div class="col-md-9" style="display: flex; flex-direction: column">
                         @foreach (var warehouseCity in Model.WarehouseCities)
                         {
-                            await Html.RenderPartialAsync("/Plugins/Shipping.NovaPoshta/Views/WarehouseCity.cshtml", warehouseCity);
+                            await Html.RenderPartialAsync("WarehouseCity.cshtml", warehouseCity);
                         }
                     </div>
                 </div>

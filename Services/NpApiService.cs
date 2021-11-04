@@ -9,6 +9,7 @@ using Nop.Core.Domain.Catalog;
 using Nop.Plugin.Shipping.NovaPoshta.Domain;
 using Nop.Plugin.Shipping.NovaPoshta.Infrastructure;
 using Nop.Plugin.Shipping.NovaPoshta.Infrastructure.ApiRequest;
+using Nop.Plugin.Shipping.NovaPoshta.Services.Factories;
 using Nop.Services.Configuration;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Services
@@ -16,10 +17,14 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
     public class NpApiService : INpApiService
     {
         private readonly ISettingService _settingService;
+        private readonly IFactoriesService _factoriesService;
 
-        public NpApiService(ISettingService settingService)
+        public NpApiService(
+            ISettingService settingService,
+            IFactoriesService factoriesService)
         {
             _settingService = settingService;
+            _factoriesService = factoriesService;
         }
 
         public async Task<List<NovaPoshtaAddress>> GetAddressesByCityName(string cityName)
@@ -117,29 +122,20 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         public async Task<List<NovaPoshtaDocumentPrice>> GetDeliveryPrice(NovaPoshtaSettlement sender, 
             NovaPoshtaSettlement recipient, Product product, bool toWarehouse = true)
         {
-            //TODO Check and recalculate dimensions
-            
+            var optionSeat = await _factoriesService.BuildOptionSeatByProduct(product);
+
             var apiResponse = await NovaPoshtaApiGetData<NovaPoshtaDocumentPrice, GetDeliveryCostProps>(props =>
             {
                 props.ModelName = "InternetDocument";
                 props.CalledMethod = "getDocumentPrice";
                 props.CitySender = sender.Ref;
                 props.CityRecipient = recipient.Ref;
-                props.Weight = ((int)product.Weight).ToString();
+                props.Weight = optionSeat.weight;
                 props.ServiceType = toWarehouse ? "WarehouseWarehouse" : "WarehouseDoors";
                 props.Cost = ((int)product.Price).ToString();
                 props.CargoType = "Parcel";
                 props.SeatsAmount = "1";
-                props.OptionsSeat = new List<OptionSeat>
-                {
-                    new()
-                    {
-                        weight = ((int)product.Weight).ToString(),
-                        volumetricHeight = ((int)(product.Height * 100)).ToString(),
-                        volumetricLength = ((int)(product.Length * 100)).ToString(),
-                        volumetricWidth = ((int)(product.Width * 100)).ToString()
-                    }
-                };
+                props.OptionsSeat = new List<OptionSeat> { optionSeat };
             });
 
             return apiResponse.Success ? apiResponse.Data : new List<NovaPoshtaDocumentPrice>();

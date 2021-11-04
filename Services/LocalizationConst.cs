@@ -10,6 +10,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         public static string ShippingMethodAddress => "Plugins.Shipping.NovaPoshta.views.shippingMethodAddress";
         public static string ApiKey => "Plugins.Shipping.NovaPoshta.Fields.ApiKey";
         public static string ApiUrl => "Plugins.Shipping.NovaPoshta.Fields.ApiUrl";
+        public static string Centimetres => "Plugins.Shipping.NovaPoshta.Fields.Centimetres";
         public static string UseAdditionalFee => "Plugins.Shipping.NovaPoshta.Fields.UseAdditionalFee";
         public static string AdditionalFeeIsPercent => "Plugins.Shipping.NovaPoshta.Fields.AdditionalFeeIsPercent";
         public static string AdditionalFee => "Plugins.Shipping.NovaPoshta.Fields.AdditionalFee";

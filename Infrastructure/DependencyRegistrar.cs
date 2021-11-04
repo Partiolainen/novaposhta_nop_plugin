@@ -8,6 +8,7 @@ using Nop.Plugin.Shipping.NovaPoshta.Data;
 using Nop.Plugin.Shipping.NovaPoshta.Domain;
 using Nop.Plugin.Shipping.NovaPoshta.Routing;
 using Nop.Plugin.Shipping.NovaPoshta.Services;
+using Nop.Plugin.Shipping.NovaPoshta.Services.Factories;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Infrastructure
 {
@@ -25,6 +26,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Infrastructure
             services.AddScoped<INpService, NpService>();
             services.AddScoped<INpOrderDataService, NpOrderDataService>();
             services.AddScoped<INpCustomerAddressService, NpCustomerAddressService>();
+            services.AddScoped<IFactoriesService, FactoriesService>();
 
             services.Configure<RazorViewEngineOptions>(options =>
             {

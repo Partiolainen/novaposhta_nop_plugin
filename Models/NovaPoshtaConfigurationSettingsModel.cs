@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Shipping;
 using Nop.Web.Framework.Mvc.ModelBinding;
@@ -13,7 +14,15 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Models
         
         [NopResourceDisplayName("Plugins.Shipping.NovaPoshta.Fields.ApiUrl")]
         public string ApiUrl { get; set; }
+
+        [NopResourceDisplayName("Plugins.Shipping.NovaPoshta.Fields.Centimetres")]
+        public int MeasureDimensionId { get; set; }
+        public IList<SelectListItem> AvailableMeasureDimensions { get; set; }
         
+        [NopResourceDisplayName("Plugins.Shipping.NovaPoshta.Fields.Kilograms")]
+        public int MeasureWeightId { get; set; }
+        public IList<SelectListItem> AvailableMeasureWeights { get; set; }
+
         [NopResourceDisplayName("Plugins.Shipping.NovaPoshta.Fields.UseAdditionalFee")]
         public bool UseAdditionalFee { get; set; }
         

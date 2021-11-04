@@ -5,16 +5,19 @@
 @using Nop.Plugin.Shipping.NovaPoshta
 @using Nop.Plugin.Shipping.NovaPoshta.Domain
 @using System.Text.Json
+@using Nop.Core.Domain.Logging
 @using Nop.Plugin.Shipping.NovaPoshta.Infrastructure.GenericAttributes
 @using Nop.Plugin.Shipping.NovaPoshta.Models
 @using Nop.Plugin.Shipping.NovaPoshta.Models.ModelFactories
 @using Nop.Plugin.Shipping.NovaPoshta.Services
+@using Nop.Services.Logging
 @inject IGenericAttributeService _genericAttributeService
 @inject IWorkContext _workContext
 @inject IStoreContext _storeContext
 @inject INpCustomerAddressService _customerAddressService
 @inject INpService _npService
 @inject INpOrderDataService _npOrderDataService
+@inject ILogger _logger
 
 @model Nop.Core.Domain.Orders.Order
 
@@ -56,23 +59,34 @@
     {
         var orderShippingData = await _npOrderDataService.GetByOrderId(Model.Id);
 
-        if (orderShippingData.ShippingType == NovaPoshtaShippingType.WAREHOUSE.ToString())
+        try
         {
-            var toWarehouseCustomerMainInfo = await _genericAttributeService.GetAttributeAsync<ToWarehouseCustomerMainInfo>(
-                await _workContext.GetCurrentCustomerAsync(),
-                NovaPoshtaDefaults.CustomerMainInfoForOrder,
-                (await _storeContext.GetCurrentStoreAsync()).Id);
+            if (orderShippingData.ShippingType == NovaPoshtaShippingType.WAREHOUSE.ToString())
+            {
+                var toWarehouseCustomerMainInfo = await _genericAttributeService.GetAttributeAsync<ToWarehouseCustomerMainInfo>(
+                    await _workContext.GetCurrentCustomerAsync(),
+                    NovaPoshtaDefaults.CustomerMainInfoForOrder,
+                    (await _storeContext.GetCurrentStoreAsync()).Id);
             
-            var novaPoshtaWarehouse = await _npService.GetWarehouseByRef(toWarehouseCustomerMainInfo.WarehouseRef);
-            await Html.RenderPartialAsync("_CheckoutOrderSummaryWarehouseShippingPartialView.cshtml", 
-                new ShippingToWarehouseInfoModel(novaPoshtaWarehouse, toWarehouseCustomerMainInfo));
-        }
+                var novaPoshtaWarehouse = await _npService.GetWarehouseByRef(toWarehouseCustomerMainInfo.WarehouseRef);
+                await Html.RenderPartialAsync("_CheckoutOrderSummaryWarehouseShippingPartialView.cshtml", 
+                    new ShippingToWarehouseInfoModel(novaPoshtaWarehouse, toWarehouseCustomerMainInfo));
+            }
         
-        if (orderShippingData.ShippingType == NovaPoshtaShippingType.ADDRESS.ToString())
+            if (orderShippingData.ShippingType == NovaPoshtaShippingType.ADDRESS.ToString())
+            {
+                var customerAddressForOrder = await _customerAddressService.GetAddressByOrder(Model);
+                await Html.RenderPartialAsync("_CheckoutOrderSummaryAddressShippingPartialView.cshtml", 
+                    new CustomerAddressForOrderModelFactory().BuildPartialViewModel(customerAddressForOrder, true));
+            }
+        }
+        catch (Exception e)
         {
-            var customerAddressForOrder = await _customerAddressService.GetAddressByOrder(Model);
-            await Html.RenderPartialAsync("_CheckoutOrderSummaryAddressShippingPartialView.cshtml", 
-                new CustomerAddressForOrderModelFactory().BuildPartialViewModel(customerAddressForOrder, true));
+            await _logger.InsertLogAsync(
+                LogLevel.Error,
+                $"Nova Poshta plugin -> Failed to load additional shipping data for order (Id: {Model.Id})",
+                 $"{e.Message} \n {e.StackTrace}",
+                customer: await _workContext.GetCurrentCustomerAsync());
         }
     }
 }

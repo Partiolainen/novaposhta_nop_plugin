@@ -1,6 +1,7 @@
 ﻿@using Nop.Plugin.Shipping.NovaPoshta.Services
 @using Nop.Plugin.Shipping.NovaPoshta.Domain
 @using Nop.Core
+@using Nop.Plugin.Shipping.NovaPoshta.Services.Factories
 @using Nop.Services.Catalog
 @using Nop.Services.Localization
 @using Nop.Services.Orders
@@ -10,11 +11,7 @@
 @inject IShoppingCartService _shoppingCartService
 @inject IProductService _productService
 @inject ILocalizationService _localizationService
-@inject IWebHelper _webHelper
-
-@{
-    var storeLocation = _webHelper.GetStoreLocation();
-}
+@inject IFactoriesService _factoriesService
 
 <div >
     <style>
@@ -118,7 +115,7 @@
         foreach (var product in products)
         {
             //Check for dimensions
-            result = result && FitParcel(new Dimensions().SetDimensionsByProduct(product), warehouse.ReceivingLimitationsOnDimensions);
+            result = result && FitParcel(await _factoriesService.BuildNpDimensionsByProduct(product), warehouse.ReceivingLimitationsOnDimensions);
             
             //Check for max weight
             if (int.Parse(warehouse.PlaceMaxWeightAllowed) > 0)
