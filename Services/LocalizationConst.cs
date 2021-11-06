@@ -11,6 +11,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         public static string ApiKey => "Plugins.Shipping.NovaPoshta.Fields.ApiKey";
         public static string ApiUrl => "Plugins.Shipping.NovaPoshta.Fields.ApiUrl";
         public static string Centimetres => "Plugins.Shipping.NovaPoshta.Fields.Centimetres";
+        public static string Kilograms => "Plugins.Shipping.NovaPoshta.Fields.Kilograms";
         public static string UseAdditionalFee => "Plugins.Shipping.NovaPoshta.Fields.UseAdditionalFee";
         public static string AdditionalFeeIsPercent => "Plugins.Shipping.NovaPoshta.Fields.AdditionalFeeIsPercent";
         public static string AdditionalFee => "Plugins.Shipping.NovaPoshta.Fields.AdditionalFee";
@@ -28,6 +29,11 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         public static string RecipientMainDataTitle => "Plugins.Shipping.NovaPoshta.Fields.RecipientMainDataTitle";
         public static string ChangeData => "Plugins.Shipping.NovaPoshta.Fields.ChangeData";
         public static string SelectBranch => "Plugins.Shipping.NovaPoshta.Fields.SelectBranch";
+        public static string DefaultDimensions => "Plugins.Shipping.NovaPoshta.Fields.DefaultDimensions";
+        public static string DefaultLength => "Plugins.Shipping.NovaPoshta.Fields.DefaultLength";
+        public static string DefaultWidth => "Plugins.Shipping.NovaPoshta.Fields.DefaultWidth";
+        public static string DefaultHeight => "Plugins.Shipping.NovaPoshta.Fields.DefaultHeight";
+        public static string DefaultWeight => "Plugins.Shipping.NovaPoshta.Fields.DefaultWeight";
 
         #region Address
 

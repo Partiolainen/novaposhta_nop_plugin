@@ -14,6 +14,18 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Models
         
         [NopResourceDisplayName("Plugins.Shipping.NovaPoshta.Fields.ApiUrl")]
         public string ApiUrl { get; set; }
+        
+        [NopResourceDisplayName("Plugins.Shipping.NovaPoshta.Fields.DefaultLength")]
+        public int DefaultLengthCm { get; set; }
+        
+        [NopResourceDisplayName("Plugins.Shipping.NovaPoshta.Fields.DefaultWidth")]
+        public int DefaultWidthCm { get; set; }
+        
+        [NopResourceDisplayName("Plugins.Shipping.NovaPoshta.Fields.DefaultHeight")]
+        public int DefaultHeightCm { get; set; }
+        
+        [NopResourceDisplayName("Plugins.Shipping.NovaPoshta.Fields.DefaultWeight")]
+        public int DefaultWeightKg { get; set; }
 
         [NopResourceDisplayName("Plugins.Shipping.NovaPoshta.Fields.Centimetres")]
         public int MeasureDimensionId { get; set; }

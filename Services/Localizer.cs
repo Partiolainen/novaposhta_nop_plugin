@@ -25,6 +25,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                 [LocalizationConst.ApiKey] = "API KEY",
                 [LocalizationConst.ApiUrl] = "API URL",
                 [LocalizationConst.Centimetres] = "Centimetres",
+                [LocalizationConst.Kilograms] = "Kilograms",
                 [LocalizationConst.UseAdditionalFee] = "Use additional fee",
                 [LocalizationConst.AdditionalFeeIsPercent] = "Additional commission as a percentage?",
                 [LocalizationConst.AdditionalFee] = "Additional fee",
@@ -53,6 +54,11 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                 [LocalizationConst.RecipientMainDataTitle] = "Recipient data",
                 [LocalizationConst.ChangeData] = "Change Data",
                 [LocalizationConst.SelectBranch] = "Select branch",
+                [LocalizationConst.DefaultDimensions] = "Default dimensions",
+                [LocalizationConst.DefaultLength] = "Default length (cm)",
+                [LocalizationConst.DefaultWidth] = "Default width (cm)",
+                [LocalizationConst.DefaultHeight] = "Default height (cm)",
+                [LocalizationConst.DefaultWeight] = "Default weight (kg)",
             });
 
             var allLanguagesAsync = await _languageService.GetAllLanguagesAsync();
@@ -70,6 +76,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                         [LocalizationConst.ApiKey] = "API ключ",
                         [LocalizationConst.ApiUrl] = "API URL",
                         [LocalizationConst.Centimetres] = "Сантиметры",
+                        [LocalizationConst.Kilograms] = "Килограммы",
                         [LocalizationConst.UseAdditionalFee] = "Использовать дополнительную комиссию",
                         [LocalizationConst.AdditionalFeeIsPercent] = "Дополнительная комиссия в процентах?",
                         [LocalizationConst.AdditionalFee] = "Дополнительная комиссия",
@@ -99,6 +106,11 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                         [LocalizationConst.RecipientMainDataTitle] = "Данные получателя",
                         [LocalizationConst.ChangeData] = "Изменить данные",
                         [LocalizationConst.SelectBranch] = "Выберите отделение",
+                        [LocalizationConst.DefaultDimensions] = "Размеры по умолчанию",
+                        [LocalizationConst.DefaultLength] = "Длина (см)",
+                        [LocalizationConst.DefaultWidth] = "Ширина (см)",
+                        [LocalizationConst.DefaultHeight] = "Высота (см)",
+                        [LocalizationConst.DefaultWeight] = "Вес по умолчанию (кг)",
                     }, language.Id);
                 }
                 if (languageName == "uk")
@@ -111,6 +123,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                         [LocalizationConst.ApiKey] = "API ключ",
                         [LocalizationConst.ApiUrl] = "API URL",
                         [LocalizationConst.Centimetres] = "Сантиметри",
+                        [LocalizationConst.Kilograms] = "Кілограми",
                         [LocalizationConst.UseAdditionalFee] = "Використовувати додаткову комісію",
                         [LocalizationConst.AdditionalFeeIsPercent] = "Додаткова комісія у відсотках?",
                         [LocalizationConst.AdditionalFee] = "Додаткова комісія",
@@ -140,6 +153,11 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                         [LocalizationConst.RecipientMainDataTitle] = "Дані отримувача",
                         [LocalizationConst.ChangeData] = "Змінити дані",
                         [LocalizationConst.SelectBranch] = "Виберіть відділення",
+                        [LocalizationConst.DefaultDimensions] = "Розміри за замовчуванням",
+                        [LocalizationConst.DefaultLength] = "Довжина (см)",
+                        [LocalizationConst.DefaultWidth] = "Ширина (см)",
+                        [LocalizationConst.DefaultHeight] = "Висота (см)",
+                        [LocalizationConst.DefaultWeight] = "Вага за замовчуванням (кг)",
                     }, language.Id);
                 }
             }

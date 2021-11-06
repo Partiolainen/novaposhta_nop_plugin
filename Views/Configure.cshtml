@@ -1,19 +1,23 @@
 ﻿@using Nop.Plugin.Shipping.NovaPoshta.Data
 @using Nop.Plugin.Shipping.NovaPoshta.Domain
+@using Nop.Core
+@using Nop.Plugin.Shipping.NovaPoshta.Services
 @model Nop.Plugin.Shipping.NovaPoshta.Models.NovaPoshtaConfigurationSettingsModel
 @inject INovaPoshtaRepository<NovaPoshtaArea> _areasRepository
+@inject IWebHelper _webHelper
 
 @{
     Layout = "_ConfigurePlugin";
+    var storeLocation = _webHelper.GetStoreLocation();
 }
 
 <style>
     .np-settings-group {
         border: 1px solid lightgrey; 
         border-radius: 5px; 
-        padding: 5px 5px 0 5px; 
+        padding: 5px; 
         margin-bottom: 10px;
-        box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+        box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
         background-color: #fff;
     }
     .accent {
@@ -25,6 +29,73 @@
         font-weight: 800;
     }
 </style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.7/signalr.min.js"></script>
+<script>
+
+    const connection = new signalR
+        .HubConnectionBuilder()
+        .withUrl("/npNotifyService")
+        .configureLogging(signalR.LogLevel.Information)
+        .build();
+    
+    async function start() {
+        try {
+            await connection.start();
+            console.log("SignalR Connected.");
+        } catch (err) {
+            console.log(err);
+            setTimeout(start, 5000);
+        }
+    }
+    
+    connection.on("notification", (message, type) => {
+        const li = document.createElement("li");
+        li.textContent = message        
+        document.getElementById('dbUpdateMessagesList').appendChild(li)
+    })
+    
+    connection.on("badProduct", (message, id, name) => {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        const linkText = document.createTextNode(name)
+        a.appendChild(linkText);
+        a.href = `/Admin/Product/Edit/${id}`
+        li.appendChild(document.createTextNode(message));
+        li.appendChild(a);
+        document.getElementById('badProductsList').appendChild(li);
+    })
+    
+    connection.onclose(async () => {
+        await start();
+    });
+    
+    // Start the connection.
+    start();
+    
+    function updateDbNow() {
+        $.ajax({
+            cache: false,
+            url: '@(storeLocation)Plugins/NovaPoshtaShipping/UpdateDbNow',
+            type: 'POST',
+            error: function (err) {
+                console.log(err)
+            }
+        })
+    }
+    
+    function chekProducts() {
+            $.ajax({
+                cache: false,
+                url: '@(storeLocation)Plugins/NovaPoshtaShipping/CheckProductsDimensionsAndWeight',
+                type: 'POST',
+                error: function (err) {
+                    console.log(err)
+                }
+            })
+        }
+
+</script>
 
 <form asp-controller="NovaPoshtaShipping" asp-action="Configure" method="post">
 
@@ -108,6 +179,62 @@
                             <a class="btn btn-sm btn-outline-primary" href="/Admin/Measure/List">Настройка единиц измерения</a>
                         </div>
                     </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-md-3" style="text-align: right; font-weight: 600; line-height: 1.5; padding-top: calc(.375rem + 1px); padding-bottom: calc(.375rem + 1px)">
+                            <span>@T(LocalizationConst.DefaultDimensions)</span>
+                        </div>
+                        <div class="col-md-2">
+                            <div style="display: flex; flex-direction: column">
+                                <div style="display: flex">
+                                    <nop-label asp-for="DefaultLengthCm"/>
+                                </div>
+                                <div>
+                                    <nop-editor asp-for="DefaultLengthCm"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div style="display: flex; flex-direction: column">
+                                <div style="display: flex">
+                                    <nop-label asp-for="DefaultWidthCm"/>
+                                </div>
+                                <div>
+                                    <nop-editor asp-for="DefaultWidthCm"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div style="display: flex; flex-direction: column">
+                                <div style="display: flex">
+                                    <nop-label asp-for="DefaultHeightCm"/>
+                                </div>
+                                <div>
+                                    <nop-editor asp-for="DefaultHeightCm"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-3">
+                            <nop-label asp-for="DefaultWeightKg"/>
+                        </div>
+                        <div class="col-md-2">
+                            <nop-editor asp-for="DefaultWeightKg"/>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-3" style="text-align: right; font-weight: 600; line-height: 1.5; padding-top: calc(.375rem + 1px); padding-bottom: calc(.375rem + 1px)">
+                            <span>Проверка товаров на возможность отправки Новой Почтой</span>
+                        </div>
+                        <div class="col-md-9">
+                            <div style="border: 1px solid lightgrey; border-radius: 3px">
+                                <ul id="badProductsList"></ul>
+                            </div>
+                            <button class="btn btn-sm btn-outline-primary" style="margin-top: 10px;" type="button" onclick="chekProducts()">Проверить сейчас</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="np-settings-group">
                     <div class="form-group row">
@@ -144,64 +271,76 @@
                         <button type="submit" name="save" class="btn btn-primary">@T("Admin.Common.Save")</button>
                     </div>
                 </div>
-                <hr/>
-
-                <div class="form-group row">
-                    <div class="col-md-3">
-                        <nop-label asp-for="WarehouseCities"/>
-                    </div>
-                    <div class="col-md-9" style="display: flex; flex-direction: column">
-                        @foreach (var warehouseCity in Model.WarehouseCities)
-                        {
-                            await Html.RenderPartialAsync("WarehouseCity.cshtml", warehouseCity);
-                        }
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-9">
-                        <a class="btn btn-primary" href="/Admin/Shipping/Warehouses">Настройка складов</a>
-                    </div>
-                </div>
-
-                <hr/>
-
-                <div class="form-group row">
-                    <div class="col-md-3">
-                        <nop-label asp-for="DbLastSuccessUpdate"/>
-                    </div>
-                    <div class="col-md-6">
-                        <div style="border: 1px solid lightgray">
-                            @if (Model.DbLastSuccessUpdate == null)
-                            {
-                                <span style="line-height: 40px; margin-left: 10px;">
-                                    Нет данных. База не обновлялась или использованы неправильные настройки модуля
-                                </span>
-                            }
-                            else
-                            {
-                                <span style="line-height: 40px; margin-left: 10px;">
-                                    @Model.DbLastSuccessUpdate
-                                </span>
-                            }
-
-                        </div>
-                        <div style="margin-top: 10px;">
-                            @if (string.IsNullOrEmpty(Model.ApiKey) || string.IsNullOrEmpty(Model.ApiUrl))
-                            {
-                                <a class="btn btn-primary disabled" href="">Обновить сейчас</a>
-                                <span style="margin-left: 10px; color: red">Невозможно обновить, проверьте API URL и API ключ</span>
-                            }
-                            else
-                            {
-                                <button type="submit" class="btn btn-primary" name="UpdateDatabase">Обновить сейчас</button>
-                            }
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 
 </form>
+
+<div class="cards-group">
+    <div class="card card-default">
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <nop-label asp-for="WarehouseCities"/>
+                </div>
+                <div class="col-md-9" style="display: flex; flex-direction: column">
+                    @foreach (var warehouseCity in Model.WarehouseCities)
+                    {
+                        await Html.RenderPartialAsync("WarehouseCity.cshtml", warehouseCity);
+                    }
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-9">
+                    <a class="btn btn-primary" href="/Admin/Shipping/Warehouses">Настройка складов</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="cards-group">
+    <div class="card card-default">
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <nop-label asp-for="DbLastSuccessUpdate"/>
+                </div>
+                <div class="col-md-6">
+                    <div style="border: 1px solid lightgray">
+                        @if (Model.DbLastSuccessUpdate == null)
+                        {
+                            <span style="line-height: 40px; margin-left: 10px;">
+                                Нет данных. База не обновлялась или использованы неправильные настройки модуля
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="line-height: 40px; margin-left: 10px;">
+                                @Model.DbLastSuccessUpdate
+                            </span>
+                        }
+
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <div style="border: 1px solid lightgrey; margin-bottom: 10px; border-radius: 3px">
+                            <ul id="dbUpdateMessagesList"></ul>
+                        </div>
+                        @if (string.IsNullOrEmpty(Model.ApiKey) || string.IsNullOrEmpty(Model.ApiUrl))
+                        {
+                            <a class="btn btn-primary disabled" href="">Обновить сейчас</a>
+                            <span style="margin-left: 10px; color: red">Невозможно обновить, проверьте API URL и API ключ</span>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-primary" name="UpdateDatabase" onclick="updateDbNow()">Обновить сейчас</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

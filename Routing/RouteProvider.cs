@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Routing;
 using Nop.Core.Domain.Localization;
 using Nop.Core.Infrastructure;
 using Nop.Data;
+using Nop.Plugin.Shipping.NovaPoshta.Services;
 using Nop.Web.Framework.Mvc.Routing;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Routing
@@ -25,6 +26,18 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Routing
                 "Plugin.Shipping.NovaPoshta.SaveCheckoutShippingAddress",
                 "Plugins/NovaPoshtaShipping/SaveCheckoutShippingAddress",
                 new { controller = "NovaPoshtaHandle", action = "SaveCheckoutShippingAddress" });
+            
+            endpointRouteBuilder.MapControllerRoute(
+                "Plugin.Shipping.NovaPoshta.UpdateDbNow",
+                "Plugins/NovaPoshtaShipping/UpdateDbNow",
+                new { controller = "NovaPoshtaHandle", action = "UpdateDbNow" });
+            
+            endpointRouteBuilder.MapControllerRoute(
+                "Plugin.Shipping.NovaPoshta.CheckProductsDimensionsAndWeight",
+                "Plugins/NovaPoshtaShipping/CheckProductsDimensionsAndWeight",
+                new { controller = "NovaPoshtaHandle", action = "CheckProductsDimensionsAndWeight" });
+
+            endpointRouteBuilder.MapHub<NotifySignalRHub>("/npNotifyService");
         }
 
         public int Priority => 0;

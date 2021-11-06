@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Nop.Core.Domain.Directory;
 using Nop.Plugin.Shipping.NovaPoshta.Models;
 using Nop.Plugin.Shipping.NovaPoshta.Services;
 using Nop.Services.Configuration;
@@ -25,7 +24,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
     {
         private readonly NovaPoshtaSettings _novaPoshtaSettings;
         private readonly ISettingService _settingService;
-        private readonly INotificationService _notificationService;
+        private readonly INotificationServiceExt _notificationServiceExt;
         private readonly ILocalizationService _localizationService;
         private readonly IScheduleTaskService _scheduleTaskService;
         private readonly INpService _npService;
@@ -37,7 +36,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
         public NovaPoshtaShippingController(
             NovaPoshtaSettings novaPoshtaSettings, 
             ISettingService settingService,
-            INotificationService notificationService,
+            INotificationServiceExt notificationServiceExt,
             ILocalizationService localizationService,
             IScheduleTaskService scheduleTaskService,
             INpService npService,
@@ -46,7 +45,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
         {
             _novaPoshtaSettings = novaPoshtaSettings;
             _settingService = settingService;
-            _notificationService = notificationService;
+            _notificationServiceExt = notificationServiceExt;
             _localizationService = localizationService;
             _scheduleTaskService = scheduleTaskService;
             _npService = npService;
@@ -66,6 +65,10 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
             {
                 ApiUrl = _novaPoshtaSettings.ApiUrl,
                 ApiKey = _novaPoshtaSettings.ApiKey,
+                DefaultLengthCm = _novaPoshtaSettings.DefaultLengthCm,
+                DefaultWidthCm = _novaPoshtaSettings.DefaultWidthCm,
+                DefaultHeightCm = _novaPoshtaSettings.DefaultHeightCm,
+                DefaultWeightKg = _novaPoshtaSettings.DefaultWeightKg,
                 MeasureDimensionId = centimetresMeasureDimensionId,
                 AvailableMeasureDimensions = dimensionSelectListItems,
                 MeasureWeightId = kilogramsMeasureDimensionId,
@@ -151,6 +154,10 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
         {
             _novaPoshtaSettings.ApiUrl = configurationSettingsModel.ApiUrl;
             _novaPoshtaSettings.ApiKey = configurationSettingsModel.ApiKey;
+            _novaPoshtaSettings.DefaultLengthCm = configurationSettingsModel.DefaultLengthCm;
+            _novaPoshtaSettings.DefaultWidthCm = configurationSettingsModel.DefaultWidthCm;
+            _novaPoshtaSettings.DefaultHeightCm = configurationSettingsModel.DefaultHeightCm;
+            _novaPoshtaSettings.DefaultWeightKg = configurationSettingsModel.DefaultWeightKg;
             _novaPoshtaSettings.UseAdditionalFee = configurationSettingsModel.UseAdditionalFee;
             _novaPoshtaSettings.AdditionalFee = configurationSettingsModel.AdditionalFee;
             _novaPoshtaSettings.AdditionalFeeIsPercent = configurationSettingsModel.AdditionalFeeIsPercent;
@@ -159,8 +166,10 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
 
             await _settingService.SaveSettingAsync(_novaPoshtaSettings);
 
-            _notificationService.SuccessNotification(
+            _notificationServiceExt.SuccessNotification(
                 await _localizationService.GetResourceAsync("Admin.Plugins.Saved"));
+            
+            await _notificationServiceExt.NotificationWithSignalR(NotifyType.Success,  await _localizationService.GetResourceAsync("Admin.Plugins.Saved"));
 
             if (string.IsNullOrEmpty(configurationSettingsModel.ApiUrl) || string.IsNullOrEmpty(configurationSettingsModel.ApiKey)) 
                 return await Configure(new NovaPoshtaConfigurePageModel());
@@ -168,15 +177,6 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
             _npScheduleTasksService.UpdateDatabase();
 
             return await Configure(new NovaPoshtaConfigurePageModel(true));
-        }
-
-        [HttpPost, ActionName("Configure")]
-        [FormValueRequired("UpdateDatabase")]
-        public async Task<IActionResult> UpdateDatabase(NovaPoshtaConfigurePageModel pageModel)
-        {
-            _npScheduleTasksService.UpdateDatabase(true);
-
-            return await Configure(pageModel);
         }
     }
 }

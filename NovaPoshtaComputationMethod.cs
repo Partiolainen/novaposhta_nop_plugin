@@ -101,6 +101,10 @@ namespace Nop.Plugin.Shipping.NovaPoshta
             {
                 ApiKey = "",
                 ApiUrl = "https://api.novaposhta.ua/v2.0/json/",
+                DefaultLengthCm = 40,
+                DefaultWidthCm = 35,
+                DefaultHeightCm = 28,
+                DefaultWeightKg = 5,
                 AdditionalFee = 0,
                 UseAdditionalFee = false,
                 AdditionalFeeIsPercent = false

@@ -149,6 +149,13 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             return novaPoshtaWarehouse;
         }
 
+        public async Task<IList<NovaPoshtaWarehouse>> GetAllWarehousesAsync()
+        {
+            var novaPoshtaWarehouses = await _warehousesRepository.GetAllAsync(q => q);
+
+            return novaPoshtaWarehouses;
+        }
+
         public async Task<ShippingOption> GetToAddressShippingOption(GetShippingOptionRequest getShippingOptionRequest)
         {
             var shippingAddress = getShippingOptionRequest.ShippingAddress;

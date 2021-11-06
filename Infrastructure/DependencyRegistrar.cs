@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Razor;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Nop.Core.Configuration;
 using Nop.Core.Infrastructure;
@@ -27,6 +28,9 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Infrastructure
             services.AddScoped<INpOrderDataService, NpOrderDataService>();
             services.AddScoped<INpCustomerAddressService, NpCustomerAddressService>();
             services.AddScoped<IFactoriesService, FactoriesService>();
+
+            services.AddSingleton<INotificationServiceExt, NotificationServiceExt>();
+            services.AddSignalR();
 
             services.Configure<RazorViewEngineOptions>(options =>
             {
