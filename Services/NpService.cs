@@ -202,15 +202,14 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
 
             foreach (var requestItem in request.Items)
             {
-                var price = 
-                    await _npApiService.GetDeliveryPrice(sender, recipient, requestItem.Product);
+                if (requestItem.Product.IsFreeShipping) continue;
+
+                var price = await _npApiService
+                    .GetDeliveryPrice(sender, recipient, requestItem.Product);
+
                 if (price.Any())
                 {
                     resultRate += price.First().Cost * requestItem.GetQuantity();
-                }
-                else
-                {
-                    resultRate = 0;
                 }
             }
 
@@ -236,16 +235,13 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
 
             foreach (var requestItem in request.Items)
             {
-                var price = 
-                    await _npApiService.GetDeliveryPrice(sender, recipient, requestItem.Product, false);
-                if (price.Any())
-                {
+                if (requestItem.Product.IsFreeShipping) continue;
+                
+                var price = await _npApiService
+                    .GetDeliveryPrice(sender, recipient, requestItem.Product, false);
+
+                if (price.Any() && !requestItem.Product.IsFreeShipping)
                     resultRate += price.First().Cost * requestItem.GetQuantity();
-                }
-                else
-                {
-                    resultRate = 0;
-                }
             }
 
             return resultRate;
