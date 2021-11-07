@@ -85,15 +85,21 @@
     }
     
     function chekProducts() {
-            $.ajax({
-                cache: false,
-                url: '@(storeLocation)Plugins/NovaPoshtaShipping/CheckProductsDimensionsAndWeight',
-                type: 'POST',
-                error: function (err) {
-                    console.log(err)
-                }
-            })
+        let childNodes = document.getElementById('badProductsList').childNodes;
+        let childNodesArray = Array.from(childNodes);
+        for (let i = 0; i < childNodesArray.length; i++) {
+            document.getElementById('badProductsList').removeChild(childNodesArray[i]);
         }
+        
+        $.ajax({
+            cache: false,
+            url: '@(storeLocation)Plugins/NovaPoshtaShipping/CheckProductsDimensionsAndWeight',
+            type: 'POST',
+            error: function (err) {
+                console.log(err)
+            }
+        })
+    }
 
 </script>
 

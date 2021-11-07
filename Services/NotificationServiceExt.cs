@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.SignalR;
@@ -11,6 +11,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
 {
     public class NotificationServiceExt : NotificationService, INotificationServiceExt
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IHubContext<NotifySignalRHub> _hubContext;
 
         public NotificationServiceExt(
@@ -21,6 +22,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             IHubContext<NotifySignalRHub> hubContext) 
             : base(httpContextAccessor, logger, tempDataDictionaryFactory, workContext)
         {
+            _httpContextAccessor = httpContextAccessor;
             _hubContext = hubContext;
         }
 
@@ -32,6 +34,10 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         public async Task NotificationBadProduct(string message, int id, string name)
         {
             await _hubContext.Clients.All.SendAsync("badProduct", message, id, name);
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                base.WarningNotification(new StringBuilder(message).Append($" (Id:{id} )").Append(name).ToString());
+            }
         }
     }
 }

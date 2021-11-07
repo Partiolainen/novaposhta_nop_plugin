@@ -28,6 +28,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Infrastructure
             services.AddScoped<INpOrderDataService, NpOrderDataService>();
             services.AddScoped<INpCustomerAddressService, NpCustomerAddressService>();
             services.AddScoped<IFactoriesService, FactoriesService>();
+            services.AddScoped<INpProductService, NpProductService>();
 
             services.AddSingleton<INotificationServiceExt, NotificationServiceExt>();
             services.AddSignalR();

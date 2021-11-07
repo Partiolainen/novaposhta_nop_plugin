@@ -12,6 +12,7 @@
 @inject IProductService _productService
 @inject ILocalizationService _localizationService
 @inject IFactoriesService _factoriesService
+@inject INpProductService _npProductService
 
 <div >
     <style>
@@ -114,27 +115,11 @@
         
         foreach (var product in products)
         {
-            //Check for dimensions
-            result = result && FitParcel(await _factoriesService.BuildNpDimensionsByProduct(product), warehouse.ReceivingLimitationsOnDimensions);
+            result = result && await _npProductService.MatchDimensionsToWarehouse(product, warehouse);
             
-            //Check for max weight
-            if (int.Parse(warehouse.PlaceMaxWeightAllowed) > 0)
-            {
-                result = result && product.Weight <= decimal.Parse(warehouse.PlaceMaxWeightAllowed);
-            }
-            else
-            {
-                if (int.Parse(warehouse.TotalMaxWeightAllowed) > 0)
-                {
-                    result = result && product.Weight <= decimal.Parse(warehouse.TotalMaxWeightAllowed);
-                }
-            }
+            result = result && _npProductService.MatchWeightToWarehouse(product, warehouse);
 
-            //Check for max declared price
-            if (int.Parse(warehouse.MaxDeclaredCost) > 0)
-            {
-                result = result && product.Price <= decimal.Parse(warehouse.MaxDeclaredCost);
-            }
+            result = result && _npProductService.MatchDeclaredPriceToWarehouse(product, warehouse);
         }
 
         if (!result)

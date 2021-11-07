@@ -122,7 +122,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         public async Task<List<NovaPoshtaDocumentPrice>> GetDeliveryPrice(NovaPoshtaSettlement sender, 
             NovaPoshtaSettlement recipient, Product product, bool toWarehouse = true)
         {
-            var optionSeat = await _factoriesService.BuildOptionSeatByProduct(product);
+            var optionSeat = await _factoriesService.GetOptionSeatByProduct(product);
 
             var apiResponse = await NovaPoshtaApiGetData<NovaPoshtaDocumentPrice, GetDeliveryCostProps>(props =>
             {

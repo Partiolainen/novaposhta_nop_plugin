@@ -1,4 +1,5 @@
 ﻿using Nop.Core.Configuration;
+using Nop.Plugin.Shipping.NovaPoshta.Domain;
 
 namespace Nop.Plugin.Shipping.NovaPoshta
 {
@@ -19,5 +20,25 @@ namespace Nop.Plugin.Shipping.NovaPoshta
         public bool UseAdditionalFee { get; set; }
         public bool AdditionalFeeIsPercent { get; set; }
         public decimal AdditionalFee { get; set; }
+        
+        public Dimensions GetMaxAllowedDimensions()
+        {
+            return new Dimensions
+            {
+                Height = MaxAllowedHeightCm,
+                Width = MaxAllowedWidthCm,
+                Length = MaxAllowedLengthCm,
+            };
+        }
+        public Dimensions GetDefaultDimensions()
+        {
+            return new Dimensions
+            {
+                Height = DefaultHeightCm,
+                Width = DefaultWidthCm,
+                Length = DefaultLengthCm,
+            };
+        }
+        
     }
 }

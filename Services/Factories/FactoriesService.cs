@@ -20,7 +20,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services.Factories
             _novaPoshtaSettings = novaPoshtaSettings;
         }
 
-        public async Task<OptionSeat> BuildOptionSeatByProduct(Product product)
+        public async Task<OptionSeat> GetOptionSeatByProduct(Product product)
         {
             var centimetresMeasureDimension = await _measureService
                 .GetMeasureDimensionByIdAsync(_novaPoshtaSettings.CentimetresMeasureDimensionId);
@@ -47,9 +47,9 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services.Factories
             return optionSeat;
         }
 
-        public async Task<Dimensions> BuildNpDimensionsByProduct(Product product)
+        public async Task<Dimensions> GetNpDimensionsByProduct(Product product)
         {
-            var optionSeatByProduct = await BuildOptionSeatByProduct(product);
+            var optionSeatByProduct = await GetOptionSeatByProduct(product);
 
             var dimensions = new Dimensions
             {

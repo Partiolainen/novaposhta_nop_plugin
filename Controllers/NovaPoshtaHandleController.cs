@@ -31,6 +31,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
         private readonly IProductService _productService;
         private readonly NovaPoshtaSettings _novaPoshtaSettings;
         private readonly IFactoriesService _factoriesService;
+        private readonly INpProductService _npProductService;
 
         public NovaPoshtaHandleController(
             IGenericAttributeService genericAttributeService,
@@ -41,7 +42,8 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
             INotificationServiceExt notificationServiceExt,
             IProductService productService,
             NovaPoshtaSettings novaPoshtaSettings,
-            IFactoriesService factoriesService)
+            IFactoriesService factoriesService,
+            INpProductService npProductService)
         {
             _genericAttributeService = genericAttributeService;
             _workContext = workContext;
@@ -52,6 +54,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
             _productService = productService;
             _novaPoshtaSettings = novaPoshtaSettings;
             _factoriesService = factoriesService;
+            _npProductService = npProductService;
         }
 
         [HttpPost]
@@ -101,42 +104,16 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
         {
             var products = await _productService.SearchProductsAsync();
             var badProducts = new List<Product>();
-            
-            var maxAllowedDimension = new Dimensions
-            {
-                Height = _novaPoshtaSettings.MaxAllowedHeightCm,
-                Width = _novaPoshtaSettings.MaxAllowedWidthCm,
-                Length = _novaPoshtaSettings.MaxAllowedLengthCm,
-            };
 
             foreach (var product in products)
             {
-                if (!product.IsShipEnabled)
-                    continue;
+                if (!product.IsShipEnabled) continue;
 
-                if (product.Length == 0 || product.Width == 0 || product.Height == 0)
-                {
-                    product.Length = _novaPoshtaSettings.DefaultLengthCm;
-                    product.Height = _novaPoshtaSettings.DefaultHeightCm;
-                    product.Width = _novaPoshtaSettings.DefaultWidthCm;
-                    await _productService.UpdateProductAsync(product);
-                    await _notificationServiceExt.NotificationBadProduct(
-                        $"Для продукта была установлена размерность по умолчанию ", 
-                        product.Id, 
-                        product.Name);
-                }
+                await _npProductService.CheckDimensionValuesForZeros(product);
 
-                if (product.Weight == 0)
-                {
-                    product.Weight = _novaPoshtaSettings.DefaultWeightKg;
-                    await _productService.UpdateProductAsync(product);
-                    await _notificationServiceExt.NotificationBadProduct(
-                        $"Для продукта был установлен вес по умолчанию ", 
-                        product.Id, 
-                        product.Name);
-                }
+                await _npProductService.CheckWeightAndValueForZero(product);
 
-                if (await _factoriesService.BuildNpDimensionsByProduct(product) > maxAllowedDimension)
+                if (await _factoriesService.GetNpDimensionsByProduct(product) > _novaPoshtaSettings.GetMaxAllowedDimensions())
                 {
                     badProducts.Add(product);
                 }
@@ -154,7 +131,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
             foreach (var badProduct in badProducts)
             {
                 await _notificationServiceExt.NotificationBadProduct(
-                    $"Не подходящие параметры размерности или веса ", 
+                    $"Неподходящие параметры размерности или веса ", 
                     badProduct.Id, 
                     badProduct.Name);
             }

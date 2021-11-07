@@ -6,16 +6,16 @@ using Nop.Services.Events;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.EventListeners
 {
-    public class ProductInsertListener : IConsumer<EntityInsertedEvent<Product>>
+    public class ProductEditListener : IConsumer<EntityUpdatedEvent<Product>>
     {
         private readonly INpProductService _npProductService;
 
-        public ProductInsertListener(INpProductService npProductService)
+        public ProductEditListener(INpProductService npProductService)
         {
             _npProductService = npProductService;
         }
-
-        public async Task HandleEventAsync(EntityInsertedEvent<Product> eventMessage)
+        
+        public async Task HandleEventAsync(EntityUpdatedEvent<Product> eventMessage)
         {
             var product = eventMessage.Entity;
             

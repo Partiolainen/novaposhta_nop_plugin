@@ -7,7 +7,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services.Factories
 {
     public interface IFactoriesService
     {
-        Task<OptionSeat> BuildOptionSeatByProduct(Product product);
-        Task<Dimensions> BuildNpDimensionsByProduct(Product product);
+        Task<OptionSeat> GetOptionSeatByProduct(Product product);
+        Task<Dimensions> GetNpDimensionsByProduct(Product product);
     }
 }
