@@ -34,6 +34,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         public static string DefaultWidth => "Plugins.Shipping.NovaPoshta.Fields.DefaultWidth";
         public static string DefaultHeight => "Plugins.Shipping.NovaPoshta.Fields.DefaultHeight";
         public static string DefaultWeight => "Plugins.Shipping.NovaPoshta.Fields.DefaultWeight";
+        public static string MyAccountAddressManagementLink => "Plugins.Shipping.NovaPoshta.Actions.MyAccountAddressManagementLink";
 
         #region Address
 

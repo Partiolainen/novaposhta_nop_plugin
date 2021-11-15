@@ -38,7 +38,6 @@
         
         let zipPostal = $('#zip_code_input').val();
         let area = $('#area_input').val();
-        let region = $('#region_input').val();
         let city = $('#city_input').val();
         let street = $('#street_input').val();
         let house = $('#house_input').val();
@@ -52,7 +51,7 @@
         for (var i = 0; i < methods.length; i++) {
             if (methods[i].checked) {
                 if (methods[i].id === 'shippingoption_ADDRESS') {
-                    if (isNullOrEmpty(zipPostal) || isNullOrEmpty(area) || isNullOrEmpty(region) 
+                    if (isNullOrEmpty(zipPostal) || isNullOrEmpty(area) 
                     || isNullOrEmpty(city) || isNullOrEmpty(street) || isNullOrEmpty(house)) {
                         alert("Одно или несколько обязательных полей в адресе доставки не заполнено");
                         return false;

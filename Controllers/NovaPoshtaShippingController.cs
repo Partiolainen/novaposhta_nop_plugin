@@ -174,7 +174,9 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
             if (string.IsNullOrEmpty(configurationSettingsModel.ApiUrl) || string.IsNullOrEmpty(configurationSettingsModel.ApiKey)) 
                 return await Configure(new NovaPoshtaConfigurePageModel());
             
+#pragma warning disable 4014
             _npScheduleTasksService.UpdateDatabase();
+#pragma warning restore 4014
 
             return await Configure(new NovaPoshtaConfigurePageModel(true));
         }

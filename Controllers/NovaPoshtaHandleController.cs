@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FluentMigrator.Runner.Generators.Postgres;
 using Microsoft.AspNetCore.Mvc;
 using Nop.Core;
 using Nop.Core.Domain.Catalog;
-using Nop.Core.Html;
-using Nop.Plugin.Shipping.NovaPoshta.Domain;
 using Nop.Plugin.Shipping.NovaPoshta.Infrastructure.GenericAttributes;
 using Nop.Plugin.Shipping.NovaPoshta.Models;
 using Nop.Plugin.Shipping.NovaPoshta.Models.ModelFactories;
@@ -14,9 +11,7 @@ using Nop.Plugin.Shipping.NovaPoshta.Services;
 using Nop.Plugin.Shipping.NovaPoshta.Services.Factories;
 using Nop.Services.Catalog;
 using Nop.Services.Common;
-using Nop.Services.Localization;
 using Nop.Services.Messages;
-using HtmlHelper = Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper;
 
 namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
 {
@@ -25,7 +20,6 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
         private readonly IGenericAttributeService _genericAttributeService;
         private readonly IWorkContext _workContext;
         private readonly IStoreContext _storeContext;
-        private readonly ILocalizationService _localizationService;
         private readonly INpScheduleTasksService _npScheduleTasksService;
         private readonly INotificationServiceExt _notificationServiceExt;
         private readonly IProductService _productService;
@@ -37,7 +31,6 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
             IGenericAttributeService genericAttributeService,
             IWorkContext workContext,
             IStoreContext storeContext,
-            ILocalizationService localizationService,
             INpScheduleTasksService npScheduleTasksService,
             INotificationServiceExt notificationServiceExt,
             IProductService productService,
@@ -48,7 +41,6 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Controllers
             _genericAttributeService = genericAttributeService;
             _workContext = workContext;
             _storeContext = storeContext;
-            _localizationService = localizationService;
             _npScheduleTasksService = npScheduleTasksService;
             _notificationServiceExt = notificationServiceExt;
             _productService = productService;

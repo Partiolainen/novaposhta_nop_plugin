@@ -95,15 +95,23 @@
             </div>
         </div>
         <div class="card-footer">
-            <a href="#" onclick="Checkout.back(); return false;">@T(LocalizationConst.ChangeData)</a>
+            <a href="#" onclick="Checkout.back(); return false;">🖉 @T(LocalizationConst.ChangeData)</a>
         </div>
     </div>
     
 </div>
 
+<script>
+    $(document).ready(() => {
+        $('#shippingoption_WAREHOUSE').prop('disabled', @(WarehousesNotAvailable.ToString().ToLower()));
+        $('#shippingoption_ADDRESS').prop('checked', @(WarehousesNotAvailable.ToString().ToLower()));
+    })
+</script>
+
 @functions
 {
     public string Message { get; set; }
+    public bool WarehousesNotAvailable { get; set; } = true;
     
     private async Task<bool> WarehouseAvailability(NovaPoshtaWarehouse warehouse)
     {
@@ -126,12 +134,11 @@
         {
             Message = await _localizationService.GetResourceAsync(LocalizationConst.WarehouseUnavailableMessage);
         }
-        
-        return result;
-    }
+        else
+        {
+            WarehousesNotAvailable = false;
+        }
 
-    private bool FitParcel(Dimensions productDimensions, Dimensions npWarehouseDimensions)
-    {
-        return npWarehouseDimensions >= productDimensions;
+        return result;
     }
 }

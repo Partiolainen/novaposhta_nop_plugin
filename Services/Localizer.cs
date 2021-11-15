@@ -59,6 +59,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                 [LocalizationConst.DefaultWidth] = "Default width (cm)",
                 [LocalizationConst.DefaultHeight] = "Default height (cm)",
                 [LocalizationConst.DefaultWeight] = "Default weight (kg)",
+                [LocalizationConst.MyAccountAddressManagementLink] = "My account - Address management",
             });
 
             var allLanguagesAsync = await _languageService.GetAllLanguagesAsync();
@@ -111,6 +112,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                         [LocalizationConst.DefaultWidth] = "Ширина (см)",
                         [LocalizationConst.DefaultHeight] = "Высота (см)",
                         [LocalizationConst.DefaultWeight] = "Вес по умолчанию (кг)",
+                        [LocalizationConst.MyAccountAddressManagementLink] = "Личный кабинет - управление адресами",
                     }, language.Id);
                 }
                 if (languageName == "uk")
@@ -158,6 +160,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
                         [LocalizationConst.DefaultWidth] = "Ширина (см)",
                         [LocalizationConst.DefaultHeight] = "Висота (см)",
                         [LocalizationConst.DefaultWeight] = "Вага за замовчуванням (кг)",
+                        [LocalizationConst.MyAccountAddressManagementLink] = "Мій кабінет - керування адресами",
                     }, language.Id);
                 }
             }
