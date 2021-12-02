@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FluentMigrator.Runner.Generators.Postgres;
 using Nop.Core.Caching;
 using Nop.Core.Events;
 using Nop.Data;

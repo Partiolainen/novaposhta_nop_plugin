@@ -9,15 +9,15 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Data.Mapping
     {
         public override void MapEntity(CreateTableExpressionBuilder table)
         {
-            table
-                .WithColumn(nameof(NovaPoshtaWarehouse.SendingLimitationsOnDimensionsId))
-                .AsInt32()
-                .ForeignKey<Dimensions>();
-            
-            table
-                .WithColumn(nameof(NovaPoshtaWarehouse.ReceivingLimitationsOnDimensionsId))
-                .AsInt32()
-                .ForeignKey<Dimensions>();
+            // table
+            //     .WithColumn(nameof(NovaPoshtaWarehouse.SendingLimitationsOnDimensionsId))
+            //     .AsInt32()
+            //     .ForeignKey<Dimensions>();
+            //
+            // table
+            //     .WithColumn(nameof(NovaPoshtaWarehouse.ReceivingLimitationsOnDimensionsId))
+            //     .AsInt32()
+            //     .ForeignKey<Dimensions>();
         }
     }
 }

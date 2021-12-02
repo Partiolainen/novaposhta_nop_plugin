@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Nop.Data;
 using Nop.Plugin.Shipping.NovaPoshta.Data;
 using Nop.Plugin.Shipping.NovaPoshta.Domain;
 using Nop.Services.Logging;
@@ -16,6 +17,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
         private readonly INpApiService _npApiService;
         private readonly ILogger _logger;
         private readonly INotificationServiceExt _notificationServiceExt;
+        private readonly IRepository<Dimensions> _dimensionsRepository;
 
         public NpUpdateScheduledTask(
             INovaPoshtaRepository<NovaPoshtaSettlement> settlementsRepository,
@@ -23,8 +25,8 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             INovaPoshtaRepository<NovaPoshtaArea> areasRepository,
             INpApiService npApiService,
             ILogger logger,
-            INotificationServiceExt notificationServiceExt
-        )
+            INotificationServiceExt notificationServiceExt,
+            IRepository<Dimensions> dimensionsRepository)
         {
             _settlementsRepository = settlementsRepository;
             _warehousesRepository = warehousesRepository;
@@ -32,6 +34,7 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             _npApiService = npApiService;
             _logger = logger;
             _notificationServiceExt = notificationServiceExt;
+            _dimensionsRepository = dimensionsRepository;
         }
 
         public async Task ExecuteAsync()
@@ -94,6 +97,8 @@ namespace Nop.Plugin.Shipping.NovaPoshta.Services
             if (allWarehouses.Any())
             {
                 var deleted = await _warehousesRepository.DeleteAsync(_ => true);
+                await _dimensionsRepository.DeleteAsync(_ => true);
+                
                 await _logger.InformationAsync($"Deleted from database {deleted} warehouse entities");
                 await _notificationServiceExt.NotificationWithSignalR( NotifyType.Success, $"Deleted from database {deleted} warehouse entities");
                 

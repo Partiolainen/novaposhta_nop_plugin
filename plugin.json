@@ -2,7 +2,7 @@
   "Group": "Shipping rate computation",
   "FriendlyName": "Nova Poshta",
   "SystemName": "Shipping.NovaPoshta",
-  "Version": "1.1",
+  "Version": "1.2",
   "SupportedVersions": [ "4.40" ],
   "Author": "AlexApps development",
   "DisplayOrder": 1,
